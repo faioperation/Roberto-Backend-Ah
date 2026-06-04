@@ -1,0 +1,640 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  PENDING
+}
+
+enum BusinessStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  PENDING
+}
+
+enum RoleName {
+  SYSTEM_OWNER
+  BUSINESS_OWNER
+  BRANCH_MANAGER
+  CUSTOMER
+}
+
+model User {
+  id                   String     @id @default(uuid())
+  email                String     @unique
+  passwordHash         String     @map("password_hash")
+  firstName            String?    @map("first_name")
+  lastName             String?    @map("last_name")
+  profilePicture       String?    @map("profile_picture")
+  gender               String?
+  country              String?
+  phone                String?
+  status               UserStatus @default(ACTIVE)
+  isVerified           Boolean    @default(false) @map("is_verified")
+  forgotPasswordStatus Boolean    @default(false) @map("forgot_password_status")
+  lastLoginAt          DateTime?  @map("last_login_at")
+  createdAt            DateTime   @default(now()) @map("created_at")
+  updatedAt            DateTime   @updatedAt @map("updated_at")
+  deletedAt            DateTime?  @map("deleted_at")
+
+  roles                 UserRole[]
+  businesses            Business[]         @relation("BusinessOwner")
+  systemBusinesses      SystemBusiness[]   @relation("SystemBusinessCreator")
+  ownedSystemBusinesses SystemBusiness[]   @relation("SystemBusinessOwner")
+  activityLogs          ActivityLog[]      @relation("ActivityLogCreator")
+  systemOwnerPlans      SystemOwnerPlan[]  @relation("SystemOwnerPlanCreator")
+  subscriptionPlans     SubscriptionPlan[] @relation("SubscriptionPlanCreator")
+  createdBranchManagers BranchManager[]    @relation("BranchManagerCreator")
+  createdBranches       Branch[]           @relation("BranchCreator")
+  createdOrderBookings  OrderBooking[]     @relation("OrderBookingCreator")
+  createdPricings       Pricing[]          @relation("PricingCreator")
+  createdCrmLeads       CrmLead[]          @relation("CrmLeadCreator")
+
+  @@map("users")
+}
+
+model Role {
+  id          String   @id @default(uuid())
+  name        RoleName @unique
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  users       UserRole[]
+  permissions RolePermission[]
+
+  @@map("roles")
+}
+
+model UserRole {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  roleId    String   @map("role_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+  @@map("user_roles")
+}
+
+model Permission {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  roles RolePermission[]
+
+  @@map("permissions")
+}
+
+model RolePermission {
+  id           String @id @default(uuid())
+  roleId       String @map("role_id")
+  permissionId String @map("permission_id")
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+  @@map("role_permissions")
+}
+
+enum DemoBookingStatus {
+  CALLED
+  PENDING
+}
+
+model DemoBooking {
+  id           String            @id @default(uuid())
+  email        String?           @unique
+  mobileNumber String?           @map("mobile_number")
+  date         DateTime?         @db.Date
+  status       DemoBookingStatus @default(PENDING)
+  credits      Int               @default(0)
+  createdAt    DateTime          @default(now()) @map("created_at")
+  updatedAt    DateTime          @updatedAt @map("updated_at")
+
+  @@map("demo_booking")
+}
+
+// System Owner Starts---------------------------
+
+enum PlanName {
+  NORMAL
+  MEDIUM
+  PREMIUM
+}
+
+enum PlanType {
+  YEARLY
+  MONTHLY
+}
+
+model SystemOwnerPlan {
+  id           String    @id @default(uuid())
+  name         PlanName  @unique
+  price        Decimal
+  billingCycle PlanType  @default(MONTHLY) @map("billing_cycle")
+  planList     String[]  @map("plan_list")
+  createdById  String?   @map("created_by_id")
+  deletedAt    DateTime? @map("deleted_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  createdBy User? @relation("SystemOwnerPlanCreator", fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@map("system_owner_plan")
+}
+
+enum BusinessType {
+  Retail
+  Service
+  Manufacturing
+  Tech
+  Other
+}
+
+enum BusinessPlanType {
+  MONTHLY
+  YEARLY
+}
+
+model SystemBusiness {
+  id              String           @id @default(uuid())
+  businessName    String           @map("business_name")
+  businessType    BusinessType     @default(Other) @map("business_type")
+  description     String?
+  ownerName       String?          @map("owner_name")
+  ownerEmail      String?          @map("owner_email")
+  ownerPassword   String?          @map("owner_password")
+  ownerPhone      String?          @map("owner_phone")
+  selectedBranch  String?          @map("selected_branch")
+  planId          String?          @map("plan_id")
+  planCycle       BusinessPlanType @default(MONTHLY) @map("plan_cycle")
+  status          BusinessStatus   @default(INACTIVE)
+  createdById     String?          @map("created_by_id")
+  businessOwnerId String?          @map("business_owner_id")
+  credits         Int              @default(0)
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+
+  createdBy     User? @relation("SystemBusinessCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  businessOwner User? @relation("SystemBusinessOwner", fields: [businessOwnerId], references: [id], onDelete: SetNull)
+
+  @@map("system_business")
+}
+
+model ActivityLog {
+  id            String    @id @default(uuid())
+  activityName  String?   @map("activity_name")
+  activityTitle String?   @map("activity_title")
+  activityType  String?   @map("activity_type")
+  markAsRead    Boolean   @default(false) @map("mark_as_read")
+  createdById   String?   @map("created_by_id")
+  deletedAt     DateTime? @map("deleted_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  createdBy User? @relation("ActivityLogCreator", fields: [createdById], references: [id], onDelete: Cascade)
+
+  @@map("activity_log")
+}
+
+model SubscriptionPlan {
+  id String @id @default(cuid())
+
+  name String // CONNECT / CONVERT / CONTROL
+
+  slug String @unique
+
+  description String?
+
+  monthlyPrice Float
+  yearlyPrice  Float?
+
+  currency String @default("USD")
+
+  isActive Boolean @default(true)
+
+  sortOrder Int @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  createdById String?
+  createdBy   User?   @relation("SubscriptionPlanCreator", fields: [createdById], references: [id], onDelete: SetNull)
+
+  features SubscriptionFeature[]
+}
+
+model SubscriptionFeature {
+  id String @id @default(cuid())
+
+  planId String
+  plan   SubscriptionPlan @relation(fields: [planId], references: [id])
+
+  key   String
+  value String
+
+  createdAt DateTime @default(now())
+}
+
+// System Owner ends---------------------------
+
+// Business Owner --------------------------
+enum BranchManagerStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+model Business {
+  id        String         @id @default(uuid())
+  ownerId   String         @map("owner_id")
+  name      String
+  logo      String?
+  email     String?
+  phone     String?
+  country   String?
+  address   String?
+  status    BusinessStatus @default(ACTIVE)
+  createdAt DateTime       @default(now()) @map("created_at")
+  updatedAt DateTime       @updatedAt @map("updated_at")
+  deletedAt DateTime?      @map("deleted_at")
+
+  owner          User            @relation("BusinessOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  branches       Branch[]
+  branchManagers BranchManager[] @relation("BusinessBranchManagers")
+  orderBookings  OrderBooking[]  @relation("BusinessOrderBookings")
+  pricings       Pricing[]       @relation("BusinessPricings")
+  crmLeads       CrmLead[]       @relation("BusinessCrmLeads")
+  socialConnections SocialConnection[] @relation("BusinessSocialConnections")
+  conversations     Conversation[]     @relation("BusinessConversations")
+
+  whatsappAccounts      WhatsappAccount[]      @relation("BusinessWhatsappAccounts")
+  whatsappContacts      WhatsappContact[]      @relation("BusinessWhatsappContacts")
+  whatsappConversations WhatsappConversation[] @relation("BusinessWhatsappConversations")
+  whatsappMessages      WhatsappMessage[]      @relation("BusinessWhatsappMessages")
+
+  @@map("businesses")
+}
+
+model Branch {
+  id          String    @id @default(uuid())
+  businessId  String    @map("business_id")
+  managerId   String?   @map("manager_id")
+  name        String
+  email       String?
+  phone       String?
+  address     String?
+  createdById String?   @map("created_by")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  business      Business       @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  manager       BranchManager? @relation(fields: [managerId], references: [id], onDelete: SetNull)
+  createdBy     User?          @relation("BranchCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  orderBookings OrderBooking[] @relation("BranchOrderBookings")
+  crmLeads      CrmLead[]      @relation("BranchCrmLeads")
+  pricings      Pricing[]      @relation("BranchPricings")
+  socialConnections SocialConnection[] @relation("BranchSocialConnections")
+  conversations     Conversation[]     @relation("BranchConversations")
+
+  @@map("branches")
+}
+
+model BranchManager {
+  id          String              @id @default(uuid())
+  name        String
+  email       String              @unique
+  password    String
+  status      BranchManagerStatus @default(ACTIVE)
+  createdById String?             @map("created_by")
+  businessId  String              @map("business_id")
+  createdAt   DateTime            @default(now()) @map("created_at")
+  updatedAt   DateTime            @updatedAt @map("updated_at")
+  deletedAt   DateTime?           @map("deleted_at")
+
+  business  Business @relation("BusinessBranchManagers", fields: [businessId], references: [id], onDelete: Cascade)
+  createdBy User?    @relation("BranchManagerCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  branches  Branch[]
+
+  @@map("branch_managers")
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  CASH_ON_DELIVERY
+  ONLINE_PAYMENT
+  BANK_TRANSFER
+}
+
+model OrderBooking {
+  id          String  @id @default(uuid())
+  businessId  String  @map("business_id")
+  branchId    String? @map("branch_id")
+  createdById String? @map("created_by")
+
+  customerName        String  @map("customer_name")
+  customerNumber      String  @map("customer_number")
+  email               String?
+  address             String
+  deliveryFromAddress String  @map("delivery_from_address")
+  productName         String  @map("product_name")
+  quantity            String
+  size                String
+  price               String
+
+  orderStatus    OrderStatus    @default(PENDING) @map("order_status")
+  paymentStatus  PaymentStatus  @default(PENDING) @map("payment_status")
+  shippingCharge String         @map("shipping_charge")
+  deliveryTime   DateTime       @map("delivery_time")
+  orderNote      String?        @map("order_note")
+  paymentMethod  PaymentMethod? @map("payment_method")
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  business  Business @relation("BusinessOrderBookings", fields: [businessId], references: [id], onDelete: Cascade)
+  branch    Branch?  @relation("BranchOrderBookings", fields: [branchId], references: [id], onDelete: SetNull)
+  createdBy User?    @relation("OrderBookingCreator", fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@map("order_bookings")
+}
+
+model Pricing {
+  id          String  @id @default(uuid())
+  businessId  String  @map("business_id")
+  createdById String? @map("created_by")
+  branchId    String? @map("branch_id")
+
+  ruleName      String  @map("rule_name")
+  type          String?
+  configuration String?
+  status        Boolean @default(true)
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  business  Business @relation("BusinessPricings", fields: [businessId], references: [id], onDelete: Cascade)
+  createdBy User?    @relation("PricingCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  branch    Branch?  @relation("BranchPricings", fields: [branchId], references: [id], onDelete: SetNull)
+
+  @@map("pricings")
+}
+
+enum SourceEnum {
+  WEBSITE
+  SOCIAL_MEDIA
+  REFERRAL
+  COLD_CALL
+  OTHER
+}
+
+enum CrmStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  PROPOSAL
+  WON
+  LOST
+}
+
+model CrmLead {
+  id          String  @id @default(uuid())
+  businessId  String  @map("business_id")
+  createdById String? @map("created_by")
+  branchId    String? @map("branch_id")
+
+  name    String
+  email   String?
+  phone   String?
+  source  SourceEnum?
+  status  CrmStatus?
+  address String?
+  note    String?
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  business  Business @relation("BusinessCrmLeads", fields: [businessId], references: [id], onDelete: Cascade)
+  createdBy User?    @relation("CrmLeadCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  branch    Branch?  @relation("BranchCrmLeads", fields: [branchId], references: [id], onDelete: SetNull)
+
+  @@map("crm_leads")
+}
+
+// Facebook Messenger Integration ----------------
+
+model SocialConnection {
+  id            String    @id @default(uuid())
+  businessId    String    @map("business_id")
+  branchId      String?   @map("branch_id")
+  provider      String    // e.g. 'facebook'
+  pageId        String    @map("page_id")
+  pageName      String    @map("page_name")
+  accessToken   String    @map("access_token")
+  tokenExpiry   DateTime? @map("token_expiry")
+  isActive      Boolean   @default(true) @map("is_active")
+  aiReply       Boolean   @default(true) @map("ai_reply")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  business Business @relation("BusinessSocialConnections", fields: [businessId], references: [id], onDelete: Cascade)
+  branch   Branch?  @relation("BranchSocialConnections", fields: [branchId], references: [id], onDelete: SetNull)
+
+  @@map("social_connections")
+}
+
+model Conversation {
+  id            String    @id @default(uuid())
+  businessId    String    @map("business_id")
+  branchId      String?   @map("branch_id")
+  platform      String    // e.g. 'messenger'
+  customerId    String    @map("customer_id")
+  customerName  String?   @map("customer_name")
+  lastMessage   String?   @map("last_message")
+  lastMessageAt DateTime? @map("last_message_at")
+  aiReply       Boolean   @default(true) @map("ai_reply")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  business Business  @relation("BusinessConversations", fields: [businessId], references: [id], onDelete: Cascade)
+  branch   Branch?   @relation("BranchConversations", fields: [branchId], references: [id], onDelete: SetNull)
+  messages Message[] @relation("ConversationMessages")
+
+  @@unique([businessId, platform, customerId])
+  @@map("conversations")
+}
+
+model Message {
+  id               String   @id @default(uuid())
+  conversationId   String   @map("conversation_id")
+  senderType       String   // 'business' or 'customer'
+  senderId         String   @map("sender_id")
+  type             String?  @default("text") // 'text', 'image', 'video', 'audio', 'file'
+  messageText      String?  @map("message_text")
+  mediaUrl         String?  @map("media_url")
+  filePath         String?  @map("file_path")
+  platformMessageId String? @unique @map("platform_message_id")
+  rawPayload       Json?    @map("raw_payload")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  conversation Conversation @relation("ConversationMessages", fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@map("messages")
+}
+
+// Business Owner ends --------------------------
+
+// WhatsApp Cloud API Integration ----------------
+
+enum WhatsappAccountStatus {
+  ACTIVE
+  INACTIVE
+  DISCONNECTED
+}
+
+model WhatsappAccount {
+  id              String                @id @default(uuid())
+  businessId      String                @map("business_id")
+  wabaId          String                @map("waba_id")
+  phoneNumberId   String                @map("phone_number_id")
+  phoneNumber     String                @map("phone_number")
+  accessToken     String                @map("access_token")
+  status          WhatsappAccountStatus @default(ACTIVE)
+  aiReply         Boolean               @default(true) @map("ai_reply")
+  metadata        Json?
+  createdAt       DateTime              @default(now()) @map("created_at")
+  updatedAt       DateTime              @updatedAt @map("updated_at")
+
+  business        Business               @relation("BusinessWhatsappAccounts", fields: [businessId], references: [id], onDelete: Cascade)
+  contacts        WhatsappContact[]      @relation("AccountWhatsappContacts")
+  conversations   WhatsappConversation[] @relation("AccountWhatsappConversations")
+  messages        WhatsappMessage[]      @relation("AccountWhatsappMessages")
+
+  @@unique([businessId, phoneNumberId])
+  @@map("whatsapp_accounts")
+}
+
+model WhatsappContact {
+  id                String   @id @default(uuid())
+  businessId        String   @map("business_id")
+  whatsappAccountId String   @map("whatsapp_account_id")
+  waUserId          String   @map("wa_user_id")
+  name              String?
+  phoneNumber       String   @map("phone_number")
+  profilePicture    String?  @map("profile_picture")
+  lastMessageAt     DateTime? @map("last_message_at")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  business        Business               @relation("BusinessWhatsappContacts", fields: [businessId], references: [id], onDelete: Cascade)
+  whatsappAccount WhatsappAccount        @relation("AccountWhatsappContacts", fields: [whatsappAccountId], references: [id], onDelete: Cascade)
+  conversations   WhatsappConversation[] @relation("ContactWhatsappConversations")
+  messages        WhatsappMessage[]      @relation("ContactWhatsappMessages")
+
+  @@unique([businessId, waUserId])
+  @@map("whatsapp_contacts")
+}
+
+model WhatsappConversation {
+  id                String   @id @default(uuid())
+  businessId        String   @map("business_id")
+  whatsappAccountId String   @map("whatsapp_account_id")
+  contactId         String   @map("contact_id")
+  lastMessageId     String?  @map("last_message_id")
+  unreadCount       Int      @default(0) @map("unread_count")
+  lastMessageAt     DateTime? @map("last_message_at")
+  aiReply           Boolean   @default(true) @map("ai_reply")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  business        Business          @relation("BusinessWhatsappConversations", fields: [businessId], references: [id], onDelete: Cascade)
+  whatsappAccount WhatsappAccount   @relation("AccountWhatsappConversations", fields: [whatsappAccountId], references: [id], onDelete: Cascade)
+  contact         WhatsappContact   @relation("ContactWhatsappConversations", fields: [contactId], references: [id], onDelete: Cascade)
+  messages        WhatsappMessage[] @relation("ConversationWhatsappMessages")
+
+  @@unique([businessId, contactId])
+  @@map("whatsapp_conversations")
+}
+
+enum WhatsappMessageDirection {
+  INCOMING
+  OUTGOING
+}
+
+enum WhatsappMessageStatus {
+  SENT
+  DELIVERED
+  READ
+  FAILED
+}
+
+model WhatsappMessage {
+  id                String                   @id @default(uuid())
+  businessId        String                   @map("business_id")
+  whatsappAccountId String                   @map("whatsapp_account_id")
+  conversationId    String                   @map("conversation_id")
+  contactId         String                   @map("contact_id")
+  metaMessageId     String?                  @unique @map("meta_message_id")
+  direction         WhatsappMessageDirection
+  type              String                   // text, image, video, audio, document, sticker, template
+  text              String?
+  mediaUrl          String?                  @map("media_url")
+  status            WhatsappMessageStatus?
+  rawPayload        Json?                    @map("raw_payload")
+  createdAt         DateTime                 @default(now()) @map("created_at")
+  updatedAt         DateTime                 @updatedAt @map("updated_at")
+
+  business        Business             @relation("BusinessWhatsappMessages", fields: [businessId], references: [id], onDelete: Cascade)
+  whatsappAccount WhatsappAccount      @relation("AccountWhatsappMessages", fields: [whatsappAccountId], references: [id], onDelete: Cascade)
+  conversation    WhatsappConversation @relation("ConversationWhatsappMessages", fields: [conversationId], references: [id], onDelete: Cascade)
+  contact         WhatsappContact      @relation("ContactWhatsappMessages", fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@map("whatsapp_messages")
+}
+
+model AgentTraining {
+  id                  String    @id @default(uuid())
+  systemPrompt        String?   @map("system_prompt")
+  businessInformation String?   @map("business_information")
+  productInformation  Json?     @map("product_information")
+  policiesGuidelines  Json?     @map("policies_guidelines")
+  faq                 Json?
+  businessId          String    @map("business_id")
+  createdAt           DateTime  @default(now()) @map("created_at")
+  updatedAt           DateTime  @updatedAt @map("updated_at")
+  deletedAt           DateTime? @map("deleted_at")
+
+  @@map("agent_training")
+}
