@@ -54,10 +54,13 @@ const createBusinessService = async (payload) => {
                     name: payload.businessName,
                     email: payload.ownerEmail,
                     phone: payload.ownerPhone,
-                    status: "ACTIVE"
+                    status: "INACTIVE"
                 }
             });
         }
+
+        // Force system business status to INACTIVE upon creation
+        payload.status = "INACTIVE";
 
         const business = await transactionClient.systemBusiness.create({
             data: payload,

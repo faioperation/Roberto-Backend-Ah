@@ -11,7 +11,6 @@ const createBusinessSchema = z.object({
         ownerPhone: z.string().optional(),
         planId: z.string().optional(),
         planCycle: z.enum(["MONTHLY", "YEARLY"]).optional(),
-        status: z.enum(["ACTIVE", "INACTIVE", "SUSPENDED", "PENDING"]).optional(),
         createdById: z.string().uuid("Invalid user ID format").optional(),
         credits: z.number().int().optional(),
     }),
