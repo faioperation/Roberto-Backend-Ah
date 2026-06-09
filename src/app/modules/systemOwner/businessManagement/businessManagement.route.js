@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post(
     "/create",
-    checkAuthMiddleware(Role.SYSTEM_OWNER),
+    // checkAuthMiddleware(Role.SYSTEM_OWNER),
     validateRequest(BusinessValidation.createBusinessSchema),
     BusinessController.createBusiness
 );

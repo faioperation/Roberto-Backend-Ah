@@ -21,6 +21,9 @@ const loadEnvVars = () => {
     "WHATSAPP_VERIFY_TOKEN",
     "INSTAGRAM_REDIRECT_URI",
     "INSTAGRAM_VERIFY_TOKEN",
+
+    "STRIPE_SECRET_KEY",
+    "STRIPE_WEBHOOK_SECRET",
   ];
 
   requiredVars.forEach((key) => {
@@ -75,6 +78,10 @@ const loadEnvVars = () => {
     INSTAGRAM_REDIRECT_URI: process.env.INSTAGRAM_REDIRECT_URI,
     INSTAGRAM_VERIFY_TOKEN: process.env.INSTAGRAM_VERIFY_TOKEN,
     PUBLIC_API_TOKEN: process.env.PUBLIC_API_TOKEN,
+
+    // Stripe
+    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+    STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
   };
 };
 

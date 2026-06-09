@@ -8,6 +8,9 @@ const createSubscriptionPlanSchema = z.object({
         monthlyPrice: z.number({ required_error: "Monthly price is required" }),
         yearlyPrice: z.number().optional(),
         currency: z.string().optional(),
+        stripeProductId: z.string().optional(),
+        stripeMonthlyPriceId: z.string().optional(),
+        stripeYearlyPriceId: z.string().optional(),
         isActive: z.boolean().optional(),
         sortOrder: z.number().int().optional(),
         features: z.array(z.object({
@@ -25,6 +28,9 @@ const updateSubscriptionPlanSchema = z.object({
         monthlyPrice: z.number().optional(),
         yearlyPrice: z.number().optional(),
         currency: z.string().optional(),
+        stripeProductId: z.string().optional(),
+        stripeMonthlyPriceId: z.string().optional(),
+        stripeYearlyPriceId: z.string().optional(),
         isActive: z.boolean().optional(),
         sortOrder: z.number().int().optional(),
         features: z.array(z.object({

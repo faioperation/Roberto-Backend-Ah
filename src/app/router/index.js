@@ -20,6 +20,7 @@ import { InstagramRoutes } from "../modules/instagram/instagram.route.js";
 import { PublicFacebookRoutes } from "../modules/publicApi/facebook/facebook.route.js";
 import { PublicInstagramRoutes } from "../modules/publicApi/instagram/instagram.route.js";
 import { PublicWhatsappRoutes } from "../modules/publicApi/whatsapp/whatsapp.route.js";
+import { PaymentRouter } from "../modules/payment/payment.route.js";
 
 export const router = Router();
 const moduleRoutes = [
@@ -106,6 +107,10 @@ const moduleRoutes = [
   {
     path: "/v1/public/whatsapp",
     route: PublicWhatsappRoutes,
+  },
+  {
+    path: "/payment",
+    route: PaymentRouter,
   }
 ];
 
