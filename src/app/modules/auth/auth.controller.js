@@ -33,6 +33,24 @@ const credentialLogin = async (req, res, next) => {
         // Remove sensitive fields before sending user
         const { passwordHash, ...saveUser } = user;
 
+        // Retrieve businessId for BUSINESS_OWNER or BRANCH_MANAGER
+        const userRoleNames = user.roles?.map(r => r.role.name) || [];
+        if (userRoleNames.includes("BUSINESS_OWNER")) {
+          const business = await prisma.business.findFirst({
+            where: { ownerId: user.id }
+          });
+          if (business) {
+            saveUser.businessId = business.id;
+          }
+        } else if (userRoleNames.includes("BRANCH_MANAGER")) {
+          const manager = await prisma.branchManager.findUnique({
+            where: { email: user.email }
+          });
+          if (manager) {
+            saveUser.businessId = manager.businessId;
+          }
+        }
+
         // Set cookies
         setAuthCookie(res, userToken);
 

@@ -53,6 +53,43 @@ export const checkAuthMiddleware =
           });
         }
 
+        // Check subscription status for Business Owners and Branch Managers
+        const isBusinessOwner = userRoleNames.includes("BUSINESS_OWNER");
+        const isBranchManager = userRoleNames.includes("BRANCH_MANAGER");
+
+        if (isBusinessOwner || isBranchManager) {
+          const isAllowedWithoutActiveSubscription =
+            req.originalUrl.includes("/payment/create-checkout-session") ||
+            req.originalUrl.includes("/payment/my-subscription") ||
+            req.originalUrl.includes("/user/profile/me") ||
+            req.originalUrl.includes("/auth/");
+
+          if (!isAllowedWithoutActiveSubscription) {
+            let business = null;
+            if (isBusinessOwner) {
+              business = await prisma.business.findFirst({
+                where: { ownerId: user.id }
+              });
+            } else if (isBranchManager) {
+              const managerRecord = await prisma.branchManager.findUnique({
+                where: { email: user.email }
+              });
+              if (managerRecord) {
+                business = await prisma.business.findUnique({
+                  where: { id: managerRecord.businessId }
+                });
+              }
+            }
+
+            if (!business || business.status !== "ACTIVE") {
+              return res.status(403).json({
+                success: false,
+                message: "Subscription required. Please purchase a subscription to access this resource.",
+              });
+            }
+          }
+        }
+
         req.user = user;
         next();
       } catch (error) {

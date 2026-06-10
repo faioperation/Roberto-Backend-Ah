@@ -7,8 +7,21 @@ import { envVars } from "../../../config/env.js";
 import { QueryBuilder } from "../../../utils/QueryBuilder.js";
 
 const createBusinessService = async (payload) => {
+    let isSystemOwner = payload.isSystemOwner || false;
+    delete payload.isSystemOwner;
+
     const result = await prisma.$transaction(async (transactionClient) => {
         let user = null;
+
+        if (!isSystemOwner && payload.createdById) {
+            const creator = await transactionClient.user.findUnique({
+                where: { id: payload.createdById },
+                include: { roles: { include: { role: true } } }
+            });
+            if (creator) {
+                isSystemOwner = creator.roles.some(r => r.role.name === "SYSTEM_OWNER");
+            }
+        }
 
         if (payload.ownerEmail && payload.ownerPassword) {
             // Check if user already exists
@@ -54,13 +67,13 @@ const createBusinessService = async (payload) => {
                     name: payload.businessName,
                     email: payload.ownerEmail,
                     phone: payload.ownerPhone,
-                    status: "INACTIVE"
+                    status: isSystemOwner ? "ACTIVE" : "INACTIVE"
                 }
             });
         }
 
-        // Force system business status to INACTIVE upon creation
-        payload.status = "INACTIVE";
+        // Force system business status based on whether creator is system owner
+        payload.status = isSystemOwner ? "ACTIVE" : "INACTIVE";
 
         const business = await transactionClient.systemBusiness.create({
             data: payload,

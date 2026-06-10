@@ -3,6 +3,7 @@ import prisma from "../../prisma/client.js";
 import DevBuildError from "../../lib/DevBuildError.js";
 import { StatusCodes } from "http-status-codes";
 import { envVars } from "../../config/env.js";
+import { sendEmail } from "../../utils/sendEmail.js";
 
 const stripe = new Stripe(envVars.STRIPE_SECRET_KEY);
 
@@ -158,6 +159,26 @@ const processStripeWebhook = async (event) => {
             createdById: business.ownerId,
           }
         });
+
+        // Send confirmation email to the business owner
+        if (business.owner && business.owner.email) {
+          try {
+            await sendEmail({
+              to: business.owner.email,
+              subject: "Subscription Activated - Welcome to Robarto!",
+              templateName: "subscriptionSuccess",
+              templateData: {
+                name: `${business.owner.firstName || ""} ${business.owner.lastName || ""}`.trim() || "Business Owner",
+                businessName: business.name,
+                planName: plan.name,
+                billingCycle: billingCycle.toUpperCase(),
+                frontendUrl: envVars.FRONT_END_URL || "http://localhost:3000"
+              }
+            });
+          } catch (emailErr) {
+            console.error("Failed to send subscription success email:", emailErr);
+          }
+        }
       }
     }
   }

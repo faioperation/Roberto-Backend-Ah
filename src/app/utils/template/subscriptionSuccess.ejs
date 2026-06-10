@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subscription Activated!</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f7f9;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 30px auto;
+      background: #ffffff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+    }
+
+    .header {
+      background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+      padding: 40px 30px;
+      text-align: center;
+      color: #ffffff;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .header p {
+      margin: 10px 0 0 0;
+      font-size: 16px;
+      opacity: 0.9;
+    }
+
+    .content {
+      padding: 40px;
+      text-align: center;
+    }
+
+    .welcome-text {
+      font-size: 20px;
+      color: #1f2937;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .details-card {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 24px;
+      margin: 30px 0;
+      text-align: left;
+    }
+
+    .details-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      border-bottom: 1px solid #f3f4f6;
+      padding-bottom: 12px;
+    }
+
+    .details-row:last-child {
+      margin-bottom: 0;
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .details-label {
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    .details-value {
+      color: #111827;
+      font-weight: 600;
+    }
+
+    .btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+      color: #ffffff !important;
+      text-decoration: none;
+      padding: 14px 30px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 16px;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+      margin: 20px 0;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+    }
+
+    .footer {
+      background: #f9fafb;
+      padding: 25px;
+      text-align: center;
+      color: #9ca3af;
+      font-size: 13px;
+      border-top: 1px solid #f3f4f6;
+    }
+
+    .divider {
+      height: 1px;
+      background: #e5e7eb;
+      margin: 30px 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Subscription Activated!</h1>
+      <p>Thank you for choosing Tugatai</p>
+    </div>
+    <div class="content">
+      <p class="welcome-text">Hello <%= name %>,</p>
+      <p>Your subscription has been successfully processed! Your business account is now fully active, and you can
+        access all your dashboard features.</p>
+
+      <div class="details-card">
+        <div class="details-row">
+          <div class="details-label">Business Name:</div>
+          <div class="details-value">
+            <%= businessName %>
+          </div>
+        </div>
+        <div class="details-row">
+          <div class="details-label">Plan Purchased:</div>
+          <div class="details-value">
+            <%= planName %>
+          </div>
+        </div>
+        <div class="details-row">
+          <div class="details-label">Billing Cycle:</div>
+          <div class="details-value">
+            <%= billingCycle %>
+          </div>
+        </div>
+        <div class="details-row">
+          <div class="details-label">Status:</div>
+          <div class="details-value" style="color: #10b981;">ACTIVE</div>
+        </div>
+      </div>
+
+      <p>Click the button below to sign in and set up your workspace:</p>
+
+      <a href="<%= frontendUrl %>" class="btn" target="_blank">Access Your Dashboard</a>
+
+      <div class="divider"></div>
+
+      <p style="color: #6b7280; font-size: 14px;">If you have any questions or need assistance setting up your branches
+        or connecting social accounts, feel free to reply to this email.</p>
+    </div>
+    <div class="footer">
+      &copy; <%= new Date().getFullYear() %> Robarto. All rights reserved.<br>
+        Automate your customer communications with Robarto AI.
+    </div>
+  </div>
+</body>
+
+</html>

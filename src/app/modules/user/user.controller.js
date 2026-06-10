@@ -42,6 +42,24 @@ const getUserInfo = async (req, res, next) => {
       throw new DevBuildError("User not found", 404);
     }
 
+    // Append businessId if BUSINESS_OWNER or BRANCH_MANAGER
+    const userRoleNames = user.roles?.map(r => r.role.name) || [];
+    if (userRoleNames.includes("BUSINESS_OWNER")) {
+      const business = await prisma.business.findFirst({
+        where: { ownerId: user.id }
+      });
+      if (business) {
+        user.businessId = business.id;
+      }
+    } else if (userRoleNames.includes("BRANCH_MANAGER")) {
+      const manager = await prisma.branchManager.findUnique({
+        where: { email: user.email }
+      });
+      if (manager) {
+        user.businessId = manager.businessId;
+      }
+    }
+
     res.json({
       success: true,
       data: user,
@@ -65,6 +83,21 @@ const userDetails = async (req, res, next) => {
         success: false,
         message: "User not found",
       });
+    }
+
+    // Append businessId if it exists (for BUSINESS_OWNER or BRANCH_MANAGER)
+    const business = await prisma.business.findFirst({
+      where: { ownerId: user.id }
+    });
+    if (business) {
+      user.businessId = business.id;
+    } else {
+      const manager = await prisma.branchManager.findUnique({
+        where: { email: user.email }
+      });
+      if (manager) {
+        user.businessId = manager.businessId;
+      }
     }
 
     res.status(200).json({
