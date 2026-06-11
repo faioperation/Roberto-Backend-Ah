@@ -23,6 +23,7 @@ import { PublicWhatsappRoutes } from "../modules/publicApi/whatsapp/whatsapp.rou
 import { PaymentRouter } from "../modules/payment/payment.route.js";
 import { PublicLeadRoutes } from "../modules/publicApi/leads/leads.route.js";
 import { PublicBookingRoutes } from "../modules/publicApi/bookings/bookings.route.js";
+import { PublicAgentTrainingRoutes } from "../modules/publicApi/agentTraining/agentTraining.route.js";
 
 export const router = Router();
 const moduleRoutes = [
@@ -121,6 +122,10 @@ const moduleRoutes = [
   {
     path: "/bookings",
     route: PublicBookingRoutes,
+  },
+  {
+    path: "/v1/public/agent-training",
+    route: PublicAgentTrainingRoutes,
   }
 ];
 

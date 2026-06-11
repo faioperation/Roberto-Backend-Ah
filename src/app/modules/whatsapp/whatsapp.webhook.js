@@ -1,4 +1,5 @@
 import prisma from "../../prisma/client.js";
+import { notifyAiAgent } from "../../utils/aiAgent.js";
 
 export const handleWebhookEvent = async (body) => {
   if (body.object === "whatsapp_business_account") {
@@ -105,6 +106,15 @@ const processIncomingMessages = async (value) => {
       await prisma.whatsappConversation.update({
         where: { id: conversation.id },
         data: { lastMessageId: message.id },
+      });
+
+      // Notify AI Agent of incoming WhatsApp message
+      notifyAiAgent({
+        businessId,
+        recipientId: waUserId,
+        conversationId: conversation.id,
+        channel: "whatsapp",
+        message: text || ""
       });
     }
   }

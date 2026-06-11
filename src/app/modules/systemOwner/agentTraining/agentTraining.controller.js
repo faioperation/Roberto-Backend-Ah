@@ -2,15 +2,50 @@ import { StatusCodes } from "http-status-codes";
 import { sendResponse } from "../../../utils/sendResponse.js";
 import { AgentTrainingService } from "./agentTraining.service.js";
 import { envVars } from "../../../config/env.js";
+import { extractTextFromFile } from "../../../utils/textExtractor.js";
+import prisma from "../../../prisma/client.js";
 
-const mapFiles = (filesArray) => {
+const mapFiles = async (filesArray) => {
     if (!filesArray) return null;
-    return filesArray.map(file => ({
-        url: `${envVars.BACKEND_URL}/uploads/agentTraining/${file.filename}`,
-        path: `/uploads/agentTraining/${file.filename}`,
-        mimetype: file.mimetype,
-        originalname: file.originalname
-    }));
+    const result = [];
+    for (const file of filesArray) {
+        const filePath = `./uploads/agentTraining/${file.filename}`;
+        const extractedText = await extractTextFromFile(filePath, file.mimetype);
+        result.push({
+            url: `${envVars.BACKEND_URL}/uploads/agentTraining/${file.filename}`,
+            path: `/uploads/agentTraining/${file.filename}`,
+            rowText: extractedText,
+            mimetype: file.mimetype,
+            originalname: file.originalname
+        });
+    }
+    return result;
+};
+
+const compileRowText = (payload) => {
+    let textParts = [];
+    const extractFromJson = (jsonField) => {
+        if (!jsonField) return;
+        let files = [];
+        try {
+            files = typeof jsonField === 'string' ? JSON.parse(jsonField) : jsonField;
+        } catch (e) {
+            files = jsonField;
+        }
+        if (Array.isArray(files)) {
+            files.forEach(file => {
+                if (file.rowText) {
+                    textParts.push(file.rowText);
+                }
+            });
+        }
+    };
+
+    extractFromJson(payload.productInformation);
+    extractFromJson(payload.policiesGuidelines);
+    extractFromJson(payload.faq);
+
+    return textParts.join("\n\n").trim();
 };
 
 const createAgentTraining = async (req, res, next) => {
@@ -19,15 +54,17 @@ const createAgentTraining = async (req, res, next) => {
 
         if (req.files) {
             if (req.files.productInformation) {
-                payload.productInformation = mapFiles(req.files.productInformation);
+                payload.productInformation = await mapFiles(req.files.productInformation);
             }
             if (req.files.policiesGuidelines) {
-                payload.policiesGuidelines = mapFiles(req.files.policiesGuidelines);
+                payload.policiesGuidelines = await mapFiles(req.files.policiesGuidelines);
             }
             if (req.files.faq) {
-                payload.faq = mapFiles(req.files.faq);
+                payload.faq = await mapFiles(req.files.faq);
             }
         }
+        
+        payload.rowText = compileRowText(payload);
         
         const result = await AgentTrainingService.createAgentTrainingService(payload);
 
@@ -81,14 +118,27 @@ const updateAgentTraining = async (req, res, next) => {
 
         if (req.files) {
             if (req.files.productInformation) {
-                payload.productInformation = mapFiles(req.files.productInformation);
+                payload.productInformation = await mapFiles(req.files.productInformation);
             }
             if (req.files.policiesGuidelines) {
-                payload.policiesGuidelines = mapFiles(req.files.policiesGuidelines);
+                payload.policiesGuidelines = await mapFiles(req.files.policiesGuidelines);
             }
             if (req.files.faq) {
-                payload.faq = mapFiles(req.files.faq);
+                payload.faq = await mapFiles(req.files.faq);
             }
+        }
+
+        // Fetch existing to compile complete rowText
+        const existing = await prisma.agentTraining.findUnique({
+            where: { id }
+        });
+        if (existing) {
+            const mergedPayload = {
+                productInformation: payload.productInformation !== undefined ? payload.productInformation : existing.productInformation,
+                policiesGuidelines: payload.policiesGuidelines !== undefined ? payload.policiesGuidelines : existing.policiesGuidelines,
+                faq: payload.faq !== undefined ? payload.faq : existing.faq
+            };
+            payload.rowText = compileRowText(mergedPayload);
         }
 
         const result = await AgentTrainingService.updateAgentTrainingService(id, payload);

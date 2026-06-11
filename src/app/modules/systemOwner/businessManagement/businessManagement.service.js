@@ -67,6 +67,7 @@ const createBusinessService = async (payload) => {
                     name: payload.businessName,
                     email: payload.ownerEmail,
                     phone: payload.ownerPhone,
+                    businessType: payload.businessType || null,
                     status: isSystemOwner ? "ACTIVE" : "INACTIVE"
                 }
             });

@@ -157,14 +157,6 @@ model SystemOwnerPlan {
   @@map("system_owner_plan")
 }
 
-enum BusinessType {
-  Retail
-  Service
-  Manufacturing
-  Tech
-  Other
-}
-
 enum BusinessPlanType {
   MONTHLY
   YEARLY
@@ -173,7 +165,7 @@ enum BusinessPlanType {
 model SystemBusiness {
   id              String           @id @default(uuid())
   businessName    String           @map("business_name")
-  businessType    BusinessType     @default(Other) @map("business_type")
+  businessType    String?          @default("Other") @map("business_type")
   description     String?
   ownerName       String?          @map("owner_name")
   ownerEmail      String?          @map("owner_email")
@@ -328,6 +320,7 @@ model Business {
   phone     String?
   country   String?
   address   String?
+  businessType String?         @map("business_type")
   status    BusinessStatus @default(INACTIVE)
   createdAt DateTime       @default(now()) @map("created_at")
   updatedAt DateTime       @updatedAt @map("updated_at")
@@ -569,6 +562,7 @@ model Message {
   filePath          String?  @map("file_path")
   platformMessageId String?  @unique @map("platform_message_id")
   rawPayload        Json?    @map("raw_payload")
+  aiReply           Boolean  @default(true) @map("ai_reply")
   createdAt         DateTime @default(now()) @map("created_at")
 
   conversation Conversation @relation("ConversationMessages", fields: [conversationId], references: [id], onDelete: Cascade)
@@ -694,6 +688,7 @@ model AgentTraining {
   policiesGuidelines  Json?     @map("policies_guidelines")
   faq                 Json?
   businessId          String    @map("business_id")
+  rowText             String?   @map("row_text")
   createdAt           DateTime  @default(now()) @map("created_at")
   updatedAt           DateTime  @updatedAt @map("updated_at")
   deletedAt           DateTime? @map("deleted_at")

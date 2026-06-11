@@ -82,6 +82,10 @@ const loadEnvVars = () => {
     // Stripe
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
     STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+
+    // AI Agent Integration
+    AI_API_TAREQ: process.env.AI_API_TAREQ,
+    AI_AGENT_API_TOKEN: process.env.AI_AGENT_API_TOKEN,
   };
 };
 

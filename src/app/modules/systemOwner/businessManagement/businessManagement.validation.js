@@ -3,7 +3,7 @@ import { z } from "zod";
 const createBusinessSchema = z.object({
     body: z.object({
         businessName: z.string({ required_error: "Business name is required" }),
-        businessType: z.enum(["Retail", "Service", "Manufacturing", "Tech", "Other"]).optional(),
+        businessType: z.string().optional(),
         description: z.string().optional(),
         ownerName: z.string().optional(),
         ownerEmail: z.string().email("Invalid email address").optional(),
@@ -19,7 +19,7 @@ const createBusinessSchema = z.object({
 const updateBusinessSchema = z.object({
     body: z.object({
         businessName: z.string().optional(),
-        businessType: z.enum(["Retail", "Service", "Manufacturing", "Tech", "Other"]).optional(),
+        businessType: z.string().optional(),
         description: z.string().optional(),
         ownerName: z.string().optional(),
         ownerEmail: z.string().email("Invalid email address").optional(),

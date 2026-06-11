@@ -2,6 +2,7 @@ import axios from "axios";
 import prisma from "../../prisma/client.js";
 import { envVars } from "../../config/env.js";
 import { AppError } from "../../errorHelper/appError.js";
+import { notifyAiAgent } from "../../utils/aiAgent.js";
 
 const getGraphUrl = () => `https://graph.facebook.com/${envVars.META_GRAPH_VERSION || "v23.0"}`;
 
@@ -54,6 +55,15 @@ export const handleIncomingMessage = async (pageId, webhookEvent) => {
       platformMessageId: platformMessageId,
       rawPayload: webhookEvent,
     },
+  });
+
+  // Notify AI Agent of incoming Messenger message
+  notifyAiAgent({
+    businessId,
+    recipientId: senderId,
+    conversationId: conversation.id,
+    channel: "messenger",
+    message: messageText || ""
   });
 };
 
@@ -199,7 +209,7 @@ export const sendMediaMessageToUser = async (businessId, recipientId, type, medi
 
 export const getConversations = async (businessId) => {
   const conversations = await prisma.conversation.findMany({
-    where: { businessId },
+    where: { businessId, platform: "messenger" },
     orderBy: { lastMessageAt: 'desc' },
   });
   return conversations;

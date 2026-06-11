@@ -2,6 +2,7 @@ import axios from "axios";
 import prisma from "../../prisma/client.js";
 import { envVars } from "../../config/env.js";
 import { AppError } from "../../errorHelper/appError.js";
+import { notifyAiAgent } from "../../utils/aiAgent.js";
 
 const getGraphUrl = () => `https://graph.facebook.com/${envVars.META_GRAPH_VERSION || "v23.0"}`;
 
@@ -64,6 +65,15 @@ export const handleIncomingMessage = async (instagramAccountId, webhookEvent) =>
       type: attachments ? "media" : "text",
       mediaUrl: attachments ? attachments[0].payload?.url : null,
     },
+  });
+
+  // Notify AI Agent of incoming Instagram message
+  notifyAiAgent({
+    businessId,
+    recipientId: senderId,
+    conversationId: conversation.id,
+    channel: "instagram",
+    message: messageText || ""
   });
 };
 

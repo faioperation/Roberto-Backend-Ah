@@ -10,6 +10,7 @@ const createAgentTrainingSchema = z.object({
         businessId: z.string({
             required_error: "businessId is required",
         }),
+        rowText: z.string().optional(),
     }),
 });
 
@@ -21,6 +22,7 @@ const updateAgentTrainingSchema = z.object({
         policiesGuidelines: z.any().optional(),
         faq: z.any().optional(),
         businessId: z.string().optional(),
+        rowText: z.string().optional(),
     }),
 });
 
