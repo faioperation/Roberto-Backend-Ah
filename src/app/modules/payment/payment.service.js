@@ -124,13 +124,6 @@ const processStripeWebhook = async (event) => {
         data: { status: "ACTIVE" },
       });
 
-      // Also update SystemBusiness status to ACTIVE if it exists for this business
-      // Note: SystemBusiness is linked by businessOwnerId in creation
-      await prisma.systemBusiness.updateMany({
-        where: { ownerEmail: business.owner.email },
-        data: { status: "ACTIVE" },
-      });
-
       // Get plan price to record invoice
       const plan = await prisma.subscriptionPlan.findUnique({ where: { id: planId } });
       const amount =
