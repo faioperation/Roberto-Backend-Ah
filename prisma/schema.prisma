@@ -20,6 +20,13 @@ enum BusinessStatus {
   PENDING
 }
 
+enum BusinessType {
+  LAW
+  CARGOS
+  EDUCATION
+  OTHER
+}
+
 enum RoleName {
   SYSTEM_OWNER
   BUSINESS_OWNER
@@ -47,8 +54,7 @@ model User {
 
   roles                 UserRole[]
   businesses            Business[]         @relation("BusinessOwner")
-  systemBusinesses      SystemBusiness[]   @relation("SystemBusinessCreator")
-  ownedSystemBusinesses SystemBusiness[]   @relation("SystemBusinessOwner")
+  createdBusinesses     Business[]         @relation("BusinessCreator")
   activityLogs          ActivityLog[]      @relation("ActivityLogCreator")
   systemOwnerPlans      SystemOwnerPlan[]  @relation("SystemOwnerPlanCreator")
   subscriptionPlans     SubscriptionPlan[] @relation("SubscriptionPlanCreator")
@@ -160,31 +166,6 @@ model SystemOwnerPlan {
 enum BusinessPlanType {
   MONTHLY
   YEARLY
-}
-
-model SystemBusiness {
-  id              String           @id @default(uuid())
-  businessName    String           @map("business_name")
-  businessType    String?          @default("Other") @map("business_type")
-  description     String?
-  ownerName       String?          @map("owner_name")
-  ownerEmail      String?          @map("owner_email")
-  ownerPassword   String?          @map("owner_password")
-  ownerPhone      String?          @map("owner_phone")
-  selectedBranch  String?          @map("selected_branch")
-  planId          String?          @map("plan_id")
-  planCycle       BusinessPlanType @default(MONTHLY) @map("plan_cycle")
-  status          BusinessStatus   @default(INACTIVE)
-  createdById     String?          @map("created_by_id")
-  businessOwnerId String?          @map("business_owner_id")
-  credits         Int              @default(0)
-  createdAt       DateTime         @default(now()) @map("created_at")
-  updatedAt       DateTime         @updatedAt @map("updated_at")
-
-  createdBy     User? @relation("SystemBusinessCreator", fields: [createdById], references: [id], onDelete: SetNull)
-  businessOwner User? @relation("SystemBusinessOwner", fields: [businessOwnerId], references: [id], onDelete: SetNull)
-
-  @@map("system_business")
 }
 
 model ActivityLog {
@@ -312,21 +293,27 @@ enum BranchManagerStatus {
 }
 
 model Business {
-  id        String         @id @default(uuid())
-  ownerId   String         @map("owner_id")
-  name      String
-  logo      String?
-  email     String?
-  phone     String?
-  country   String?
-  address   String?
-  businessType String?         @map("business_type")
-  status    BusinessStatus @default(INACTIVE)
-  createdAt DateTime       @default(now()) @map("created_at")
-  updatedAt DateTime       @updatedAt @map("updated_at")
-  deletedAt DateTime?      @map("deleted_at")
+  id           String           @id @default(uuid())
+  ownerId      String           @map("owner_id")
+  name         String
+  logo         String?
+  email        String?
+  phone        String?
+  country      String?
+  address      String?
+  businessType BusinessType?    @map("business_type")
+  status       BusinessStatus   @default(INACTIVE)
+  description  String?
+  planId       String?          @map("plan_id")
+  planCycle    BusinessPlanType @default(MONTHLY) @map("plan_cycle")
+  createdById  String?          @map("created_by_id")
+  credits      Int              @default(0)
+  createdAt    DateTime         @default(now()) @map("created_at")
+  updatedAt    DateTime         @updatedAt @map("updated_at")
+  deletedAt    DateTime?        @map("deleted_at")
 
   owner             User                   @relation("BusinessOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  createdBy         User?                  @relation("BusinessCreator", fields: [createdById], references: [id], onDelete: SetNull)
   branches          Branch[]
   branchManagers    BranchManager[]        @relation("BusinessBranchManagers")
   orderBookings     OrderBooking[]         @relation("BusinessOrderBookings")
@@ -341,6 +328,7 @@ model Business {
   whatsappContacts      WhatsappContact[]      @relation("BusinessWhatsappContacts")
   whatsappConversations WhatsappConversation[] @relation("BusinessWhatsappConversations")
   whatsappMessages      WhatsappMessage[]      @relation("BusinessWhatsappMessages")
+  chatSummaries         ChatSummary[]
 
   @@map("businesses")
 }
@@ -694,4 +682,44 @@ model AgentTraining {
   deletedAt           DateTime? @map("deleted_at")
 
   @@map("agent_training")
+}
+
+model Agent {
+  id         String    @id @default(uuid())
+  businessId String    @map("business_id")
+  rulesFile  String    @map("rules_file")
+  vapiId     String?   @map("vapi_id")
+  metadata   Json?
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  deletedAt  DateTime? @map("deleted_at")
+
+  @@map("agents")
+}
+
+model ChatSummary {
+  id             String   @id @default(uuid())
+  conversationId String   @unique @map("conversation_id")
+  businessId     String   @map("business_id")
+  
+  items          String?
+  pickupArea     String?  @map("pickup_area")
+  destination    String?
+  weight         String?
+  pickupDateTime String?  @map("pickup_date_time")
+  currentStatus  String?  @map("current_status")
+  recentSummary  String?  @map("recent_summary")
+  bookingInfo    Json?    @map("booking_info")
+  summary        String?
+  keyPoints      String[] @map("key_points")
+  intent         String?
+  confidence     String?
+  reason         String?
+
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  business       Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@map("chat_summaries")
 }
