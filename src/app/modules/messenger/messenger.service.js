@@ -212,7 +212,19 @@ export const getConversations = async (businessId) => {
     where: { businessId, platform: "messenger" },
     orderBy: { lastMessageAt: 'desc' },
   });
-  return conversations;
+
+  const conversationIds = conversations.map((c) => c.id);
+  const summaries = await prisma.chatSummary.findMany({
+    where: { conversationId: { in: conversationIds } },
+  });
+
+  return conversations.map((c) => {
+    const summary = summaries.find((s) => s.conversationId === c.id);
+    return {
+      ...c,
+      chatSummary: summary || null,
+    };
+  });
 };
 
 export const getMessages = async (conversationId) => {

@@ -40,6 +40,35 @@ passport.use(
                     });
                 }
 
+                // Check business status for BUSINESS_OWNER and BRANCH_MANAGER roles
+                const userRoleNames = user.roles?.map(r => r.role.name) || [];
+                const isBusinessOwner = userRoleNames.includes("BUSINESS_OWNER");
+                const isBranchManager = userRoleNames.includes("BRANCH_MANAGER");
+
+                if (isBusinessOwner || isBranchManager) {
+                    let business = null;
+                    if (isBusinessOwner) {
+                        business = await prisma.business.findFirst({
+                            where: { ownerId: user.id }
+                        });
+                    } else if (isBranchManager) {
+                        const manager = await prisma.branchManager.findUnique({
+                            where: { email: user.email }
+                        });
+                        if (manager) {
+                            business = await prisma.business.findUnique({
+                                where: { id: manager.businessId }
+                            });
+                        }
+                    }
+
+                    if (!business || business.deletedAt || business.status !== "ACTIVE") {
+                        return done(null, false, {
+                            message: "Your business account is suspended or inactive. Please contact the administrator.",
+                        });
+                    }
+                }
+
                 return done(null, user);
             } catch (err) {
                 return done(err);
@@ -83,6 +112,35 @@ passport.use(
                             }
                         },
                     });
+                } else {
+                    // Check business status for existing user if they are a BUSINESS_OWNER or BRANCH_MANAGER
+                    const userRoleNames = user.roles?.map(r => r.role.name) || [];
+                    const isBusinessOwner = userRoleNames.includes("BUSINESS_OWNER");
+                    const isBranchManager = userRoleNames.includes("BRANCH_MANAGER");
+
+                    if (isBusinessOwner || isBranchManager) {
+                        let business = null;
+                        if (isBusinessOwner) {
+                            business = await prisma.business.findFirst({
+                                where: { ownerId: user.id }
+                            });
+                        } else if (isBranchManager) {
+                            const manager = await prisma.branchManager.findUnique({
+                                where: { email: user.email }
+                            });
+                            if (manager) {
+                                business = await prisma.business.findUnique({
+                                    where: { id: manager.businessId }
+                                });
+                            }
+                        }
+
+                        if (!business || business.deletedAt || business.status !== "ACTIVE") {
+                            return done(null, false, {
+                                message: "Your business account is suspended or inactive. Please contact the administrator.",
+                            });
+                        }
+                    }
                 }
 
                 return done(null, user);

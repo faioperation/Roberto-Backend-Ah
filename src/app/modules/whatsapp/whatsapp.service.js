@@ -47,9 +47,22 @@ export const WhatsappService = {
   },
 
   getConversations: async (businessId) => {
-    return await prisma.whatsappConversation.findMany({
+    const conversations = await prisma.whatsappConversation.findMany({
       where: { businessId },
       include: { contact: true },
+    });
+
+    const conversationIds = conversations.map((c) => c.id);
+    const summaries = await prisma.chatSummary.findMany({
+      where: { conversationId: { in: conversationIds } },
+    });
+
+    return conversations.map((c) => {
+      const summary = summaries.find((s) => s.conversationId === c.id);
+      return {
+        ...c,
+        chatSummary: summary || null,
+      };
     });
   },
 

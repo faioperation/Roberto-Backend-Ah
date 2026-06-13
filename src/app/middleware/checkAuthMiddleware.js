@@ -58,6 +58,30 @@ export const checkAuthMiddleware =
         const isBranchManager = userRoleNames.includes("BRANCH_MANAGER");
 
         if (isBusinessOwner || isBranchManager) {
+          let business = null;
+          if (isBusinessOwner) {
+            business = await prisma.business.findFirst({
+              where: { ownerId: user.id }
+            });
+          } else if (isBranchManager) {
+            const managerRecord = await prisma.branchManager.findUnique({
+              where: { email: user.email }
+            });
+            if (managerRecord) {
+              business = await prisma.business.findUnique({
+                where: { id: managerRecord.businessId }
+              });
+            }
+          }
+
+          // If the business is deleted or suspended, completely block access to all routes
+          if (!business || business.deletedAt || business.status === "SUSPENDED") {
+            return res.status(403).json({
+              success: false,
+              message: "Your business account is suspended or inactive. Please contact the administrator.",
+            });
+          }
+
           const isAllowedWithoutActiveSubscription =
             req.originalUrl.includes("/payment/create-checkout-session") ||
             req.originalUrl.includes("/payment/my-subscription") ||
@@ -65,23 +89,7 @@ export const checkAuthMiddleware =
             req.originalUrl.includes("/auth/");
 
           if (!isAllowedWithoutActiveSubscription) {
-            let business = null;
-            if (isBusinessOwner) {
-              business = await prisma.business.findFirst({
-                where: { ownerId: user.id }
-              });
-            } else if (isBranchManager) {
-              const managerRecord = await prisma.branchManager.findUnique({
-                where: { email: user.email }
-              });
-              if (managerRecord) {
-                business = await prisma.business.findUnique({
-                  where: { id: managerRecord.businessId }
-                });
-              }
-            }
-
-            if (!business || business.status !== "ACTIVE") {
+            if (business.status !== "ACTIVE") {
               return res.status(403).json({
                 success: false,
                 message: "Subscription required. Please purchase a subscription to access this resource.",

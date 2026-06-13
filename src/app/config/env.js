@@ -86,6 +86,8 @@ const loadEnvVars = () => {
     // AI Agent Integration
     AI_API_TAREQ: process.env.AI_API_TAREQ,
     AI_AGENT_API_TOKEN: process.env.AI_AGENT_API_TOKEN,
+    VOICE_AGENT_API: process.env.VOICE_AGENT_API,
+    VAPI_API_KEY: process.env.VAPI_API_KEY,
   };
 };
 

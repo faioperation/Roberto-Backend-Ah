@@ -108,6 +108,36 @@ const getNewAccessToken = async (req, res, next) => {
       );
     }
 
+    // Check business status for BUSINESS_OWNER and BRANCH_MANAGER roles
+    const userRoleNames = user.roles?.map(r => r.role.name) || [];
+    const isBusinessOwner = userRoleNames.includes("BUSINESS_OWNER");
+    const isBranchManager = userRoleNames.includes("BRANCH_MANAGER");
+
+    if (isBusinessOwner || isBranchManager) {
+      let business = null;
+      if (isBusinessOwner) {
+        business = await prisma.business.findFirst({
+          where: { ownerId: user.id }
+        });
+      } else if (isBranchManager) {
+        const manager = await prisma.branchManager.findUnique({
+          where: { email: user.email }
+        });
+        if (manager) {
+          business = await prisma.business.findUnique({
+            where: { id: manager.businessId }
+          });
+        }
+      }
+
+      if (!business || business.deletedAt || business.status !== "ACTIVE") {
+        throw new DevBuildError(
+          "Your business account is suspended or inactive. Please contact the administrator.",
+          StatusCodes.FORBIDDEN
+        );
+      }
+    }
+
     const newAccessToken = jwt.sign(
       { id: user.id, email: user.email, roles: user.roles ? user.roles.map(r => r.role.name) : [] },
       envVars.JWT_SECRET_TOKEN,

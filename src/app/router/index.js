@@ -6,6 +6,7 @@ import { BusinessRoutes } from "../modules/systemOwner/businessManagement/busine
 import { SubscriptionPlanRoutes } from "../modules/systemOwner/subscriptionPlan/subscriptionPlan.route.js";
 import { ActivityLogRoutes } from "../modules/systemOwner/activityLog/activityLog.route.js";
 import { AgentTrainingRoutes } from "../modules/systemOwner/agentTraining/agentTraining.route.js";
+import { AgentManagementRoutes } from "../modules/systemOwner/agentManagement/agentManagement.route.js";
 import { BranchManagerRoutes } from "../modules/businessOwner/branchManager/branchManager.route.js";
 import { BranchRoutes } from "../modules/businessOwner/branch/branch.route.js";
 import { OrderBookingRoutes } from "../modules/businessOwner/orderBooking/orderBooking.route.js";
@@ -24,6 +25,10 @@ import { PaymentRouter } from "../modules/payment/payment.route.js";
 import { PublicLeadRoutes } from "../modules/publicApi/leads/leads.route.js";
 import { PublicBookingRoutes } from "../modules/publicApi/bookings/bookings.route.js";
 import { PublicAgentTrainingRoutes } from "../modules/publicApi/agentTraining/agentTraining.route.js";
+import { PublicPricingRoutes } from "../modules/publicApi/pricing/pricing.route.js";
+import { PublicChatSummaryRoutes } from "../modules/publicApi/chatSummary/chatSummary.route.js";
+import { ChatSummaryRoutes } from "../modules/chatSummary/chatSummary.route.js";
+import { VapiRoutes } from "../modules/systemOwner/vapi/vapi.route.js";
 
 export const router = Router();
 const moduleRoutes = [
@@ -54,6 +59,10 @@ const moduleRoutes = [
   {
     path: "/system-owner/agent-trainings",
     route: AgentTrainingRoutes,
+  },
+  {
+    path: "/system-owner/agent-management",
+    route: AgentManagementRoutes,
   },
   {
     path: "/business-owner/branch-managers",
@@ -126,6 +135,22 @@ const moduleRoutes = [
   {
     path: "/v1/public/agent-training",
     route: PublicAgentTrainingRoutes,
+  },
+  {
+    path: "/v1/public/pricings",
+    route: PublicPricingRoutes,
+  },
+  {
+    path: "/v1/public/chat-summaries",
+    route: PublicChatSummaryRoutes,
+  },
+  {
+    path: "/chat-summaries",
+    route: ChatSummaryRoutes,
+  },
+  {
+    path: "/webhook",
+    route: VapiRoutes,
   }
 ];
 

@@ -3,8 +3,14 @@ import DevBuildError from "../../../lib/DevBuildError.js";
 import { StatusCodes } from "http-status-codes";
 import bcrypt from "bcrypt";
 import { envVars } from "../../../config/env.js";
-
 import { QueryBuilder } from "../../../utils/QueryBuilder.js";
+
+const mapBusinessType = (type) => {
+    if (!type) return null;
+    const upper = type.toUpperCase();
+    const allowed = ["LAW", "CARGOS", "EDUCATION", "OTHER"];
+    return allowed.includes(upper) ? upper : "OTHER";
+};
 
 const createBusinessService = async (payload) => {
     let isSystemOwner = payload.isSystemOwner || false;
@@ -56,34 +62,33 @@ const createBusinessService = async (payload) => {
                     }
                 }
             });
-
-            // 1. Save the business owner id in the SystemBusiness payload
-            payload.businessOwnerId = user.id;
-
-            // 2. Data entry in the Business Owner model (businesses table)
-            await transactionClient.business.create({
-                data: {
-                    ownerId: user.id,
-                    name: payload.businessName,
-                    email: payload.ownerEmail,
-                    phone: payload.ownerPhone,
-                    businessType: payload.businessType || null,
-                    status: isSystemOwner ? "ACTIVE" : "INACTIVE"
-                }
-            });
         }
 
-        // Force system business status based on whether creator is system owner
-        payload.status = isSystemOwner ? "ACTIVE" : "INACTIVE";
+        if (!user) {
+            throw new DevBuildError("Owner user is required to create a business", StatusCodes.BAD_REQUEST);
+        }
 
-        const business = await transactionClient.systemBusiness.create({
-            data: payload,
+        // Create the single Business record
+        const business = await transactionClient.business.create({
+            data: {
+                ownerId: user.id,
+                name: payload.businessName,
+                email: payload.ownerEmail,
+                phone: payload.ownerPhone,
+                businessType: mapBusinessType(payload.businessType),
+                status: isSystemOwner ? "ACTIVE" : "INACTIVE",
+                description: payload.description || null,
+                planId: payload.planId || null,
+                planCycle: payload.planCycle || "MONTHLY",
+                createdById: payload.createdById || null,
+                credits: payload.credits || 0,
+            }
         });
 
         await transactionClient.activityLog.create({
             data: {
-                activityName: "System Business Created",
-                activityTitle: `A new business named "${business.businessName}" has been created.`,
+                activityName: "Business Created",
+                activityTitle: `A new business named "${business.name}" has been created.`,
                 activityType: "CREATE",
                 createdById: payload.createdById || null,
             }
@@ -97,7 +102,7 @@ const createBusinessService = async (payload) => {
 
 const getAllBusinessesService = async (query = {}) => {
     const queryBuilder = new QueryBuilder(query)
-        .search(["businessName", "ownerName", "ownerEmail"])
+        .search(["name", "email"])
         .filter()
         .sort()
         .paginate()
@@ -114,12 +119,20 @@ const getAllBusinessesService = async (query = {}) => {
                     firstName: true,
                     lastName: true,
                 }
+            },
+            owner: {
+                select: {
+                    id: true,
+                    email: true,
+                    firstName: true,
+                    lastName: true,
+                }
             }
         };
     }
 
-    const result = await prisma.systemBusiness.findMany(queryParams);
-    const total = await prisma.systemBusiness.count({ where: queryBuilder.where });
+    const result = await prisma.business.findMany(queryParams);
+    const total = await prisma.business.count({ where: queryBuilder.where });
 
     // Exclude fields
     result.forEach((item) => {
@@ -152,11 +165,19 @@ const getBusinessByIdService = async (id, query = {}) => {
                     firstName: true,
                     lastName: true,
                 }
+            },
+            owner: {
+                select: {
+                    id: true,
+                    email: true,
+                    firstName: true,
+                    lastName: true,
+                }
             }
         };
     }
 
-    const result = await prisma.systemBusiness.findUnique(findArgs);
+    const result = await prisma.business.findUnique(findArgs);
     
     if (!result) {
         throw new DevBuildError("Business not found", StatusCodes.NOT_FOUND);
@@ -169,7 +190,7 @@ const getBusinessByIdService = async (id, query = {}) => {
 };
 
 const updateBusinessService = async (id, payload) => {
-    const isExist = await prisma.systemBusiness.findUnique({
+    const isExist = await prisma.business.findUnique({
         where: { id },
     });
 
@@ -177,15 +198,33 @@ const updateBusinessService = async (id, payload) => {
         throw new DevBuildError("Business not found", StatusCodes.NOT_FOUND);
     }
 
-    const result = await prisma.systemBusiness.update({
+    // Map businessName -> name, ownerEmail -> email, ownerPhone -> phone if present
+    const updateData = { ...payload };
+    if (payload.businessName) {
+        updateData.name = payload.businessName;
+        delete updateData.businessName;
+    }
+    if (payload.ownerEmail) {
+        updateData.email = payload.ownerEmail;
+        delete updateData.ownerEmail;
+    }
+    if (payload.ownerPhone) {
+        updateData.phone = payload.ownerPhone;
+        delete updateData.ownerPhone;
+    }
+    if (payload.businessType) {
+        updateData.businessType = mapBusinessType(payload.businessType);
+    }
+
+    const result = await prisma.business.update({
         where: { id },
-        data: payload,
+        data: updateData,
     });
     return result;
 };
 
 const deleteBusinessService = async (id) => {
-    const isExist = await prisma.systemBusiness.findUnique({
+    const isExist = await prisma.business.findUnique({
         where: { id },
     });
 
@@ -193,7 +232,7 @@ const deleteBusinessService = async (id) => {
         throw new DevBuildError("Business not found", StatusCodes.NOT_FOUND);
     }
 
-    const result = await prisma.systemBusiness.delete({
+    const result = await prisma.business.delete({
         where: { id },
     });
     return result;
