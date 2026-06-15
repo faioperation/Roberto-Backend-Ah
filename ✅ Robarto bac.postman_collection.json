@@ -1,0 +1,4770 @@
+{
+  "info": {
+    "_postman_id": "261cfaa3-ca01-4a15-ba7e-68d373755c02",
+    "name": "✅ Robarto bac",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "50958698"
+  },
+  "item": [
+    {
+      "name": "📒 System Owner",
+      "item": [
+        {
+          "name": "AUTH",
+          "item": [
+            {
+              "name": "SignIn| Login",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\" : \"systemowner@test.com\",\r\n    \"password\" : \"123456\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/login",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "🌏 Google Login",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "// or use this directly in frontend url > http://localhost:8000/api/auth/google",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/google/url",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "google",
+                    "url"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Forgot Password",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\" : \"ahanaf.betopia@gmail.com\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/forgot-password",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "forgot-password"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Forgot Password Otp Verify",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\" : \"ai.n3st.25@gmail.com\",\r\n    \"otp\" : \"749036\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/verify-forgot-password-otp",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "verify-forgot-password-otp"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Reset Password",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWsyMjRpNW4wMDAwc2lub3Z1dHV1cDRuIiwiZW1haWwiOiJhaGFuYWY2MDczMDdAZ21haWwuY29tIiwicm9sZSI6IlNUVURFTlQiLCJpYXQiOjE3Njc2NzMwNjUsImV4cCI6MTc2NzY3MzY2NX0.dOFTqwpB8HALGr4j6b20eiXDizQK89SWmodBklHP8hQ",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"newPassword\" : \"1qazxsw2\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/reset-password",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "reset-password"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Refresh Token",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Cookie",
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM4YzJkYjQ3LTA4NDQtNDM4NC1iMWVhLWQ1ZmQ3NjU2YzA5OCIsImVtYWlsIjoiYWhhbmFmLmJldG9waWFAZ21haWwuY29tIiwicm9sZSI6InN0dWRlbnQiLCJpYXQiOjE3Njc2MTIyNzEsImV4cCI6MTc2ODIxNzA3MX0.KGylP_1Kn9BpRv_j9v61VRbtG5DL0Q2dizyTFQyEwLw",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\" : \"ahanaf.betopia@gmail.com\",\r\n    \"password\" : \"1qazxsw2\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/refresh-token",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "refresh-token"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Logout",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/logout",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "logout"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Profile",
+          "item": [
+            {
+              "name": "Get Profile",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/user/profile/me",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user",
+                    "profile",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Avatar Only For User",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "avatar",
+                      "type": "file",
+                      "uuid": "158529ba-66df-4ee7-8d23-a3157de822c4",
+                      "src": "/C:/Users/Ahanaf/Pictures/Screenshots/Screenshot (23).png"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/user/upload-avatar",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user",
+                    "upload-avatar"
+                  ],
+                  "query": [
+                    {
+                      "key": "",
+                      "value": null,
+                      "type": "text",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Profile",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "avatar",
+                      "type": "file",
+                      "uuid": "461629b3-2a6c-4f6a-bd89-dfbd3aa1ad82",
+                      "src": "/C:/Users/Ahanaf/Pictures/Screenshots/Screenshot (23).png"
+                    },
+                    {
+                      "key": "name",
+                      "value": "Test User ",
+                      "type": "text",
+                      "uuid": "1443e73c-4601-483d-a0c8-65977e097437"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/user/update-profile",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user",
+                    "update-profile"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "🌤️ Business Management",
+          "item": [
+            {
+              "name": "Create Business..",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"businessName\": \"business2 IT\",\r\n  \"businessType\": \"education\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Ahanaf Mubasshir\",\r\n  \"ownerEmail\": \"ahanaf.betopia@gmail.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+1234567890\",\r\n//   \"planId\": \"plan_12345abcde\",\r\n//   \"planCycle\": \"MONTHLY\",\r\n  \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/system-owner/businesses/create",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "system-owner",
+                    "businesses",
+                    "create"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Create Business..",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"businessName\": \"BD Calling\",\r\n  \"businessType\": \"Tech\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Jane Doe\",\r\n  \"ownerEmail\": \"jane.doe@acmeinnovations.com\",\r\n  \"ownerPassword\": \"SecurePassword123!\",\r\n  \"ownerPhone\": \"+1234567890\",\r\n  \"planId\": \"plan_12345abcde\",\r\n  \"planCycle\": \"YEARLY\",\r\n  \"status\": \"ACTIVE\",\r\n  \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/system-owner/businesses/create",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "system-owner",
+                        "businesses",
+                        "create"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": null,
+                  "header": [
+                    {
+                      "key": "X-Powered-By",
+                      "value": "Express"
+                    },
+                    {
+                      "key": "Access-Control-Allow-Origin",
+                      "value": "*"
+                    },
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json; charset=utf-8"
+                    },
+                    {
+                      "key": "Content-Length",
+                      "value": "616"
+                    },
+                    {
+                      "key": "ETag",
+                      "value": "W/\"268-lWZhHewZw4uSLCivMobx21cyW00\""
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Sun, 24 May 2026 09:10:58 GMT"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=5"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"message\": \"Business created successfully\",\n    \"success\": true,\n    \"statusCode\": 201,\n    \"data\": {\n        \"id\": \"222d1e54-b9d2-4f58-b406-817a451098e3\",\n        \"businessName\": \"BD Calling\",\n        \"businessType\": \"Tech\",\n        \"description\": \"A leading technology company specializing in AI solutions.\",\n        \"ownerName\": \"Jane Doe\",\n        \"ownerEmail\": \"jane.doe@acmeinnovations.com\",\n        \"ownerPassword\": \"SecurePassword123!\",\n        \"ownerPhone\": \"+1234567890\",\n        \"selectedBranch\": \"6\",\n        \"planId\": \"plan_12345abcde\",\n        \"planCycle\": \"YEARLY\",\n        \"status\": \"ACTIVE\",\n        \"createdById\": \"5622a782-9080-4d6a-8dba-51618d8e788a\",\n        \"credits\": 100,\n        \"createdAt\": \"2026-05-24T09:10:58.809Z\",\n        \"updatedAt\": \"2026-05-24T09:10:58.809Z\"\n    }\n}"
+                }
+              ]
+            },
+            {
+              "name": "Get All Business",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/system-owner/businesses/all",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "system-owner",
+                    "businesses",
+                    "all"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Single Business",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/system-owner/businesses/:businessId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "system-owner",
+                    "businesses",
+                    ":businessId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "businessId",
+                      "value": "edc3411b-9c91-4074-a239-a511a2b4e92e"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Single Business",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"businessName\": \"BD Calling it\"\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/system-owner/businesses/:businessId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "system-owner",
+                    "businesses",
+                    ":businessId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "businessId",
+                      "value": "222d1e54-b9d2-4f58-b406-817a451098e3"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Update Single Business",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"businessName\": \"BD Calling it\"\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/system-owner/businesses/:businessId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "system-owner",
+                        "businesses",
+                        ":businessId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "businessId",
+                          "value": "222d1e54-b9d2-4f58-b406-817a451098e3"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": null,
+                  "header": [
+                    {
+                      "key": "X-Powered-By",
+                      "value": "Express"
+                    },
+                    {
+                      "key": "Access-Control-Allow-Origin",
+                      "value": "*"
+                    },
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json; charset=utf-8"
+                    },
+                    {
+                      "key": "Content-Length",
+                      "value": "619"
+                    },
+                    {
+                      "key": "ETag",
+                      "value": "W/\"26b-y/EU6rfvvk7/xqUvXSpJ63JT/fA\""
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Sun, 24 May 2026 09:23:03 GMT"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=5"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"message\": \"Business updated successfully\",\n    \"success\": true,\n    \"statusCode\": 200,\n    \"data\": {\n        \"id\": \"222d1e54-b9d2-4f58-b406-817a451098e3\",\n        \"businessName\": \"BD Calling it\",\n        \"businessType\": \"Tech\",\n        \"description\": \"A leading technology company specializing in AI solutions.\",\n        \"ownerName\": \"Jane Doe\",\n        \"ownerEmail\": \"jane.doe@acmeinnovations.com\",\n        \"ownerPassword\": \"SecurePassword123!\",\n        \"ownerPhone\": \"+1234567890\",\n        \"selectedBranch\": \"6\",\n        \"planId\": \"plan_12345abcde\",\n        \"planCycle\": \"YEARLY\",\n        \"status\": \"ACTIVE\",\n        \"createdById\": \"5622a782-9080-4d6a-8dba-51618d8e788a\",\n        \"credits\": 100,\n        \"createdAt\": \"2026-05-24T09:10:58.809Z\",\n        \"updatedAt\": \"2026-05-24T09:23:03.062Z\"\n    }\n}"
+                }
+              ]
+            },
+            {
+              "name": "Delete Single",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/system-owner/businesses/:businessId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "system-owner",
+                    "businesses",
+                    ":businessId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "businessId",
+                      "value": "72f9f6a2-1dc4-4f68-ba31-a711750af445"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "🚀 Subscription",
+          "item": [
+            {
+              "name": "Create  🛑 dont use this one",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"CONNECT\",\r\n  \"slug\": \"connect\",\r\n  \"description\": \"Best for businesses getting started with AI automation\",\r\n  \"monthlyPrice\": 700,\r\n  \"yearlyPrice\": 7000, \r\n  \"currency\": \"USD\",\r\n  \"stripeMonthlyPriceId\": \"price_1TgFoFQnbE7SRxaaoYKTIj4q\",\r\n  \"stripeYearlyPriceId\": \"price_1TgGrrQnbE7SRxaay4bQgmUX\",\r\n  \"isActive\": true,\r\n  \"sortOrder\": 1,\r\n  \"features\": [\r\n    { \"key\": \"channels\", \"value\": \"2 channels\" },\r\n    { \"key\": \"chats_limit\", \"value\": \"up to 1,000 chats/month\" },\r\n    { \"key\": \"shared_inbox\", \"value\": \"shared inbox\" },\r\n    { \"key\": \"ai_replies\", \"value\": \"basic AI instant replies\" },\r\n    { \"key\": \"lead_capture\", \"value\": \"basic lead capture\" },\r\n    { \"key\": \"booking_form\", \"value\": \"basic booking form\" },\r\n    { \"key\": \"analytics\", \"value\": \"limited analytics\" },\r\n    { \"key\": \"advanced_automation\", \"value\": \"no advanced automation\" },\r\n    { \"key\": \"campaigns\", \"value\": \"no campaigns\" },\r\n    { \"key\": \"voice_ai\", \"value\": \"no voice AI\" }\r\n  ]\r\n}\r\n\r\n\r\n\r\n// 2nd plan\r\n// {\r\n//   \"name\": \"CONVERT\",\r\n//   \"slug\": \"convert\",\r\n//   \"description\": \"Best for growing businesses that need more leads, bookings, and automation\",\r\n//   \"monthlyPrice\": 1250,\r\n//   \"yearlyPrice\": 12500,\r\n//   \"currency\": \"USD\",\r\n//   \"stripeMonthlyPriceId\": \"price_1TgH2CQnbE7SRxaaGvEpJTCc\", \r\n//   \"stripeYearlyPriceId\": \"price_1TgH3SQnbE7SRxaabOwVzUKx\",\r\n//   \"isActive\": true,\r\n//   \"sortOrder\": 2,\r\n//   \"features\": [\r\n//     { \"key\": \"base_features\", \"value\": \"everything in CONNECT, plus:\" },\r\n//     { \"key\": \"channels\", \"value\": \"multi-channel\" },\r\n//     { \"key\": \"chats_limit\", \"value\": \"up to 5,000 chats/month\" },\r\n//     { \"key\": \"ai_assistant\", \"value\": \"advanced AI assistant\" },\r\n//     { \"key\": \"crm_pipeline\", \"value\": \"CRM pipeline\" },\r\n//     { \"key\": \"booking_workflow\", \"value\": \"full booking workflow\" },\r\n//     { \"key\": \"pricing_engine\", \"value\": \"pricing engine\" },\r\n//     { \"key\": \"quote_generation\", \"value\": \"quote generation\" },\r\n//     { \"key\": \"workflow_automation\", \"value\": \"workflow automation\" },\r\n//     { \"key\": \"chat_summaries\", \"value\": \"chat summaries\" },\r\n//     { \"key\": \"whatsapp_campaigns\", \"value\": \"WhatsApp campaigns (basic)\" },\r\n//     { \"key\": \"analytics_dashboard\", \"value\": \"analytics dashboard\" },\r\n//     { \"key\": \"ai_assist_agents\", \"value\": \"AI assist for agents\" }\r\n//   ]\r\n// }\r\n\r\n\r\n// 3rd plan\r\n// {\r\n//   \"name\": \"CONTROL\",\r\n//   \"slug\": \"control\",\r\n//   \"description\": \"Best for high-volume teams and serious businesses\",\r\n//   \"monthlyPrice\": 2050,\r\n//   \"yearlyPrice\": 20500,\r\n//   \"currency\": \"USD\",\r\n//   \"stripeMonthlyPriceId\": \"price_1TgH2pQnbE7SRxaaVmcePcyo\",\r\n//   \"stripeYearlyPriceId\": \"price_1TgH3sQnbE7SRxaaFDYZX9aw\",\r\n//   \"isActive\": true,\r\n//   \"sortOrder\": 3,\r\n//   \"features\": [\r\n//     { \"key\": \"base_features\", \"value\": \"everything in CONVERT, plus:\" },\r\n//     { \"key\": \"chats_limit\", \"value\": \"unlimited or high-volume chats\" },\r\n//     { \"key\": \"multi_branch\", \"value\": \"multi-branch / multi-country\" },\r\n//     { \"key\": \"workflow_automation\", \"value\": \"advanced workflow automation\" },\r\n//     { \"key\": \"advanced_campaigns\", \"value\": \"advanced campaigns\" },\r\n//     { \"key\": \"api_integrations\", \"value\": \"API integrations\" },\r\n//     { \"key\": \"advanced_analytics\", \"value\": \"advanced analytics\" },\r\n//     { \"key\": \"dedicated_onboarding\", \"value\": \"dedicated onboarding\" },\r\n//     { \"key\": \"priority_support\", \"value\": \"priority support\" },\r\n//     { \"key\": \"voice_ai\", \"value\": \"voice AI included or as premium add-on\" }\r\n//   ]\r\n// }\r\n\r\n\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/system-owner/subscription-plans/create",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "system-owner",
+                    "subscription-plans",
+                    "create"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Create",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"name\": \"Connect\",\r\n  \"slug\": \"connect-plan\",\r\n  \"description\": \"The perfect starting plan for small businesses.\",\r\n  \"monthlyPrice\": 29.99,\r\n  \"yearlyPrice\": 299.99,\r\n  \"currency\": \"USD\",\r\n  \"isActive\": true,\r\n  \"sortOrder\": 1,\r\n  \"features\": [\r\n    {\r\n      \"key\": \"max_users\",\r\n      \"value\": \"5\"\r\n    },\r\n    {\r\n      \"key\": \"storage_limit\",\r\n      \"value\": \"10GB\"\r\n    },\r\n    {\r\n      \"key\": \"support_type\",\r\n      \"value\": \"Email Support\"\r\n    }\r\n  ]\r\n}\r\n",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/system-owner/subscription-plans/create",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "system-owner",
+                        "subscription-plans",
+                        "create"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": null,
+                  "header": [
+                    {
+                      "key": "X-Powered-By",
+                      "value": "Express"
+                    },
+                    {
+                      "key": "Access-Control-Allow-Origin",
+                      "value": "*"
+                    },
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json; charset=utf-8"
+                    },
+                    {
+                      "key": "Content-Length",
+                      "value": "907"
+                    },
+                    {
+                      "key": "ETag",
+                      "value": "W/\"38b-O1I0cbx6BX2vB28rkKzfyhDynGI\""
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Sun, 24 May 2026 09:21:08 GMT"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=5"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"message\": \"Subscription plan created successfully\",\n    \"success\": true,\n    \"statusCode\": 201,\n    \"data\": {\n        \"id\": \"cmpjki7wl0000cstxeu9uyb6l\",\n        \"name\": \"Connect\",\n        \"slug\": \"connect-plan\",\n        \"description\": \"The perfect starting plan for small businesses.\",\n        \"monthlyPrice\": 29.99,\n        \"yearlyPrice\": 299.99,\n        \"currency\": \"USD\",\n        \"isActive\": true,\n        \"sortOrder\": 1,\n        \"createdAt\": \"2026-05-24T09:21:08.230Z\",\n        \"updatedAt\": \"2026-05-24T09:21:08.230Z\",\n        \"createdById\": \"5622a782-9080-4d6a-8dba-51618d8e788a\",\n        \"features\": [\n            {\n                \"id\": \"cmpjki7wo0001cstx6a33bfxk\",\n                \"planId\": \"cmpjki7wl0000cstxeu9uyb6l\",\n                \"key\": \"max_users\",\n                \"value\": \"5\",\n                \"createdAt\": \"2026-05-24T09:21:08.230Z\"\n            },\n            {\n                \"id\": \"cmpjki7wo0002cstxvcrv880s\",\n                \"planId\": \"cmpjki7wl0000cstxeu9uyb6l\",\n                \"key\": \"storage_limit\",\n                \"value\": \"10GB\",\n                \"createdAt\": \"2026-05-24T09:21:08.230Z\"\n            },\n            {\n                \"id\": \"cmpjki7wo0003cstxshtbhub8\",\n                \"planId\": \"cmpjki7wl0000cstxeu9uyb6l\",\n                \"key\": \"support_type\",\n                \"value\": \"Email Support\",\n                \"createdAt\": \"2026-05-24T09:21:08.230Z\"\n            }\n        ]\n    }\n}"
+                }
+              ]
+            },
+            {
+              "name": "Get All",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/system-owner/subscription-plans/all",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "system-owner",
+                    "subscription-plans",
+                    "all"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Single",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/system-owner/subscription-plans/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "system-owner",
+                    "subscription-plans",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"monthlyPrice\": 39.99,\r\n  \"yearlyPrice\": 399.99,\r\n  \"description\": \"Updated pricing for the Connect plan.\",\r\n  \"features\": [\r\n    {\r\n      \"key\": \"max_users\",\r\n      \"value\": \"10\"\r\n    },\r\n    {\r\n      \"key\": \"storage_limit\",\r\n      \"value\": \"20GB\"\r\n    },\r\n    {\r\n      \"key\": \"support_type\",\r\n      \"value\": \"Priority Email Support\"\r\n    }\r\n  ]\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/system-owner/subscription-plans/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "system-owner",
+                    "subscription-plans",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "cmpjki7wl0000cstxeu9uyb6l"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Update",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"monthlyPrice\": 39.99,\r\n  \"yearlyPrice\": 399.99,\r\n  \"description\": \"Updated pricing for the Connect plan.\",\r\n  \"features\": [\r\n    {\r\n      \"key\": \"max_users\",\r\n      \"value\": \"10\"\r\n    },\r\n    {\r\n      \"key\": \"storage_limit\",\r\n      \"value\": \"20GB\"\r\n    },\r\n    {\r\n      \"key\": \"support_type\",\r\n      \"value\": \"Priority Email Support\"\r\n    }\r\n  ]\r\n}\r\n",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/system-owner/subscription-plans/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "system-owner",
+                        "subscription-plans",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "cmpjki7wl0000cstxeu9uyb6l"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": null,
+                  "header": [
+                    {
+                      "key": "X-Powered-By",
+                      "value": "Express"
+                    },
+                    {
+                      "key": "Access-Control-Allow-Origin",
+                      "value": "*"
+                    },
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json; charset=utf-8"
+                    },
+                    {
+                      "key": "Content-Length",
+                      "value": "907"
+                    },
+                    {
+                      "key": "ETag",
+                      "value": "W/\"38b-PBm3QxRzZlp2tS/LZEcYZhr3pOs\""
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Sun, 24 May 2026 09:21:34 GMT"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=5"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"message\": \"Subscription plan updated successfully\",\n    \"success\": true,\n    \"statusCode\": 200,\n    \"data\": {\n        \"id\": \"cmpjki7wl0000cstxeu9uyb6l\",\n        \"name\": \"Connect\",\n        \"slug\": \"connect-plan\",\n        \"description\": \"Updated pricing for the Connect plan.\",\n        \"monthlyPrice\": 39.99,\n        \"yearlyPrice\": 399.99,\n        \"currency\": \"USD\",\n        \"isActive\": true,\n        \"sortOrder\": 1,\n        \"createdAt\": \"2026-05-24T09:21:08.230Z\",\n        \"updatedAt\": \"2026-05-24T09:21:34.854Z\",\n        \"createdById\": \"5622a782-9080-4d6a-8dba-51618d8e788a\",\n        \"features\": [\n            {\n                \"id\": \"cmpjkisgb0004cstx87559yhh\",\n                \"planId\": \"cmpjki7wl0000cstxeu9uyb6l\",\n                \"key\": \"max_users\",\n                \"value\": \"10\",\n                \"createdAt\": \"2026-05-24T09:21:34.854Z\"\n            },\n            {\n                \"id\": \"cmpjkisgb0005cstxussmna68\",\n                \"planId\": \"cmpjki7wl0000cstxeu9uyb6l\",\n                \"key\": \"storage_limit\",\n                \"value\": \"20GB\",\n                \"createdAt\": \"2026-05-24T09:21:34.854Z\"\n            },\n            {\n                \"id\": \"cmpjkisgb0006cstx9odvrdf2\",\n                \"planId\": \"cmpjki7wl0000cstxeu9uyb6l\",\n                \"key\": \"support_type\",\n                \"value\": \"Priority Email Support\",\n                \"createdAt\": \"2026-05-24T09:21:34.854Z\"\n            }\n        ]\n    }\n}"
+                }
+              ]
+            },
+            {
+              "name": "Delete Single",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/system-owner/subscription-plans/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "system-owner",
+                    "subscription-plans",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Activity Logs",
+          "item": [
+            {
+              "name": "Get All",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/system-owner/activity-logs/all",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "system-owner",
+                    "activity-logs",
+                    "all"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Single",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/system-owner/subscription-plans/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "system-owner",
+                    "subscription-plans",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Agent Training",
+          "item": [
+            {
+              "name": "Create",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "systemPrompt",
+                      "value": "You are a helpful AI assistant for the omnichannel platform",
+                      "type": "text",
+                      "uuid": "9175bf2b-617a-426e-8709-c02890eaaf54"
+                    },
+                    {
+                      "key": "businessInformation",
+                      "value": "We provide retail and e-commerce solutions globally",
+                      "type": "text",
+                      "uuid": "b93c7092-ded1-4616-ae83-9f55f22b26a0"
+                    },
+                    {
+                      "key": "productInformation",
+                      "type": "file",
+                      "uuid": "fc0c7cfa-f29e-4650-9d4f-8b4d9fd2fd71",
+                      "src": "/C:/Users/Morning Shift/Downloads/Global_Link_Cargo_Solutions_Business_Document_dealafriq.pdf"
+                    },
+                    {
+                      "key": "policiesGuidelines",
+                      "type": "file",
+                      "uuid": "faf2c690-a348-4d6e-9580-28dc8f8e6e11",
+                      "src": "/C:/Users/Morning Shift/Downloads/Global_Link_Cargo_Solutions_Business_Document_dealafriq.pdf"
+                    },
+                    {
+                      "key": "faq",
+                      "type": "file",
+                      "uuid": "8df15275-10d2-427f-a209-677e09e2a336",
+                      "src": "/C:/Users/Morning Shift/Downloads/Global_Link_Cargo_Solutions_Business_Document_dealafriq.pdf"
+                    },
+                    {
+                      "key": "businessId",
+                      "value": "1e632395-fd73-4320-ad91-0a1826a4ca06",
+                      "type": "text",
+                      "uuid": "de0ae19f-7330-4c70-8a2c-f079a71d36dc"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/system-owner/agent-trainings/create",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "system-owner",
+                    "agent-trainings",
+                    "create"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get all",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/system-owner/agent-trainings/all",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "system-owner",
+                    "agent-trainings",
+                    "all"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get single",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/system-owner/agent-trainings/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "system-owner",
+                    "agent-trainings",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"systemPrompt\": \"Updated system prompt: Provide concise and direct answers.\",\r\n  \"faq\": \"Q: How do I contact support? A: Email support@example.com.\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/system-owner/agent-trainings/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "system-owner",
+                    "agent-trainings",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete single",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/system-owner/agent-trainings/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "system-owner",
+                    "agent-trainings",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "924dbdf9-e649-475b-a172-4fd6da48d4d8"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Agent Creation",
+          "item": [
+            {
+              "name": "Create",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "businessId",
+                      "value": "1e632395-fd73-4320-ad91-0a1826a4ca06",
+                      "type": "text",
+                      "uuid": "b2523e60-2c11-4906-88f7-0899431ef82d"
+                    },
+                    {
+                      "key": "rules_file",
+                      "type": "file",
+                      "uuid": "c13b5d86-19df-46cc-b9b6-9e8a9d196f76",
+                      "src": "/C:/Users/Morning Shift/Downloads/Global_Link_Cargo_Solutions_Business_Document_dealafriq.pdf"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/system-owner/agent-management/create",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "system-owner",
+                    "agent-management",
+                    "create"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get all",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/system-owner/agent-management/all",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "system-owner",
+                    "agent-management",
+                    "all"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get single",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/system-owner/agent-management/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "system-owner",
+                    "agent-management",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "businessId",
+                      "value": "",
+                      "type": "text",
+                      "uuid": "339c81e3-97cf-4465-aa2c-2275425ee561"
+                    },
+                    {
+                      "key": "rules_file",
+                      "type": "file",
+                      "uuid": "5c94e27b-e252-41dc-b1c7-56ae7a76e769",
+                      "value": null
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/system-owner/agent-management/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "system-owner",
+                    "agent-management",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete single",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/system-owner/agent-management/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "system-owner",
+                    "agent-management",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "53bae25b-ff98-4667-b85d-24d5bd59f13a"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "✅ Business Owner",
+      "item": [
+        {
+          "name": "AUTH",
+          "item": [
+            {
+              "name": "SignIn| Login",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\" : \"ahanaf.betopia@gmail.com\",\r\n    \"password\" : \"123456\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/login",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "🌏 Google Login",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "// or use this directly in frontend url > http://localhost:8000/api/auth/google",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/google/url",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "google",
+                    "url"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Forgot Password",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\" : \"ahanaf.betopia@gmail.com\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/forgot-password",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "forgot-password"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Forgot Password Otp Verify",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\" : \"ai.n3st.25@gmail.com\",\r\n    \"otp\" : \"749036\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/verify-forgot-password-otp",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "verify-forgot-password-otp"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Reset Password",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWsyMjRpNW4wMDAwc2lub3Z1dHV1cDRuIiwiZW1haWwiOiJhaGFuYWY2MDczMDdAZ21haWwuY29tIiwicm9sZSI6IlNUVURFTlQiLCJpYXQiOjE3Njc2NzMwNjUsImV4cCI6MTc2NzY3MzY2NX0.dOFTqwpB8HALGr4j6b20eiXDizQK89SWmodBklHP8hQ",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"newPassword\" : \"1qazxsw2\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/reset-password",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "reset-password"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Refresh Token",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Cookie",
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM4YzJkYjQ3LTA4NDQtNDM4NC1iMWVhLWQ1ZmQ3NjU2YzA5OCIsImVtYWlsIjoiYWhhbmFmLmJldG9waWFAZ21haWwuY29tIiwicm9sZSI6InN0dWRlbnQiLCJpYXQiOjE3Njc2MTIyNzEsImV4cCI6MTc2ODIxNzA3MX0.KGylP_1Kn9BpRv_j9v61VRbtG5DL0Q2dizyTFQyEwLw",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\" : \"ahanaf.betopia@gmail.com\",\r\n    \"password\" : \"1qazxsw2\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/refresh-token",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "refresh-token"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Logout",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/logout",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "logout"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Profile",
+          "item": [
+            {
+              "name": "Get Profile",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/user/profile/me",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user",
+                    "profile",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Avatar Only For User",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "avatar",
+                      "type": "file",
+                      "uuid": "158529ba-66df-4ee7-8d23-a3157de822c4",
+                      "src": "/C:/Users/Ahanaf/Pictures/Screenshots/Screenshot (23).png"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/user/upload-avatar",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user",
+                    "upload-avatar"
+                  ],
+                  "query": [
+                    {
+                      "key": "",
+                      "value": null,
+                      "type": "text",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Profile",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "avatar",
+                      "type": "file",
+                      "uuid": "461629b3-2a6c-4f6a-bd89-dfbd3aa1ad82",
+                      "src": "/C:/Users/Ahanaf/Pictures/Screenshots/Screenshot (23).png"
+                    },
+                    {
+                      "key": "name",
+                      "value": "Test User ",
+                      "type": "text",
+                      "uuid": "1443e73c-4601-483d-a0c8-65977e097437"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/user/update-profile",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user",
+                    "update-profile"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Branch Manager",
+          "item": [
+            {
+              "name": "Create Branch Manager",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"Branch Manager\",\r\n  \"email\": \"manager1@test.com\",\r\n  \"password\": \"123456\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/branch-managers/create",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "branch-managers",
+                    "create"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get all",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"businessName\": \"Belon IT\",\r\n  \"businessType\": \"Tech\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Jane Doe\",\r\n  \"ownerEmail\": \"belon@test.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+1234567890\",\r\n  \"planId\": \"plan_12345abcde\",\r\n  \"planCycle\": \"YEARLY\",\r\n  \"status\": \"ACTIVE\",\r\n  \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/branch-managers/all",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "branch-managers",
+                    "all"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Single",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"businessName\": \"Belon IT\",\r\n  \"businessType\": \"Tech\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Jane Doe\",\r\n  \"ownerEmail\": \"belon@test.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+1234567890\",\r\n  \"planId\": \"plan_12345abcde\",\r\n  \"planCycle\": \"YEARLY\",\r\n  \"status\": \"ACTIVE\",\r\n  \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/branch-managers/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "branch-managers",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "9bb7b9ac-22a9-4dca-9b8a-f9e03e26242d"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"Tubrute\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/branch-managers/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "branch-managers",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "9bb7b9ac-22a9-4dca-9b8a-f9e03e26242d"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete 1",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"businessName\": \"Belon IT\",\r\n  \"businessType\": \"Tech\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Jane Doe\",\r\n  \"ownerEmail\": \"belon@test.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+1234567890\",\r\n  \"planId\": \"plan_12345abcde\",\r\n  \"planCycle\": \"YEARLY\",\r\n  \"status\": \"ACTIVE\",\r\n  \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/branch-managers/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "branch-managers",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Branch Management",
+          "item": [
+            {
+              "name": "Create Branch",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"Main Branch\",\r\n  \"email\": \"branch1@test.com\",\r\n  \"phone\": \"+1234567890\",\r\n  \"address\": \"123 Business Rd\",\r\n  \"managerId\": \"cb9159b6-a196-42a5-b431-d8abfc2ad8de\" \r\n}\r\n\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/branches/create",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "branches",
+                    "create"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get all",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/branches/all",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "branches",
+                    "all"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Single",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/branches/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "branches",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "a60e6f48-14d4-487f-b757-1b99c7b81a83"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"Main Branch\",\r\n  \"managerId\": \"uuid-of-existing-branch-manager-user\" \r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/branches/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "branches",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete 1",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"businessName\": \"Belon IT\",\r\n  \"businessType\": \"Tech\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Jane Doe\",\r\n  \"ownerEmail\": \"belon@test.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+1234567890\",\r\n  \"planId\": \"plan_12345abcde\",\r\n  \"planCycle\": \"YEARLY\",\r\n  \"status\": \"ACTIVE\",\r\n  \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/branches/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "branches",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Pricing",
+          "item": [
+            {
+              "name": "Create",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"ruleName\": \"Summer Discount Rule\",\r\n  \"type\": \"PERCENTAGE\",\r\n  \"configuration\": \"{\\\"percentage\\\": 15, \\\"maxDiscount\\\": 500}\",\r\n  \"status\": true,\r\n  \"branchId\": \"9a13311a-3efd-41a7-9626-c981bb944126\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/pricings/create",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "pricings",
+                    "create"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get all",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/pricings/all",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "pricings",
+                    "all"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Single",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"businessName\": \"Belon IT\",\r\n  \"businessType\": \"Tech\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Jane Doe\",\r\n  \"ownerEmail\": \"belon@test.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+1234567890\",\r\n  \"planId\": \"plan_12345abcde\",\r\n  \"planCycle\": \"YEARLY\",\r\n  \"status\": \"ACTIVE\",\r\n  \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/pricings/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "pricings",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"Main Branch\",\r\n  \"managerId\": \"uuid-of-existing-branch-manager-user\" \r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/pricings/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "pricings",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete 1",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"businessName\": \"Belon IT\",\r\n  \"businessType\": \"Tech\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Jane Doe\",\r\n  \"ownerEmail\": \"belon@test.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+1234567890\",\r\n  \"planId\": \"plan_12345abcde\",\r\n  \"planCycle\": \"YEARLY\",\r\n  \"status\": \"ACTIVE\",\r\n  \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/pricings/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "pricings",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Order Booking",
+          "item": [
+            {
+              "name": "Create",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"customerName\": \"Rahim Uddin\",\r\n  \"customerNumber\": \"01711223344\",\r\n  \"email\": \"rahim@example.com\",\r\n  \"address\": \"House 12, Road 5, Dhanmondi, Dhaka\",\r\n  \"deliveryFromAddress\": \"Mirpur 10 Branch, Dhaka\",\r\n  \"productName\": \"Premium Cotton T-Shirt\",\r\n  \"quantity\": \"2\",\r\n  \"size\": \"XL\",\r\n  \"price\": \"1200\",\r\n  \"shippingCharge\": \"100\",\r\n  \"deliveryTime\": \"2026-05-30T10:00:00.000Z\",\r\n  \"orderStatus\": \"PENDING\",\r\n  \"paymentStatus\": \"PENDING\",\r\n  \"paymentMethod\": \"CASH_ON_DELIVERY\",\r\n  \"orderNote\": \"Please deliver between 2 PM to 5 PM\",\r\n  \"branchId\": \"a60e6f48-14d4-487f-b757-1b99c7b81a83\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/order-bookings/create",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "order-bookings",
+                    "create"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get all",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/order-bookings/all",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "order-bookings",
+                    "all"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Single",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"businessName\": \"Belon IT\",\r\n  \"businessType\": \"Tech\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Jane Doe\",\r\n  \"ownerEmail\": \"belon@test.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+1234567890\",\r\n  \"planId\": \"plan_12345abcde\",\r\n  \"planCycle\": \"YEARLY\",\r\n  \"status\": \"ACTIVE\",\r\n  \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/order-bookings/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "order-bookings",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"Main Branch\",\r\n  \"managerId\": \"uuid-of-existing-branch-manager-user\" \r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/branches/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "branches",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete 1",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"businessName\": \"Belon IT\",\r\n  \"businessType\": \"Tech\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Jane Doe\",\r\n  \"ownerEmail\": \"belon@test.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+1234567890\",\r\n  \"planId\": \"plan_12345abcde\",\r\n  \"planCycle\": \"YEARLY\",\r\n  \"status\": \"ACTIVE\",\r\n  \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/order-bookings/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "order-bookings",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "CRM Leads",
+          "item": [
+            {
+              "name": "Create",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"John Doe\",\r\n  \"email\": \"johndoe@example.com\",\r\n  \"phone\": \"+1234567890\",\r\n  \"source\": \"WEBSITE\",\r\n  \"status\": \"NEW\",\r\n  \"address\": \"123 Main St, City\",\r\n  \"note\": \"Looking for a software solution.\",\r\n  \"branchId\": \"a60e6f48-14d4-487f-b757-1b99c7b81a83\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/crm-leads/create",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "crm-leads",
+                    "create"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get all",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/crm-leads/all",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "crm-leads",
+                    "all"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Single",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"businessName\": \"Belon IT\",\r\n  \"businessType\": \"Tech\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Jane Doe\",\r\n  \"ownerEmail\": \"belon@test.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+1234567890\",\r\n  \"planId\": \"plan_12345abcde\",\r\n  \"planCycle\": \"YEARLY\",\r\n  \"status\": \"ACTIVE\",\r\n  \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/crm-leads/:jd",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "crm-leads",
+                    ":jd"
+                  ],
+                  "variable": [
+                    {
+                      "key": "jd",
+                      "value": "0b8df6fd-c5b3-4bbc-9da2-2926ff1a2582"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"status\": \"CONTACTED\",\r\n  \"note\": \"Followed up with a call, expecting reply tomorrow.\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/crm-leads/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "crm-leads",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "0b8df6fd-c5b3-4bbc-9da2-2926ff1a2582"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete 1",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"businessName\": \"Belon IT\",\r\n  \"businessType\": \"Tech\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Jane Doe\",\r\n  \"ownerEmail\": \"belon@test.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+1234567890\",\r\n  \"planId\": \"plan_12345abcde\",\r\n  \"planCycle\": \"YEARLY\",\r\n  \"status\": \"ACTIVE\",\r\n  \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/crm-leads/:jd",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "crm-leads",
+                    ":jd"
+                  ],
+                  "variable": [
+                    {
+                      "key": "jd",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Connect Facebook",
+          "item": [
+            {
+              "name": "Connect Facebook",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/messenger/auth/facebook",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "messenger",
+                    "auth",
+                    "facebook"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "See Status",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/messenger/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "messenger",
+                    "status"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Conversation",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/messenger/conversations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "messenger",
+                    "conversations"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "message by conversation id",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/messenger/messages/:conversationId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "messenger",
+                    "messages",
+                    ":conversationId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "conversationId",
+                      "value": "e04fb9ce-7b05-4d2e-abf6-3f0e51004846"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Send Message",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "recipientId",
+                      "value": "25971144789223658",
+                      "type": "text",
+                      "uuid": "1f0501ea-1bc6-429f-9fd2-d1e09b497b2c"
+                    },
+                    {
+                      "key": "message",
+                      "value": "",
+                      "type": "text",
+                      "uuid": "a0571389-99f9-436b-b9f9-b84e22bf6c0f"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/messenger/messages/send",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "messenger",
+                    "messages",
+                    "send"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Send Media/file/image",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "recipientId",
+                      "value": "25971144789223658",
+                      "type": "text",
+                      "uuid": "1f0501ea-1bc6-429f-9fd2-d1e09b497b2c"
+                    },
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "uuid": "883af973-c93f-41f2-bd7f-c9c5ee33a518",
+                      "src": "/C:/Users/Morning Shift/Pictures/Screenshot 2026-03-13 054002.png"
+                    },
+                    {
+                      "key": "type",
+                      "value": "image",
+                      "type": "text",
+                      "uuid": "180dd955-35d2-4e78-81c3-abe3782ee9dd"
+                    },
+                    {
+                      "key": "",
+                      "value": "video/audio/document/image",
+                      "type": "text",
+                      "uuid": "97b3d533-b396-44b2-81a1-754fcc2c57cc",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/messenger/messages/media",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "messenger",
+                    "messages",
+                    "media"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Connect Whatsapp",
+          "item": [
+            {
+              "name": "Connect  Whatsapp",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"businessId\": \"1e632395-fd73-4320-ad91-0a1826a4ca06\",\r\n  \"wabaId\": \"992794369947449\",\r\n  \"phoneNumberId\": \"1078482402023669\",\r\n  \"phoneNumber\": \"+880 1335 241609\",\r\n  \"accessToken\": \"EAAVZARSm2HzkBRp8FmQQd1Xh8SNRj7rOte28oXwXDTxiZBKx9yrlLWvDLTi08bdbAWOCHAbZAxd54PFERr4afoPQZC0xxNLiXzwliICIZALSj7wmZBSVZAajFiKxjA7kqxNOtbuPpwPREURnptZBaAv2bpqCp3eUjqCU34RKq06u02Bv1ZBr1TtIkuUHJMomkSNMUCwZDZD\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/whatsapp/connect",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "whatsapp",
+                    "connect"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Connection Status",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/whatsapp/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "whatsapp",
+                    "status"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Conversation by business id",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/whatsapp/conversations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "whatsapp",
+                    "conversations"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "message by conversation id",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/whatsapp/conversations/:conversationId/messages",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "whatsapp",
+                    "conversations",
+                    ":conversationId",
+                    "messages"
+                  ],
+                  "variable": [
+                    {
+                      "key": "conversationId",
+                      "value": "6f6c0df8-a30d-4b52-848c-dc2a59ea8a4a"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Send Message",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"conversationId\" : \"6f6c0df8-a30d-4b52-848c-dc2a59ea8a4a\",\r\n    \"message\" : \"Hello, how can I help you today by tugatai by tareq\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/whatsapp/messages/send",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "whatsapp",
+                    "messages",
+                    "send"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Send Media/file/image",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "conversationId",
+                      "value": "f0507974-1aa8-430f-b0dd-8f45ddbd1c67",
+                      "type": "text",
+                      "uuid": "b4c3b232-1d0e-487a-a59e-095175a4de05"
+                    },
+                    {
+                      "key": "type",
+                      "value": "image",
+                      "type": "text",
+                      "uuid": "bfcf1896-1444-4a60-a713-d6f61c1fc7f5"
+                    },
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "uuid": "c8387340-c4c4-403f-902e-a8370b6c89de",
+                      "src": "/C:/Users/Morning Shift/Pictures/Screenshot 2026-03-13 054002.png"
+                    },
+                    {
+                      "key": "ei type gulo use kora jabe > ",
+                      "value": "text, image, video, audio,",
+                      "description": "eita use korben na ... tik mark uthay rakhun",
+                      "type": "text",
+                      "uuid": "1d86f9f8-69eb-4114-9378-779ac463689c",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/whatsapp/messages/media",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "whatsapp",
+                    "messages",
+                    "media"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Connect Instagram",
+          "item": [
+            {
+              "name": "Connect Instagram",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/instagram/auth/facebook",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "instagram",
+                    "auth",
+                    "facebook"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "See Status",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/instagram/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "instagram",
+                    "status"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Conversation",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/instagram/conversations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "instagram",
+                    "conversations"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "message by conversation id",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/instagram/messages/:conversationId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "instagram",
+                    "messages",
+                    ":conversationId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "conversationId",
+                      "value": "f01a1198-bca4-4e8f-b96a-728b5ea71f5d"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Send Message",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"recipientId\":\"4335400436719620\",\r\n    \"message\":\"heelo dada\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/instagram/messages/send",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "instagram",
+                    "messages",
+                    "send"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Send Media/file/image",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "recipientId",
+                      "value": "4335400436719620",
+                      "type": "text",
+                      "uuid": "1f0501ea-1bc6-429f-9fd2-d1e09b497b2c"
+                    },
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "uuid": "883af973-c93f-41f2-bd7f-c9c5ee33a518",
+                      "src": "/C:/Users/Morning Shift/Pictures/Screenshot 2026-03-13 054120.png"
+                    },
+                    {
+                      "key": "type",
+                      "value": "image",
+                      "type": "text",
+                      "uuid": "180dd955-35d2-4e78-81c3-abe3782ee9dd"
+                    },
+                    {
+                      "key": "",
+                      "value": "video/audio/document/image",
+                      "type": "text",
+                      "uuid": "97b3d533-b396-44b2-81a1-754fcc2c57cc",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/instagram/messages/media",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "instagram",
+                    "messages",
+                    "media"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "🙌buy subscription.",
+          "item": [
+            {
+              "name": "checkout",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"planId\": \"cmqbyavbo00005ol6akuwk1n5\" , // The ID of the CONNECT/CONVERT plan from your database\r\n  \"billingCycle\": \"monthly\"          // Must be exactly \"monthly\" or \"yearly\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/payment/create-checkout-session",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "payment",
+                    "create-checkout-session"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Subscription",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/payment/my-subscription",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "payment",
+                    "my-subscription"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "🛑 Branch Manager",
+      "item": [
+        {
+          "name": "AUTH",
+          "item": [
+            {
+              "name": "SignIn| Login",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\" : \"manager1@test.com\",\r\n    \"password\" : \"123456\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/login",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "🌏 Google Login",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "// or use this directly in frontend url > http://localhost:8000/api/auth/google",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/google/url",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "google",
+                    "url"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Forgot Password",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\" : \"ahanaf.betopia@gmail.com\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/forgot-password",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "forgot-password"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Forgot Password Otp Verify",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\" : \"ai.n3st.25@gmail.com\",\r\n    \"otp\" : \"749036\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/verify-forgot-password-otp",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "verify-forgot-password-otp"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Reset Password",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWsyMjRpNW4wMDAwc2lub3Z1dHV1cDRuIiwiZW1haWwiOiJhaGFuYWY2MDczMDdAZ21haWwuY29tIiwicm9sZSI6IlNUVURFTlQiLCJpYXQiOjE3Njc2NzMwNjUsImV4cCI6MTc2NzY3MzY2NX0.dOFTqwpB8HALGr4j6b20eiXDizQK89SWmodBklHP8hQ",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"newPassword\" : \"1qazxsw2\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/reset-password",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "reset-password"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Refresh Token",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Cookie",
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM4YzJkYjQ3LTA4NDQtNDM4NC1iMWVhLWQ1ZmQ3NjU2YzA5OCIsImVtYWlsIjoiYWhhbmFmLmJldG9waWFAZ21haWwuY29tIiwicm9sZSI6InN0dWRlbnQiLCJpYXQiOjE3Njc2MTIyNzEsImV4cCI6MTc2ODIxNzA3MX0.KGylP_1Kn9BpRv_j9v61VRbtG5DL0Q2dizyTFQyEwLw",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\" : \"ahanaf.betopia@gmail.com\",\r\n    \"password\" : \"1qazxsw2\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/refresh-token",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "refresh-token"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Logout",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/logout",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "logout"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Profile",
+          "item": [
+            {
+              "name": "Get Profile",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/user/profile/me",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user",
+                    "profile",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Avatar Only For User",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "avatar",
+                      "type": "file",
+                      "uuid": "158529ba-66df-4ee7-8d23-a3157de822c4",
+                      "src": "/C:/Users/Ahanaf/Pictures/Screenshots/Screenshot (23).png"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/user/upload-avatar",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user",
+                    "upload-avatar"
+                  ],
+                  "query": [
+                    {
+                      "key": "",
+                      "value": null,
+                      "type": "text",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Profile",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "avatar",
+                      "type": "file",
+                      "uuid": "461629b3-2a6c-4f6a-bd89-dfbd3aa1ad82",
+                      "src": "/C:/Users/Ahanaf/Pictures/Screenshots/Screenshot (23).png"
+                    },
+                    {
+                      "key": "name",
+                      "value": "Test User ",
+                      "type": "text",
+                      "uuid": "1443e73c-4601-483d-a0c8-65977e097437"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/user/update-profile",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user",
+                    "update-profile"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Pricing Branch",
+          "item": [
+            {
+              "name": "Create",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"ruleName\": \"Summer Discount Rule\",\r\n  \"type\": \"PERCENTAGE\",\r\n  \"configuration\": \"{\\\"percentage\\\": 15, \\\"maxDiscount\\\": 500}\",\r\n  \"status\": true\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/pricing/create",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "pricing",
+                    "create"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get all",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/pricing/all",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "pricing",
+                    "all"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Single",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/pricing/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "pricing",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "06701a8e-01ec-4752-a46c-d4f797745f1b"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"ruleName\": \"Winter Discount Rule\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/pricing/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "pricing",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "06701a8e-01ec-4752-a46c-d4f797745f1b"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete 1",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"businessName\": \"Belon IT\",\r\n  \"businessType\": \"Tech\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Jane Doe\",\r\n  \"ownerEmail\": \"belon@test.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+1234567890\",\r\n  \"planId\": \"plan_12345abcde\",\r\n  \"planCycle\": \"YEARLY\",\r\n  \"status\": \"ACTIVE\",\r\n  \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/pricing/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "pricing",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "CRM Leads Branch",
+          "item": [
+            {
+              "name": "Create",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"John Doe\",\r\n  \"email\": \"johndoe@example.com\",\r\n  \"phone\": \"+1234567890\",\r\n  \"source\": \"SOCIAL_MEDIA\",\r\n  \"status\": \"NEW\",\r\n  \"address\": \"123 Marketing Ave, Suite 1\",\r\n  \"note\": \"Client found us via a Facebook Ad campaign.\"\r\n}\r\n\r\n// enum SourceEnum {\r\n//   WEBSITE\r\n//   SOCIAL_MEDIA\r\n//   REFERRAL\r\n//   COLD_CALL\r\n//   OTHER\r\n// }\r\n\r\n// enum CrmStatus {\r\n//   NEW\r\n//   CONTACTED\r\n//   QUALIFIED\r\n//   PROPOSAL\r\n//   WON\r\n//   LOST\r\n// }",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/crm-leads/create",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "crm-leads",
+                    "create"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get all",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/crm-leads/all",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "crm-leads",
+                    "all"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Single",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"businessName\": \"Belon IT\",\r\n  \"businessType\": \"Tech\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Jane Doe\",\r\n  \"ownerEmail\": \"belon@test.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+1234567890\",\r\n  \"planId\": \"plan_12345abcde\",\r\n  \"planCycle\": \"YEARLY\",\r\n  \"status\": \"ACTIVE\",\r\n  \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/crm-leads/:jd",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "crm-leads",
+                    ":jd"
+                  ],
+                  "variable": [
+                    {
+                      "key": "jd",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"John Doe Jr\",\r\n  \"email\": \"johndoe.new@example.com\",\r\n  \"phone\": \"+0987654321\",\r\n  \"source\": \"WEBSITE\",\r\n  \"status\": \"CONTACTED\",\r\n  \"address\": \"456 Updated St\",\r\n  \"note\": \"Called the client, waiting for proposal.\"\r\n}\r\n\r\n\r\n// enum SourceEnum {\r\n//   WEBSITE\r\n//   SOCIAL_MEDIA\r\n//   REFERRAL\r\n//   COLD_CALL\r\n//   OTHER\r\n// }\r\n\r\n// enum CrmStatus {\r\n//   NEW\r\n//   CONTACTED\r\n//   QUALIFIED\r\n//   PROPOSAL\r\n//   WON\r\n//   LOST\r\n// }",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/crm-leads/:jd",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "crm-leads",
+                    ":jd"
+                  ],
+                  "variable": [
+                    {
+                      "key": "jd",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete 1",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"businessName\": \"Belon IT\",\r\n  \"businessType\": \"Tech\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Jane Doe\",\r\n  \"ownerEmail\": \"belon@test.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+1234567890\",\r\n  \"planId\": \"plan_12345abcde\",\r\n  \"planCycle\": \"YEARLY\",\r\n  \"status\": \"ACTIVE\",\r\n  \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/crm-leads/:jd",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "crm-leads",
+                    ":jd"
+                  ],
+                  "variable": [
+                    {
+                      "key": "jd",
+                      "value": "3d4e7f11-0a07-4b17-8f5b-4a5d61c95322"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Order Booking branch",
+          "item": [
+            {
+              "name": "Create",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"customerName\": \"Alice Smith\",\r\n  \"customerNumber\": \"+1987654321\",\r\n  \"email\": \"alice.smith@example.com\",\r\n  \"address\": \"789 Customer Road, Suite B\",\r\n  \"deliveryFromAddress\": \"123 Warehouse Ave, Suite 1\",\r\n  \"productName\": \"Wireless Noise-Canceling Headphones\",\r\n  \"quantity\": \"2\",\r\n  \"size\": \"Standard\",\r\n  \"price\": \"299.99\",\r\n  \"orderStatus\": \"PENDING\",\r\n  \"paymentStatus\": \"PENDING\",\r\n  \"shippingCharge\": \"15.00\",\r\n  \"deliveryTime\": \"2026-06-01T10:00:00Z\",\r\n  \"orderNote\": \"Please leave the package at the front porch.\",\r\n  \"paymentMethod\": \"CASH_ON_DELIVERY\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/order-bookings/create",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "order-bookings",
+                    "create"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get all",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/order-bookings/all",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "order-bookings",
+                    "all"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Single",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"businessName\": \"Belon IT\",\r\n  \"businessType\": \"Tech\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Jane Doe\",\r\n  \"ownerEmail\": \"belon@test.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+1234567890\",\r\n  \"planId\": \"plan_12345abcde\",\r\n  \"planCycle\": \"YEARLY\",\r\n  \"status\": \"ACTIVE\",\r\n  \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/order-bookings/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "order-bookings",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "f2f8c267-c7fd-475e-9a06-67381e5ff3f8"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"Main Branch\",\r\n  \"managerId\": \"uuid-of-existing-branch-manager-user\" \r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/order-bookings/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "order-bookings",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete 1",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"businessName\": \"Belon IT\",\r\n  \"businessType\": \"Tech\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Jane Doe\",\r\n  \"ownerEmail\": \"belon@test.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+1234567890\",\r\n  \"planId\": \"plan_12345abcde\",\r\n  \"planCycle\": \"YEARLY\",\r\n  \"status\": \"ACTIVE\",\r\n  \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/order-bookings/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "order-bookings",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "📒📒📒📒📒For Landing Page Create or signup business",
+      "item": [
+        {
+          "name": "Create Business",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"businessName\": \"Ahanaf Transport LTD\",\r\n  \"businessType\": \"Education\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Ahanaf Mubasshir\",\r\n  \"ownerEmail\": \"ahanaf.betopia@gmail.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+1234567890\"\r\n//   \"planId\": \"plan_12345abcde\",\r\n//   \"planCycle\": \"MONTHLY\",\r\n//   \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/system-owner/businesses/create",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "system-owner",
+                "businesses",
+                "create"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Create Business..",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"businessName\": \"BD Calling\",\r\n  \"businessType\": \"Tech\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Jane Doe\",\r\n  \"ownerEmail\": \"jane.doe@acmeinnovations.com\",\r\n  \"ownerPassword\": \"SecurePassword123!\",\r\n  \"ownerPhone\": \"+1234567890\",\r\n  \"planId\": \"plan_12345abcde\",\r\n  \"planCycle\": \"YEARLY\",\r\n  \"status\": \"ACTIVE\",\r\n  \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/system-owner/businesses/create",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "system-owner",
+                    "businesses",
+                    "create"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "616"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"268-lWZhHewZw4uSLCivMobx21cyW00\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 24 May 2026 09:10:58 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Business created successfully\",\n    \"success\": true,\n    \"statusCode\": 201,\n    \"data\": {\n        \"id\": \"222d1e54-b9d2-4f58-b406-817a451098e3\",\n        \"businessName\": \"BD Calling\",\n        \"businessType\": \"Tech\",\n        \"description\": \"A leading technology company specializing in AI solutions.\",\n        \"ownerName\": \"Jane Doe\",\n        \"ownerEmail\": \"jane.doe@acmeinnovations.com\",\n        \"ownerPassword\": \"SecurePassword123!\",\n        \"ownerPhone\": \"+1234567890\",\n        \"selectedBranch\": \"6\",\n        \"planId\": \"plan_12345abcde\",\n        \"planCycle\": \"YEARLY\",\n        \"status\": \"ACTIVE\",\n        \"createdById\": \"5622a782-9080-4d6a-8dba-51618d8e788a\",\n        \"credits\": 100,\n        \"createdAt\": \"2026-05-24T09:10:58.809Z\",\n        \"updatedAt\": \"2026-05-24T09:10:58.809Z\"\n    }\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "userToken",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI0NmZiZjU5LWJmYjEtNDg2MC05NDBiLTgxNGRmNzNhZGFkZiIsImVtYWlsIjoiYWhhbmFmQGdtYWlsLmNvbSIsInJvbGUiOiJDVVNUT01FUiIsImlhdCI6MTc2OTczODcxOCwiZXhwIjoxNzcwMzQzNTE4fQ.PlLkuzTRJUlT68m5u84uLZcCr6KXjQQxf4pB-Y8ihuE"
+    },
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8001/api"
+    },
+    {
+      "key": "admin_token",
+      "value": ""
+    },
+    {
+      "key": "live_url",
+      "value": ""
+    },
+    {
+      "key": "localUrl",
+      "value": ""
+    },
+    {
+      "key": "businessOwnerToken",
+      "value": ""
+    },
+    {
+      "key": "branchManager",
+      "value": ""
+    }
+  ]
+}
