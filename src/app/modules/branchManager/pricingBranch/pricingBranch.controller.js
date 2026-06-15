@@ -31,6 +31,14 @@ const createPricing = async (req, res, next) => {
         req.body.branchId = branchId;
         req.body.createdById = req.user?.id;
 
+        if (req.body.configuration && typeof req.body.configuration === "string") {
+            try {
+                req.body.configuration = JSON.parse(req.body.configuration);
+            } catch (err) {
+                // Ignore if not valid JSON
+            }
+        }
+
         const result = await PricingBranchService.createPricingService(req.body);
 
         sendResponse(res, {
@@ -115,6 +123,14 @@ const updatePricing = async (req, res, next) => {
             businessId: branchManager.businessId,
             branchId: branchManager.branches[0]?.id
         };
+
+        if (req.body.configuration && typeof req.body.configuration === "string") {
+            try {
+                req.body.configuration = JSON.parse(req.body.configuration);
+            } catch (err) {
+                // Ignore if not valid JSON
+            }
+        }
 
         const result = await PricingBranchService.updatePricingService(req.params.id, filter, req.body);
 

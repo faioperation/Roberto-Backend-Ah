@@ -1504,7 +1504,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"email\" : \"ahanaf.betopia@gmail.com\",\r\n    \"password\" : \"123456\"\r\n}",
+                  "raw": "{\n  \"email\": \"businessowner@test.com\",\n  \"password\": \"123456\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2462,6 +2462,142 @@
           ]
         },
         {
+          "name": "Workflow Engine",
+          "item": [
+            {
+              "name": "Create Workflow",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Cargo Shipments\",\n  \"type\": \"BOOKING\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/workflows/create",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "workflows",
+                    "create"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get All Workflows",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/workflows/all",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "workflows",
+                    "all"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Add Stage to Workflow",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Quote In-Progress\",\n  \"order\": 1,\n  \"color\": \"#FFC107\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/workflows/stages/:workflowId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "workflows",
+                    "stages",
+                    ":workflowId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "workflowId",
+                      "value": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Reorder/Update Stages",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"stages\": [\n    {\n      \"id\": \"stage-uuid-here\",\n      \"order\": 1\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/workflows/stages/reorder",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "workflows",
+                    "stages",
+                    "reorder"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
           "name": "Order Booking",
           "item": [
             {
@@ -2481,7 +2617,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n  \"customerName\": \"Rahim Uddin\",\r\n  \"customerNumber\": \"01711223344\",\r\n  \"email\": \"rahim@example.com\",\r\n  \"address\": \"House 12, Road 5, Dhanmondi, Dhaka\",\r\n  \"deliveryFromAddress\": \"Mirpur 10 Branch, Dhaka\",\r\n  \"productName\": \"Premium Cotton T-Shirt\",\r\n  \"quantity\": \"2\",\r\n  \"size\": \"XL\",\r\n  \"price\": \"1200\",\r\n  \"shippingCharge\": \"100\",\r\n  \"deliveryTime\": \"2026-05-30T10:00:00.000Z\",\r\n  \"orderStatus\": \"PENDING\",\r\n  \"paymentStatus\": \"PENDING\",\r\n  \"paymentMethod\": \"CASH_ON_DELIVERY\",\r\n  \"orderNote\": \"Please deliver between 2 PM to 5 PM\",\r\n  \"branchId\": \"a60e6f48-14d4-487f-b757-1b99c7b81a83\"\r\n}\r\n",
+                  "raw": "{\n  \"customerName\": \"Rahim Uddin\",\n  \"customerNumber\": \"01711223344\",\n  \"email\": \"rahim@example.com\",\n  \"price\": \"1200\",\n  \"stageId\": \"stage-uuid-from-workflow-stages\",\n  \"paymentStatus\": \"PENDING\",\n  \"paymentMethod\": \"CASH_ON_DELIVERY\",\n  \"orderNote\": \"Please deliver between 2 PM to 5 PM\",\n  \"branchId\": \"branch-uuid-here\",\n  \"metadata\": {\n    \"address\": \"House 12, Road 5, Dhanmondi, Dhaka\",\n    \"deliveryFromAddress\": \"Mirpur 10 Branch, Dhaka\",\n    \"productName\": \"Premium Cotton T-Shirt\",\n    \"quantity\": 2,\n    \"size\": \"XL\",\n    \"shippingCharge\": 100,\n    \"deliveryTime\": \"2026-05-30T10:00:00.000Z\"\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2688,7 +2824,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n  \"name\": \"John Doe\",\r\n  \"email\": \"johndoe@example.com\",\r\n  \"phone\": \"+1234567890\",\r\n  \"source\": \"WEBSITE\",\r\n  \"status\": \"NEW\",\r\n  \"address\": \"123 Main St, City\",\r\n  \"note\": \"Looking for a software solution.\",\r\n  \"branchId\": \"a60e6f48-14d4-487f-b757-1b99c7b81a83\"\r\n}\r\n",
+                  "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"johndoe@example.com\",\n  \"phone\": \"+1234567890\",\n  \"source\": \"WEBSITE\",\n  \"stageId\": \"stage-uuid-from-crm-workflow-stages\",\n  \"address\": \"123 Main St, City\",\n  \"note\": \"Looking for a software solution.\",\n  \"branchId\": \"branch-uuid-here\",\n  \"metadata\": {\n    \"companyName\": \"Acme Corp\",\n    \"leadValue\": 5000\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -4213,7 +4349,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n  \"name\": \"John Doe\",\r\n  \"email\": \"johndoe@example.com\",\r\n  \"phone\": \"+1234567890\",\r\n  \"source\": \"SOCIAL_MEDIA\",\r\n  \"status\": \"NEW\",\r\n  \"address\": \"123 Marketing Ave, Suite 1\",\r\n  \"note\": \"Client found us via a Facebook Ad campaign.\"\r\n}\r\n\r\n// enum SourceEnum {\r\n//   WEBSITE\r\n//   SOCIAL_MEDIA\r\n//   REFERRAL\r\n//   COLD_CALL\r\n//   OTHER\r\n// }\r\n\r\n// enum CrmStatus {\r\n//   NEW\r\n//   CONTACTED\r\n//   QUALIFIED\r\n//   PROPOSAL\r\n//   WON\r\n//   LOST\r\n// }",
+                  "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"johndoe@example.com\",\n  \"phone\": \"+1234567890\",\n  \"source\": \"SOCIAL_MEDIA\",\n  \"stageId\": \"stage-uuid-from-crm-workflow-stages\",\n  \"address\": \"123 Marketing Ave, Suite 1\",\n  \"note\": \"Client found us via a Facebook Ad campaign.\",\n  \"metadata\": {\n    \"campaignName\": \"FB Promo 2026\"\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -4420,7 +4556,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n  \"customerName\": \"Alice Smith\",\r\n  \"customerNumber\": \"+1987654321\",\r\n  \"email\": \"alice.smith@example.com\",\r\n  \"address\": \"789 Customer Road, Suite B\",\r\n  \"deliveryFromAddress\": \"123 Warehouse Ave, Suite 1\",\r\n  \"productName\": \"Wireless Noise-Canceling Headphones\",\r\n  \"quantity\": \"2\",\r\n  \"size\": \"Standard\",\r\n  \"price\": \"299.99\",\r\n  \"orderStatus\": \"PENDING\",\r\n  \"paymentStatus\": \"PENDING\",\r\n  \"shippingCharge\": \"15.00\",\r\n  \"deliveryTime\": \"2026-06-01T10:00:00Z\",\r\n  \"orderNote\": \"Please leave the package at the front porch.\",\r\n  \"paymentMethod\": \"CASH_ON_DELIVERY\"\r\n}\r\n",
+                  "raw": "{\n  \"customerName\": \"Alice Smith\",\n  \"customerNumber\": \"+1987654321\",\n  \"email\": \"alice.smith@example.com\",\n  \"price\": \"299.99\",\n  \"stageId\": \"stage-uuid-from-workflow-stages\",\n  \"paymentStatus\": \"PENDING\",\n  \"paymentMethod\": \"CASH_ON_DELIVERY\",\n  \"orderNote\": \"Please leave the package at the front porch.\",\n  \"metadata\": {\n    \"address\": \"789 Customer Road, Suite B\",\n    \"deliveryFromAddress\": \"123 Warehouse Ave, Suite 1\",\n    \"productName\": \"Wireless Noise-Canceling Headphones\",\n    \"quantity\": 2,\n    \"size\": \"Standard\",\n    \"shippingCharge\": 15,\n    \"deliveryTime\": \"2026-06-01T10:00:00Z\"\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"

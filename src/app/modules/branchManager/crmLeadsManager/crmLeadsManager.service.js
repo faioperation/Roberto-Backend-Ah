@@ -2,10 +2,12 @@ import prisma from "../../../prisma/client.js";
 import DevBuildError from "../../../lib/DevBuildError.js";
 import { StatusCodes } from "http-status-codes";
 import { QueryBuilder } from "../../../utils/QueryBuilder.js";
+import { extractLeadPayload } from "../../../utils/workflowHelpers.js";
 
 const createCrmLeadService = async (payload) => {
+    const cleanPayload = await extractLeadPayload(payload.businessId, payload);
     const result = await prisma.crmLead.create({
-        data: payload,
+        data: cleanPayload,
     });
     return result;
 };
@@ -96,9 +98,10 @@ const updateCrmLeadService = async (id, filter, payload) => {
         throw new DevBuildError("CRM Lead not found or you don't have access", StatusCodes.NOT_FOUND);
     }
 
+    const cleanPayload = await extractLeadPayload(isExist.businessId, payload);
     const result = await prisma.crmLead.update({
         where: { id },
-        data: payload,
+        data: cleanPayload,
     });
     
     return result;

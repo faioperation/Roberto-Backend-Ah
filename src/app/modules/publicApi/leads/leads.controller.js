@@ -2,10 +2,11 @@ import prisma from "../../../prisma/client.js";
 import { StatusCodes } from "http-status-codes";
 import { sendResponse } from "../../../utils/sendResponse.js";
 import { AppError } from "../../../errorHelper/appError.js";
+import { extractLeadPayload } from "../../../utils/workflowHelpers.js";
 
 export const createLead = async (req, res, next) => {
   try {
-    const { businessId, branchId, name, email, phone, source, status, address, note } = req.body;
+    const { businessId, name } = req.body;
 
     if (!businessId) {
       throw new AppError(StatusCodes.BAD_REQUEST, "businessId is required.");
@@ -24,29 +25,19 @@ export const createLead = async (req, res, next) => {
       throw new AppError(StatusCodes.NOT_FOUND, `Business with ID ${businessId} not found.`);
     }
 
-    if (branchId) {
+    const cleanPayload = await extractLeadPayload(businessId, req.body);
+
+    if (cleanPayload.branchId) {
       const branchExists = await prisma.branch.findFirst({
-        where: { id: branchId, businessId }
+        where: { id: cleanPayload.branchId, businessId }
       });
       if (!branchExists) {
-        throw new AppError(StatusCodes.NOT_FOUND, `Branch with ID ${branchId} not found in this business.`);
+        throw new AppError(StatusCodes.NOT_FOUND, `Branch with ID ${cleanPayload.branchId} not found in this business.`);
       }
     }
 
-    const payload = {
-      businessId,
-      branchId: branchId || null,
-      name,
-      email: email || null,
-      phone: phone || null,
-      source: source || "WEBSITE", // Default to WEBSITE for public submissions
-      status: status || "NEW",
-      address: address || null,
-      note: note || null,
-    };
-
     const newLead = await prisma.crmLead.create({
-      data: payload
+      data: cleanPayload
     });
 
     sendResponse(res, {

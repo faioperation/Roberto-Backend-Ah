@@ -2,17 +2,25 @@ import prisma from "../../../prisma/client.js";
 import DevBuildError from "../../../lib/DevBuildError.js";
 import { StatusCodes } from "http-status-codes";
 import { QueryBuilder } from "../../../utils/QueryBuilder.js";
+import { extractBookingPayload } from "../../../utils/workflowHelpers.js";
 
 const createOrderBookingService = async (payload) => {
+    const cleanPayload = await extractBookingPayload(payload.businessId, payload);
+
     const result = await prisma.orderBooking.create({
-        data: payload,
+        data: cleanPayload,
+        include: {
+            stage: true,
+            assignedUser: true,
+        }
     });
+
     return result;
 };
 
 const getAllOrderBookingsService = async (query = {}) => {
     const queryBuilder = new QueryBuilder(query)
-        .search(["customerName", "customerNumber", "email", "productName"])
+        .search(["customerName", "customerNumber", "email"])
         .filter()
         .sort()
         .paginate()
@@ -22,6 +30,8 @@ const getAllOrderBookingsService = async (query = {}) => {
 
     if (!queryParams.select) {
         queryParams.include = {
+            stage: true,
+            assignedUser: true,
             createdBy: {
                 select: {
                     id: true,
@@ -54,6 +64,8 @@ const getOrderBookingByIdService = async (id, query = {}) => {
         findArgs.select = queryParams.select;
     } else {
         findArgs.include = {
+            stage: true,
+            assignedUser: true,
             createdBy: {
                 select: {
                     id: true,
@@ -83,11 +95,35 @@ const updateOrderBookingService = async (id, payload) => {
         throw new DevBuildError("Order Booking not found", StatusCodes.NOT_FOUND);
     }
 
-    const result = await prisma.orderBooking.update({
-        where: { id },
-        data: payload,
+    const cleanPayload = await extractBookingPayload(isExist.businessId, payload);
+    const { userId } = payload; // Actor ID
+
+    const result = await prisma.$transaction(async (tx) => {
+        const updated = await tx.orderBooking.update({
+            where: { id },
+            data: cleanPayload,
+            include: {
+                stage: true,
+                assignedUser: true,
+            }
+        });
+
+        // Log to Audit Log
+        await tx.auditLog.create({
+            data: {
+                businessId: updated.businessId,
+                userId: userId || null,
+                action: cleanPayload.stageId && cleanPayload.stageId !== isExist.stageId ? "STATUS_CHANGE" : "UPDATE",
+                targetTable: "OrderBooking",
+                targetId: id,
+                oldValues: { stageId: isExist.stageId, metadata: isExist.metadata, assignedUserId: isExist.assignedUserId },
+                newValues: { stageId: updated.stageId, metadata: updated.metadata, assignedUserId: updated.assignedUserId }
+            }
+        });
+
+        return updated;
     });
-    
+
     return result;
 };
 

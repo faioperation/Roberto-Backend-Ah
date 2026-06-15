@@ -24,6 +24,14 @@ const createPricing = async (req, res, next) => {
         req.body.businessId = business.id;
         req.body.createdById = userId;
 
+        if (req.body.configuration && typeof req.body.configuration === "string") {
+            try {
+                req.body.configuration = JSON.parse(req.body.configuration);
+            } catch (err) {
+                // Ignore if not valid JSON
+            }
+        }
+
         const result = await PricingService.createPricingService(req.body);
 
         sendResponse(res, {
@@ -70,6 +78,13 @@ const getPricingById = async (req, res, next) => {
 
 const updatePricing = async (req, res, next) => {
     try {
+        if (req.body.configuration && typeof req.body.configuration === "string") {
+            try {
+                req.body.configuration = JSON.parse(req.body.configuration);
+            } catch (err) {
+                // Ignore if not valid JSON
+            }
+        }
         const result = await PricingService.updatePricingService(req.params.id, req.body);
 
         sendResponse(res, {

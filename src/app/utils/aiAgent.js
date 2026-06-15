@@ -23,7 +23,7 @@ export const notifyAiAgent = async ({
 
     const payload = {
       business_id: businessId,
-      subject: business?.businessType || "others",
+      subject: business?.industry || "others",
       recipient_id: recipientId,
       conversation_id: conversationId,
       channel,

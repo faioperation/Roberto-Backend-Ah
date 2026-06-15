@@ -7,9 +7,15 @@ import { QueryBuilder } from "../../../utils/QueryBuilder.js";
 
 const mapBusinessType = (type) => {
     if (!type) return null;
-    const upper = type.toUpperCase();
-    const allowed = ["LAW", "CARGOS", "EDUCATION", "OTHER"];
-    return allowed.includes(upper) ? upper : "OTHER";
+    return String(type).toUpperCase();
+};
+
+const formatBusinessResponse = (business) => {
+    if (!business) return null;
+    return {
+        ...business,
+        businessType: business.industry
+    };
 };
 
 const createBusinessService = async (payload) => {
@@ -75,7 +81,7 @@ const createBusinessService = async (payload) => {
                 name: payload.businessName,
                 email: payload.ownerEmail,
                 phone: payload.ownerPhone,
-                businessType: mapBusinessType(payload.businessType),
+                industry: mapBusinessType(payload.industry || payload.businessType),
                 status: isSystemOwner ? "ACTIVE" : "INACTIVE",
                 description: payload.description || null,
                 planId: payload.planId || null,
@@ -94,7 +100,7 @@ const createBusinessService = async (payload) => {
             }
         });
 
-        return business;
+        return formatBusinessResponse(business);
     });
 
     return result;
@@ -134,15 +140,16 @@ const getAllBusinessesService = async (query = {}) => {
     const result = await prisma.business.findMany(queryParams);
     const total = await prisma.business.count({ where: queryBuilder.where });
 
-    // Exclude fields
-    result.forEach((item) => {
+    // Exclude fields and format response
+    const formatted = result.map((item) => {
         delete item.createdById;
         delete item.planId;
+        return formatBusinessResponse(item);
     });
 
     return {
         meta: queryBuilder.getMeta(total),
-        data: result,
+        data: formatted,
     };
 };
 
@@ -186,7 +193,7 @@ const getBusinessByIdService = async (id, query = {}) => {
     delete result.createdById;
     delete result.planId;
     
-    return result;
+    return formatBusinessResponse(result);
 };
 
 const updateBusinessService = async (id, payload) => {
@@ -212,15 +219,18 @@ const updateBusinessService = async (id, payload) => {
         updateData.phone = payload.ownerPhone;
         delete updateData.ownerPhone;
     }
-    if (payload.businessType) {
-        updateData.businessType = mapBusinessType(payload.businessType);
+    
+    const rawIndustry = payload.industry || payload.businessType;
+    if (rawIndustry) {
+        updateData.industry = mapBusinessType(rawIndustry);
     }
+    delete updateData.businessType;
 
     const result = await prisma.business.update({
         where: { id },
         data: updateData,
     });
-    return result;
+    return formatBusinessResponse(result);
 };
 
 const deleteBusinessService = async (id) => {
@@ -235,7 +245,7 @@ const deleteBusinessService = async (id) => {
     const result = await prisma.business.delete({
         where: { id },
     });
-    return result;
+    return formatBusinessResponse(result);
 };
 
 export const BusinessService = {

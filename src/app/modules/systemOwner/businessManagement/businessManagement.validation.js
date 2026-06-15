@@ -4,9 +4,10 @@ const createBusinessSchema = z.object({
     body: z.object({
         businessName: z.string({ required_error: "Business name is required" }),
         businessType: z.string().optional(),
+        industry: z.string().optional(),
         description: z.string().optional(),
         ownerName: z.string().optional(),
-        ownerEmail: z.string().email("Invalid email address").optional(),
+        ownerEmail: z.string().email("Invalid email address").optional().or(z.literal('')),
         ownerPassword: z.string().optional(),
         ownerPhone: z.string().optional(),
         planId: z.string().optional(),
@@ -20,9 +21,10 @@ const updateBusinessSchema = z.object({
     body: z.object({
         businessName: z.string().optional(),
         businessType: z.string().optional(),
+        industry: z.string().optional(),
         description: z.string().optional(),
         ownerName: z.string().optional(),
-        ownerEmail: z.string().email("Invalid email address").optional(),
+        ownerEmail: z.string().email("Invalid email address").optional().or(z.literal('')),
         ownerPassword: z.string().optional(),
         ownerPhone: z.string().optional(),
         planId: z.string().optional(),

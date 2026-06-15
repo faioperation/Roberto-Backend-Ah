@@ -29,6 +29,7 @@ import { PublicPricingRoutes } from "../modules/publicApi/pricing/pricing.route.
 import { PublicChatSummaryRoutes } from "../modules/publicApi/chatSummary/chatSummary.route.js";
 import { ChatSummaryRoutes } from "../modules/chatSummary/chatSummary.route.js";
 import { VapiRoutes } from "../modules/systemOwner/vapi/vapi.route.js";
+import { WorkflowRoutes } from "../modules/businessOwner/workflow/workflow.route.js";
 
 export const router = Router();
 const moduleRoutes = [
@@ -75,6 +76,10 @@ const moduleRoutes = [
   {
     path: "/business-owner/order-bookings",
     route: OrderBookingRoutes,
+  },
+  {
+    path: "/business-owner/workflows",
+    route: WorkflowRoutes,
   },
   {
     path: "/business-owner/pricings",
