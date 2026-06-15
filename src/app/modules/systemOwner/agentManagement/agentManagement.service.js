@@ -11,7 +11,7 @@ import path from "path";
 /**
  * Helper to call the external voice agent creation API
  */
-const callExternalCreateAgent = async (businessId, file) => {
+const callExternalCreateAgent = async (agentName, file) => {
     const apiBaseUrl = envVars.VOICE_AGENT_API;
     if (!apiBaseUrl) {
         throw new DevBuildError("VOICE_AGENT_API is not defined in environment variables", StatusCodes.INTERNAL_SERVER_ERROR);
@@ -22,7 +22,7 @@ const callExternalCreateAgent = async (businessId, file) => {
         const blob = new Blob([fileBuffer], { type: file.mimetype });
 
         const formData = new FormData();
-        formData.append("business_id", businessId);
+        formData.append("business_id", agentName);
         formData.append("rules_file", blob, file.originalname);
 
         console.log(`[Voice Agent API] Calling create endpoint at: ${apiBaseUrl}/api/agents/create`);
@@ -85,7 +85,7 @@ const mergeRulesFiles = async (files) => {
     };
 };
 
-const createAgentService = async (businessId, files) => {
+const createAgentService = async (businessId, agentName, files) => {
     if (!files || files.length === 0) {
         throw new DevBuildError("rules_file is required for agent creation", StatusCodes.BAD_REQUEST);
     }
@@ -98,8 +98,8 @@ const createAgentService = async (businessId, files) => {
     }
 
     // Call external Voice Agent API
-    const externalResponse = await callExternalCreateAgent(businessId, fileToUse);
-    const vapiId = externalResponse?.id || externalResponse?.vapiId || externalResponse?.assistantId || null;
+    const externalResponse = await callExternalCreateAgent(agentName, fileToUse);
+    const vapiId = externalResponse?.assistant_id || externalResponse?.id || externalResponse?.vapiId || externalResponse?.assistantId || null;
 
     const relativePath = `/uploads/agents/${fileToUse.filename}`;
 
@@ -108,7 +108,7 @@ const createAgentService = async (businessId, files) => {
             businessId,
             rulesFile: relativePath,
             vapiId,
-            metadata: externalResponse || {},
+            metadata: externalResponse ? { ...externalResponse, agentName } : { agentName },
         },
     });
 
@@ -168,6 +168,13 @@ const updateAgentService = async (id, payload, files) => {
         updateData.businessId = payload.businessId;
     }
 
+    const existingMetadata = existingAgent.metadata || {};
+    let updatedMetadata = { ...existingMetadata };
+    if (payload.agentName) {
+        updatedMetadata.agentName = payload.agentName;
+        updateData.metadata = updatedMetadata;
+    }
+
     if (files && files.length > 0) {
         let fileToUse;
         if (files.length === 1) {
@@ -176,12 +183,16 @@ const updateAgentService = async (id, payload, files) => {
             fileToUse = await mergeRulesFiles(files);
         }
 
-        const businessIdForApi = payload.businessId || existingAgent.businessId;
-        const externalResponse = await callExternalCreateAgent(businessIdForApi, fileToUse);
+        const agentNameForApi = payload.agentName || existingMetadata.agentName || "";
+        const externalResponse = await callExternalCreateAgent(agentNameForApi, fileToUse);
 
         updateData.rulesFile = `/uploads/agents/${fileToUse.filename}`;
-        updateData.vapiId = externalResponse?.id || externalResponse?.vapiId || externalResponse?.assistantId || null;
-        updateData.metadata = externalResponse || {};
+        updateData.vapiId = externalResponse?.assistant_id || externalResponse?.id || externalResponse?.vapiId || externalResponse?.assistantId || null;
+        updateData.metadata = {
+            ...updatedMetadata,
+            ...(externalResponse || {}),
+            agentName: agentNameForApi
+        };
 
         // Optionally delete old local file to save storage
         if (existingAgent.rulesFile) {
