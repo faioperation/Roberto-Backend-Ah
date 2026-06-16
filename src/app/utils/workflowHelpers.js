@@ -64,11 +64,31 @@ export const resolveWorkflowStage = async (businessId, type, stageId, statusName
  * and resolves `stageId` dynamically.
  */
 export const extractBookingPayload = async (businessId, payload) => {
+  // Normalize snake_case keys to camelCase standard keys
+  const normalizedPayload = { ...payload };
+  const keyMap = {
+    branch_id: "branchId",
+    created_by_id: "createdById",
+    created_by: "createdById",
+    customer_name: "customerName",
+    customer_number: "customerNumber",
+    payment_status: "paymentStatus",
+    payment_method: "paymentMethod",
+    order_note: "orderNote",
+    stage_id: "stageId",
+    order_status: "orderStatus",
+  };
+
+  for (const [snakeKey, camelKey] of Object.entries(keyMap)) {
+    if (normalizedPayload[snakeKey] !== undefined && normalizedPayload[camelKey] === undefined) {
+      normalizedPayload[camelKey] = normalizedPayload[snakeKey];
+    }
+  }
+
   const standardKeys = [
     "businessId",
     "branchId",
     "createdById",
-    "assignedUserId",
     "customerName",
     "customerNumber",
     "email",
@@ -81,25 +101,25 @@ export const extractBookingPayload = async (businessId, payload) => {
   ];
 
   const extracted = {};
-  const metadata = payload.metadata && typeof payload.metadata === "object" ? { ...payload.metadata } : {};
+  const metadata = normalizedPayload.metadata && typeof normalizedPayload.metadata === "object" ? { ...normalizedPayload.metadata } : {};
 
   // Extract standard keys
   for (const key of standardKeys) {
-    if (key !== "stageId" && key !== "metadata" && payload[key] !== undefined) {
-      extracted[key] = payload[key];
+    if (key !== "stageId" && key !== "metadata" && normalizedPayload[key] !== undefined) {
+      extracted[key] = normalizedPayload[key];
     }
   }
 
-  // Put non-standard fields in metadata (excluding orderStatus/status which are used for workflow resolution)
-  for (const [key, value] of Object.entries(payload)) {
-    if (!standardKeys.includes(key) && key !== "orderStatus" && key !== "status") {
+  // Put non-standard fields in metadata (excluding orderStatus/status which are used for workflow resolution and snake_case keys)
+  for (const [key, value] of Object.entries(normalizedPayload)) {
+    if (!standardKeys.includes(key) && key !== "orderStatus" && key !== "status" && !keyMap[key]) {
       metadata[key] = value;
     }
   }
 
   // Resolve stageId
-  const statusName = payload.orderStatus || payload.status;
-  extracted.stageId = await resolveWorkflowStage(businessId, "BOOKING", payload.stageId, statusName);
+  const statusName = normalizedPayload.orderStatus || normalizedPayload.status;
+  extracted.stageId = await resolveWorkflowStage(businessId, "BOOKING", normalizedPayload.stageId, statusName);
 
   // Set price as string since Prisma expects String for price
   if (extracted.price !== undefined) {
@@ -117,6 +137,21 @@ export const extractBookingPayload = async (businessId, payload) => {
  * and resolves `stageId` dynamically.
  */
 export const extractLeadPayload = async (businessId, payload) => {
+  // Normalize snake_case keys to camelCase standard keys
+  const normalizedPayload = { ...payload };
+  const keyMap = {
+    branch_id: "branchId",
+    created_by_id: "createdById",
+    created_by: "createdById",
+    stage_id: "stageId",
+  };
+
+  for (const [snakeKey, camelKey] of Object.entries(keyMap)) {
+    if (normalizedPayload[snakeKey] !== undefined && normalizedPayload[camelKey] === undefined) {
+      normalizedPayload[camelKey] = normalizedPayload[snakeKey];
+    }
+  }
+
   const standardKeys = [
     "businessId",
     "createdById",
@@ -132,27 +167,57 @@ export const extractLeadPayload = async (businessId, payload) => {
   ];
 
   const extracted = {};
-  const metadata = payload.metadata && typeof payload.metadata === "object" ? { ...payload.metadata } : {};
+  const metadata = normalizedPayload.metadata && typeof normalizedPayload.metadata === "object" ? { ...normalizedPayload.metadata } : {};
 
   // Extract standard keys
   for (const key of standardKeys) {
-    if (key !== "stageId" && key !== "metadata" && payload[key] !== undefined) {
-      extracted[key] = payload[key];
+    if (key !== "stageId" && key !== "metadata" && normalizedPayload[key] !== undefined) {
+      extracted[key] = normalizedPayload[key];
     }
   }
 
-  // Put non-standard fields in metadata (excluding status which is used for workflow resolution)
-  for (const [key, value] of Object.entries(payload)) {
-    if (!standardKeys.includes(key) && key !== "status") {
+  // Put non-standard fields in metadata (excluding status which is used for workflow resolution and snake_case keys)
+  for (const [key, value] of Object.entries(normalizedPayload)) {
+    if (!standardKeys.includes(key) && key !== "status" && !keyMap[key]) {
       metadata[key] = value;
     }
   }
 
   // Resolve stageId
-  extracted.stageId = await resolveWorkflowStage(businessId, "CRM", payload.stageId, payload.status);
+  extracted.stageId = await resolveWorkflowStage(businessId, "CRM", normalizedPayload.stageId, normalizedPayload.status);
 
   extracted.metadata = metadata;
   extracted.businessId = businessId;
 
   return extracted;
+};
+
+/**
+ * Resolves the businessId and branchId associated with the logged-in user.
+ */
+export const getBusinessAndBranchForUser = async (user) => {
+  if (!user) return { businessId: null, branchId: null, isOwner: false };
+  const userRoleNames = user.roles?.map(r => r.role?.name || r.role) || [];
+  const isBusinessOwner = userRoleNames.includes("BUSINESS_OWNER");
+  const isBranchManager = userRoleNames.includes("BRANCH_MANAGER");
+
+  if (isBusinessOwner) {
+    const business = await prisma.business.findFirst({ where: { ownerId: user.id } });
+    return { businessId: business?.id || null, branchId: null, isOwner: true };
+  } else if (isBranchManager) {
+    const managerRecord = await prisma.branchManager.findUnique({
+      where: { email: user.email }
+    });
+    if (managerRecord) {
+      const branch = await prisma.branch.findFirst({
+        where: { managerId: managerRecord.id }
+      });
+      return { 
+        businessId: managerRecord.businessId, 
+        branchId: branch?.id || null, 
+        isOwner: false 
+      };
+    }
+  }
+  return { businessId: null, branchId: null, isOwner: false };
 };

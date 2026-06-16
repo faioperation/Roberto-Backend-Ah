@@ -8,28 +8,58 @@ export const getPricingsByBusinessId = async (req, res, next) => {
     const { businessId } = req.params;
 
     if (!businessId) {
-      throw new AppError(StatusCodes.BAD_REQUEST, "businessId is required.");
+      throw new AppError(StatusCodes.BAD_REQUEST, "businessId or branchId is required.");
     }
 
-    // Verify if business exists
+    // First try to find as businessId
     const businessExists = await prisma.business.findUnique({
       where: { id: businessId }
     });
 
-    if (!businessExists) {
-      throw new AppError(StatusCodes.NOT_FOUND, `Business with ID ${businessId} not found.`);
+    if (businessExists) {
+      // Found as business - fetch pricings by businessId
+      const { branchId } = req.query;
+      const whereClause = { businessId, status: true };
+      if (branchId) {
+        whereClause.branchId = branchId;
+      }
+
+      const pricings = await prisma.pricing.findMany({
+        where: whereClause
+      });
+
+      return sendResponse(res, {
+        success: true,
+        statusCode: StatusCodes.OK,
+        message: "Pricings retrieved successfully.",
+        data: pricings
+      });
     }
 
-    const pricings = await prisma.pricing.findMany({
-      where: { businessId, status: true }
+    // If not found as business, try as branchId
+    const branchExists = await prisma.branch.findUnique({
+      where: { id: businessId }
     });
 
-    sendResponse(res, {
-      success: true,
-      statusCode: StatusCodes.OK,
-      message: "Pricings retrieved successfully.",
-      data: pricings
-    });
+    if (branchExists) {
+      const pricings = await prisma.pricing.findMany({
+        where: {
+          branchId: businessId,
+          businessId: branchExists.businessId,
+          status: true
+        }
+      });
+
+      return sendResponse(res, {
+        success: true,
+        statusCode: StatusCodes.OK,
+        message: "Pricings retrieved successfully by branch.",
+        data: pricings
+      });
+    }
+
+    // Neither business nor branch found
+    throw new AppError(StatusCodes.NOT_FOUND, `No Business or Branch found with ID ${businessId}.`);
   } catch (error) {
     next(error);
   }

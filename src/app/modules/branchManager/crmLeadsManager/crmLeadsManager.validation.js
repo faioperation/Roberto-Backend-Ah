@@ -10,7 +10,7 @@ const createCrmLeadSchema = z.object({
         address: z.string().optional(),
         note: z.string().optional(),
         stageId: z.string().optional(),
-        metadata: z.record(z.any()).optional(),
+        metadata: z.record(z.string(), z.any()).optional(),
     }).passthrough(),
 });
 
@@ -24,7 +24,7 @@ const updateCrmLeadSchema = z.object({
         address: z.string().optional(),
         note: z.string().optional(),
         stageId: z.string().optional(),
-        metadata: z.record(z.any()).optional(),
+        metadata: z.record(z.string(), z.any()).optional(),
     }).passthrough(),
 });
 

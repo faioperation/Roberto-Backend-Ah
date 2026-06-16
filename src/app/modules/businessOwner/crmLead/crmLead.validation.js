@@ -11,7 +11,7 @@ const createCrmLeadSchema = z.object({
         note: z.string().optional(),
         branchId: z.string().uuid("Invalid branch ID format").optional(),
         stageId: z.string().optional(),
-        metadata: z.record(z.any()).optional(),
+        metadata: z.record(z.string(), z.any()).optional(),
     }).passthrough(),
 });
 
@@ -26,7 +26,7 @@ const updateCrmLeadSchema = z.object({
         note: z.string().optional(),
         branchId: z.string().uuid("Invalid branch ID format").optional(),
         stageId: z.string().optional(),
-        metadata: z.record(z.any()).optional(),
+        metadata: z.record(z.string(), z.any()).optional(),
     }).passthrough(),
 });
 

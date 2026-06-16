@@ -11,7 +11,6 @@ const createOrderBookingService = async (payload) => {
         data: cleanPayload,
         include: {
             stage: true,
-            assignedUser: true,
         }
     });
 
@@ -31,7 +30,6 @@ const getAllOrderBookingsService = async (query = {}) => {
     if (!queryParams.select) {
         queryParams.include = {
             stage: true,
-            assignedUser: true,
             createdBy: {
                 select: {
                     id: true,
@@ -65,7 +63,6 @@ const getOrderBookingByIdService = async (id, query = {}) => {
     } else {
         findArgs.include = {
             stage: true,
-            assignedUser: true,
             createdBy: {
                 select: {
                     id: true,
@@ -104,7 +101,6 @@ const updateOrderBookingService = async (id, payload) => {
             data: cleanPayload,
             include: {
                 stage: true,
-                assignedUser: true,
             }
         });
 
@@ -116,8 +112,8 @@ const updateOrderBookingService = async (id, payload) => {
                 action: cleanPayload.stageId && cleanPayload.stageId !== isExist.stageId ? "STATUS_CHANGE" : "UPDATE",
                 targetTable: "OrderBooking",
                 targetId: id,
-                oldValues: { stageId: isExist.stageId, metadata: isExist.metadata, assignedUserId: isExist.assignedUserId },
-                newValues: { stageId: updated.stageId, metadata: updated.metadata, assignedUserId: updated.assignedUserId }
+                oldValues: { stageId: isExist.stageId, metadata: isExist.metadata },
+                newValues: { stageId: updated.stageId, metadata: updated.metadata }
             }
         });
 

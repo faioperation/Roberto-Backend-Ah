@@ -13,10 +13,10 @@ const formatAgentResponse = (agent) => {
 
 const createAgent = async (req, res, next) => {
     try {
-        const { businessId, agentName } = req.body;
+        const { businessId, agentName, branchId } = req.body;
         const files = req.files; // Array of files from multer
 
-        const result = await AgentService.createAgentService(businessId, agentName, files);
+        const result = await AgentService.createAgentService(businessId, agentName, files, branchId);
 
         sendResponse(res, {
             success: true,

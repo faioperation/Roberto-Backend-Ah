@@ -17,12 +17,38 @@ export const notifyAiAgent = async ({
     }
 
     // Fetch business to get type (subject)
-    const business = await prisma.business.findUnique({
+    const business = await prisma.business.findUnique({ 
+
+      
       where: { id: businessId }
     });
 
+    // Fetch branchId depending on channel
+    let branchId = null;
+    try {
+      if (channel === "whatsapp") {
+        const waConv = await prisma.whatsappConversation.findUnique({
+          where: { id: conversationId },
+          include: { whatsappAccount: true }
+        });
+        if (waConv?.whatsappAccount) {
+          branchId = waConv.whatsappAccount.branchId || null;
+        }
+      } else if (channel === "instagram" || channel === "messenger") {
+        const conv = await prisma.conversation.findUnique({
+          where: { id: conversationId }
+        });
+        if (conv) {
+          branchId = conv.branchId;
+        }
+      }
+    } catch (e) {
+      console.error("[AI Agent] Error resolving branchId for conversation:", e);
+    }
+
     const payload = {
       business_id: businessId,
+      branchId: branchId || null,
       subject: business?.industry || "others",
       recipient_id: recipientId,
       conversation_id: conversationId,

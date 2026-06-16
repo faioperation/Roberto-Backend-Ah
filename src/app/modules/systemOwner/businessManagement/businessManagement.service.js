@@ -82,7 +82,7 @@ const createBusinessService = async (payload) => {
                 email: payload.ownerEmail,
                 phone: payload.ownerPhone,
                 industry: mapBusinessType(payload.industry || payload.businessType),
-                status: isSystemOwner ? "ACTIVE" : "INACTIVE",
+                status: "ACTIVE",
                 description: payload.description || null,
                 planId: payload.planId || null,
                 planCycle: payload.planCycle || "MONTHLY",
@@ -242,9 +242,20 @@ const deleteBusinessService = async (id) => {
         throw new DevBuildError("Business not found", StatusCodes.NOT_FOUND);
     }
 
-    const result = await prisma.business.delete({
-        where: { id },
+    const result = await prisma.$transaction(async (transactionClient) => {
+        const deletedBusiness = await transactionClient.business.delete({
+            where: { id },
+        });
+
+        if (isExist.ownerId) {
+            await transactionClient.user.delete({
+                where: { id: isExist.ownerId },
+            });
+        }
+
+        return deletedBusiness;
     });
+
     return formatBusinessResponse(result);
 };
 

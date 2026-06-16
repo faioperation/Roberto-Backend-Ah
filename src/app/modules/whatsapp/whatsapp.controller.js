@@ -2,6 +2,7 @@ import { envVars } from "../../config/env.js";
 import { WhatsappService } from "./whatsapp.service.js";
 import { handleWebhookEvent } from "./whatsapp.webhook.js";
 import prisma from "../../prisma/client.js";
+import { getBusinessAndBranchForUser } from "../../utils/workflowHelpers.js";
 
 export const WhatsappController = {
   verifyWebhook: (req, res) => {
@@ -29,11 +30,9 @@ export const WhatsappController = {
 
   connectAccount: async (req, res) => {
     try {
-      const business = await prisma.business.findFirst({ where: { ownerId: req.user.id } });
-      if (!business) return res.status(404).json({ success: false, message: "Business not found for this user" });
+      const { businessId } = await getBusinessAndBranchForUser(req.user);
+      if (!businessId) return res.status(404).json({ success: false, message: "Business not found for this user" });
       
-      const businessId = business.id;
-
       const account = await WhatsappService.connectAccount(businessId, req.body);
       res.json({ success: true, data: account });
     } catch (error) {
@@ -43,11 +42,18 @@ export const WhatsappController = {
 
   checkConnectionStatus: async (req, res) => {
     try {
-      const business = await prisma.business.findFirst({ where: { ownerId: req.user.id } });
-      if (!business) return res.status(404).json({ success: false, message: "Business not found for this user" });
+      const { businessId, branchId: userBranchId, isOwner } = await getBusinessAndBranchForUser(req.user);
+      if (!businessId) return res.status(404).json({ success: false, message: "Business not found for this user" });
       
+      const branchId = isOwner ? (req.query.branchId || null) : userBranchId;
+
+      const whereClause = { businessId, status: "ACTIVE" };
+      if (branchId) {
+        whereClause.branchId = branchId;
+      }
+
       const account = await prisma.whatsappAccount.findFirst({
-        where: { businessId: business.id, status: "ACTIVE" },
+        where: whereClause,
       });
 
       if (account) {
@@ -63,11 +69,11 @@ export const WhatsappController = {
 
   getConversations: async (req, res) => {
     try {
-      const business = await prisma.business.findFirst({ where: { ownerId: req.user.id } });
-      if (!business) return res.status(404).json({ success: false, message: "Business not found for this user" });
+      const { businessId, branchId: userBranchId, isOwner } = await getBusinessAndBranchForUser(req.user);
+      if (!businessId) return res.status(404).json({ success: false, message: "Business not found for this user" });
       
-      const businessId = business.id;
-      const data = await WhatsappService.getConversations(businessId);
+      const branchId = isOwner ? (req.query.branchId || null) : userBranchId;
+      const data = await WhatsappService.getConversations(businessId, branchId);
       res.json({ success: true, data });
     } catch (error) {
       res.status(500).json({ success: false, message: error.message });
@@ -76,10 +82,9 @@ export const WhatsappController = {
 
   getMessages: async (req, res) => {
     try {
-      const business = await prisma.business.findFirst({ where: { ownerId: req.user.id } });
-      if (!business) return res.status(404).json({ success: false, message: "Business not found for this user" });
+      const { businessId } = await getBusinessAndBranchForUser(req.user);
+      if (!businessId) return res.status(404).json({ success: false, message: "Business not found for this user" });
       
-      const businessId = business.id;
       const { id: conversationId } = req.params;
       const data = await WhatsappService.getMessages(businessId, conversationId);
       res.json({ success: true, data });
@@ -90,10 +95,9 @@ export const WhatsappController = {
 
   sendTextMessage: async (req, res) => {
     try {
-      const business = await prisma.business.findFirst({ where: { ownerId: req.user.id } });
-      if (!business) return res.status(404).json({ success: false, message: "Business not found for this user" });
+      const { businessId } = await getBusinessAndBranchForUser(req.user);
+      if (!businessId) return res.status(404).json({ success: false, message: "Business not found for this user" });
       
-      const businessId = business.id;
       const { conversationId, message } = req.body;
       const data = await WhatsappService.sendTextMessage(businessId, conversationId, message);
       res.json({ success: true, data });
@@ -104,10 +108,9 @@ export const WhatsappController = {
 
   sendMediaMessage: async (req, res) => {
     try {
-      const business = await prisma.business.findFirst({ where: { ownerId: req.user.id } });
-      if (!business) return res.status(404).json({ success: false, message: "Business not found for this user" });
+      const { businessId } = await getBusinessAndBranchForUser(req.user);
+      if (!businessId) return res.status(404).json({ success: false, message: "Business not found for this user" });
       
-      const businessId = business.id;
       const { conversationId, type } = req.body;
       
       let finalUrl = req.body.url;

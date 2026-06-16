@@ -7,6 +7,7 @@ export const WhatsappValidation = {
       phoneNumberId: z.string({ required_error: "Phone Number ID is required" }),
       phoneNumber: z.string({ required_error: "Phone Number is required" }),
       accessToken: z.string({ required_error: "Access Token is required" }),
+      branchId: z.string().uuid("Invalid branch ID format").optional().or(z.literal('')),
     }),
   }),
   sendMessage: z.object({

@@ -24,6 +24,15 @@ const createPricing = async (req, res, next) => {
         req.body.businessId = business.id;
         req.body.createdById = userId;
 
+        if (req.body.branchId) {
+            const branchExists = await prisma.branch.findFirst({
+                where: { id: req.body.branchId, businessId: business.id }
+            });
+            if (!branchExists) {
+                throw new DevBuildError(`Branch with ID ${req.body.branchId} not found in this business`, StatusCodes.BAD_REQUEST);
+            }
+        }
+
         if (req.body.configuration && typeof req.body.configuration === "string") {
             try {
                 req.body.configuration = JSON.parse(req.body.configuration);
@@ -78,6 +87,21 @@ const getPricingById = async (req, res, next) => {
 
 const updatePricing = async (req, res, next) => {
     try {
+        if (req.body.branchId) {
+            const business = await prisma.business.findFirst({
+                where: { ownerId: req.user?.id }
+            });
+            if (!business) {
+                throw new DevBuildError("No business found for the logged-in user", StatusCodes.BAD_REQUEST);
+            }
+            const branchExists = await prisma.branch.findFirst({
+                where: { id: req.body.branchId, businessId: business.id }
+            });
+            if (!branchExists) {
+                throw new DevBuildError(`Branch with ID ${req.body.branchId} not found in this business`, StatusCodes.BAD_REQUEST);
+            }
+        }
+
         if (req.body.configuration && typeof req.body.configuration === "string") {
             try {
                 req.body.configuration = JSON.parse(req.body.configuration);

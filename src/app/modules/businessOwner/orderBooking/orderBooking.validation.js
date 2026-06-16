@@ -11,8 +11,7 @@ const createOrderBookingSchema = z.object({
         paymentMethod: z.enum(["CASH_ON_DELIVERY", "ONLINE_PAYMENT", "BANK_TRANSFER"]).optional(),
         orderNote: z.string().optional(),
         branchId: z.string().uuid("Invalid branch ID").optional(),
-        assignedUserId: z.string().uuid("Invalid assigned user ID").optional(),
-        metadata: z.record(z.any()).optional(), // Dynamic JSON data
+        metadata: z.record(z.string(), z.any()).optional(), // Dynamic JSON data
     }).passthrough(),
 });
 
@@ -27,8 +26,7 @@ const updateOrderBookingSchema = z.object({
         paymentMethod: z.enum(["CASH_ON_DELIVERY", "ONLINE_PAYMENT", "BANK_TRANSFER"]).optional(),
         orderNote: z.string().optional(),
         branchId: z.string().uuid("Invalid branch ID").optional(),
-        assignedUserId: z.string().uuid("Invalid assigned user ID").optional(),
-        metadata: z.record(z.any()).optional(),
+        metadata: z.record(z.string(), z.any()).optional(),
     }).passthrough(),
 });
 

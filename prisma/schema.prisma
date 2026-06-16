@@ -58,7 +58,6 @@ model User {
   createdOrderBookings  OrderBooking[]     @relation("OrderBookingCreator")
   createdPricings       Pricing[]          @relation("PricingCreator")
   createdCrmLeads       CrmLead[]          @relation("CrmLeadCreator")
-  assignedBookings      OrderBooking[]     @relation("OrderBookingAssignedUser")
   auditLogs             AuditLog[]         @relation("UserAuditLogs")
 
   @@map("users")
@@ -353,6 +352,7 @@ model Branch {
   pricings          Pricing[]          @relation("BranchPricings")
   socialConnections SocialConnection[] @relation("BranchSocialConnections")
   conversations     Conversation[]     @relation("BranchConversations")
+  whatsappAccounts  WhatsappAccount[]  @relation("BranchWhatsappAccounts")
 
   @@map("branches")
 }
@@ -430,7 +430,6 @@ model OrderBooking {
   businessId     String         @map("business_id")
   branchId       String?        @map("branch_id")
   createdById    String?        @map("created_by")
-  assignedUserId String?        @map("assigned_user_id") // Assigned staff/user
 
   customerName   String         @map("customer_name")
   customerNumber String         @map("customer_number")
@@ -453,7 +452,6 @@ model OrderBooking {
   business       Business       @relation("BusinessOrderBookings", fields: [businessId], references: [id], onDelete: Cascade)
   branch         Branch?        @relation("BranchOrderBookings", fields: [branchId], references: [id], onDelete: SetNull)
   createdBy      User?          @relation("OrderBookingCreator", fields: [createdById], references: [id], onDelete: SetNull)
-  assignedUser   User?          @relation("OrderBookingAssignedUser", fields: [assignedUserId], references: [id], onDelete: SetNull)
   stage          WorkflowStage  @relation("StageBookings", fields: [stageId], references: [id])
 
   @@map("order_bookings")
@@ -609,6 +607,7 @@ enum WhatsappAccountStatus {
 model WhatsappAccount {
   id            String                @id @default(uuid())
   businessId    String                @map("business_id")
+  branchId      String?               @map("branch_id")
   wabaId        String                @map("waba_id")
   phoneNumberId String                @map("phone_number_id")
   phoneNumber   String                @map("phone_number")
@@ -620,6 +619,7 @@ model WhatsappAccount {
   updatedAt     DateTime              @updatedAt @map("updated_at")
 
   business      Business               @relation("BusinessWhatsappAccounts", fields: [businessId], references: [id], onDelete: Cascade)
+  branch        Branch?                @relation("BranchWhatsappAccounts", fields: [branchId], references: [id], onDelete: SetNull)
   contacts      WhatsappContact[]      @relation("AccountWhatsappContacts")
   conversations WhatsappConversation[] @relation("AccountWhatsappConversations")
   messages      WhatsappMessage[]      @relation("AccountWhatsappMessages")
@@ -725,6 +725,7 @@ model AgentTraining {
 model Agent {
   id         String    @id @default(uuid())
   businessId String    @map("business_id")
+  branchId   String?   @map("branch_id")
   rulesFile  String    @map("rules_file")
   vapiId     String?   @map("vapi_id")
   metadata   Json?
