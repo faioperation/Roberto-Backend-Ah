@@ -6,6 +6,7 @@ import { extractBookingPayload } from "../../../utils/workflowHelpers.js";
 
 export const createBooking = async (req, res, next) => {
   try {
+    console.log("📥 [Public API - Create Booking] Incoming Request Data:", JSON.stringify(req.body, null, 2));
     const { businessId } = req.body;
 
     if (!businessId) {

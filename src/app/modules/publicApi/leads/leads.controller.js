@@ -6,6 +6,7 @@ import { extractLeadPayload } from "../../../utils/workflowHelpers.js";
 
 export const createLead = async (req, res, next) => {
   try {
+    console.log("📥 [Public API - Create Lead] Incoming Request Data:", JSON.stringify(req.body, null, 2));
     const { businessId, name } = req.body;
 
     if (!businessId) {
