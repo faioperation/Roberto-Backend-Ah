@@ -17,9 +17,9 @@ export const notifyAiAgent = async ({
     }
 
     // Fetch business to get type (subject)
-    const business = await prisma.business.findUnique({ 
+    const business = await prisma.business.findUnique({
 
-      
+
       where: { id: businessId }
     });
 
@@ -49,11 +49,12 @@ export const notifyAiAgent = async ({
     const payload = {
       business_id: businessId,
       branchId: branchId || null,
-      subject: business?.industry || "others",
+      subject: business?.businessType || "ORDER_BOOKING",
       recipient_id: recipientId,
       conversation_id: conversationId,
       channel,
-      message: message || ""
+      message: message || "",
+      training_data_id : "0ca80bd3-8519-4298-8a02-8f4ac0993e59"
     };
 
     console.log(`[AI Agent] Triggering notifyAiAgent for channel ${channel}...`);

@@ -41,11 +41,20 @@ const getAllCrmLeadsService = async (query = {}) => {
         };
     }
 
-    const result = await prisma.crmLead.findMany(queryParams);
-    const total = await prisma.crmLead.count({ where: queryBuilder.where });
+    const [result, total, totalBooked] = await Promise.all([
+        prisma.crmLead.findMany(queryParams),
+        prisma.crmLead.count({ where: queryParams.where }),
+        prisma.crmLead.count({ where: { ...queryParams.where, status: "BOOKED" } }),
+    ]);
+
+    const meta = queryBuilder.getMeta(total);
 
     return {
-        meta: queryBuilder.getMeta(total),
+        meta: {
+            ...meta,
+            totalCount: total,
+            totalBooked,
+        },
         data: result,
     };
 };

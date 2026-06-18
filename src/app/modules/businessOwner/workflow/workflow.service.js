@@ -29,6 +29,19 @@ const getWorkflowsService = async (businessId) => {
     return result;
 };
 
+const getWorkflowByIdService = async (id) => {
+    const result = await prisma.workflow.findUnique({
+        where: { id },
+        include: {
+            stages: { orderBy: { order: "asc" } }
+        }
+    });
+    if (!result) {
+        throw new DevBuildError("Workflow not found", StatusCodes.NOT_FOUND);
+    }
+    return result;
+};
+
 const createStageService = async (workflowId, payload) => {
     const { name, order, color } = payload;
 
@@ -66,6 +79,7 @@ const reorderStagesService = async (stagesList) => {
 export const WorkflowService = {
     createWorkflowService,
     getWorkflowsService,
+    getWorkflowByIdService,
     createStageService,
     reorderStagesService,
 };

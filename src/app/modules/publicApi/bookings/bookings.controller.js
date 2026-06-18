@@ -2,65 +2,79 @@ import prisma from "../../../prisma/client.js";
 import { StatusCodes } from "http-status-codes";
 import { sendResponse } from "../../../utils/sendResponse.js";
 import { AppError } from "../../../errorHelper/appError.js";
-import { extractBookingPayload } from "../../../utils/workflowHelpers.js";
+import {
+    getBookingModel,
+    buildDetailsPayload,
+    saveAdditionalDetails,
+    attachDetails,
+} from "../../../utils/bookingHelpers.js";
 
 export const createBooking = async (req, res, next) => {
   try {
-    console.log("📥 [Public API - Create Booking] Incoming Request Data:", JSON.stringify(req.body, null, 2));
-    const { businessId } = req.body;
+    console.log("📥 [Public API - Create Booking] Payload:", JSON.stringify(req.body, null, 2));
+    const { businessId, customerName, customerNumber, price } = req.body;
 
-    if (!businessId) {
-      throw new AppError(StatusCodes.BAD_REQUEST, "businessId is required.");
+    if (!businessId) throw new AppError(StatusCodes.BAD_REQUEST, "businessId is required.");
+    if (!customerName) throw new AppError(StatusCodes.BAD_REQUEST, "customerName is required.");
+    if (!customerNumber) throw new AppError(StatusCodes.BAD_REQUEST, "customerNumber is required.");
+
+    const business = await prisma.business.findUnique({ where: { id: businessId } });
+    if (!business) throw new AppError(StatusCodes.NOT_FOUND, `Business ${businessId} not found.`);
+
+    if (req.body.branchId) {
+      const branchExists = await prisma.branch.findFirst({ where: { id: req.body.branchId, businessId } });
+      if (!branchExists) throw new AppError(StatusCodes.NOT_FOUND, "Branch not found in this business.");
     }
 
-    // Verify if business exists
-    const businessExists = await prisma.business.findUnique({
-      where: { id: businessId }
-    });
+    const businessType = business.businessType || "ORDER_BOOKING";
+    const { model, detailsModel, detailsRelation } = getBookingModel(businessType);
 
-    if (!businessExists) {
-      throw new AppError(StatusCodes.NOT_FOUND, `Business with ID ${businessId} not found.`);
-    }
-
-    const cleanPayload = await extractBookingPayload(businessId, req.body);
-
-    // Validate required fields
-    const requiredFields = {
-      customerName: cleanPayload.customerName,
-      customerNumber: cleanPayload.customerNumber,
-      price: cleanPayload.price,
-      stageId: cleanPayload.stageId,
-    };
-
-    for (const [key, value] of Object.entries(requiredFields)) {
-      if (!value) {
-        throw new AppError(StatusCodes.BAD_REQUEST, `${key} is required.`);
-      }
-    }
-
-    if (cleanPayload.branchId) {
-      const branchExists = await prisma.branch.findFirst({
-        where: { id: cleanPayload.branchId, businessId }
+    const result = await prisma.$transaction(async (tx) => {
+      const booking = await model.create({
+        data: {
+          businessId,
+          branchId: req.body.branchId || null,
+          customerName,
+          customerNumber,
+          email: req.body.email || null,
+          price: price ? String(price) : "0",
+          note: req.body.note || req.body.orderNote || null,
+          status: req.body.status || "PENDING",
+        }
       });
-      if (!branchExists) {
-        throw new AppError(StatusCodes.NOT_FOUND, `Branch with ID ${cleanPayload.branchId} not found in this business.`);
-      }
-    }
 
-    // Create the order booking using generic structure
-    const newBooking = await prisma.orderBooking.create({
-      data: cleanPayload,
-      include: {
-        stage: true
+      const detailsPayload = buildDetailsPayload(businessType, req.body, booking.id, businessId, req.body.branchId || null);
+      await detailsModel.create({ data: detailsPayload });
+
+      // Create payment detail if provided
+      const hasPaymentStatus = req.body.paymentStatus || req.body.paymentDetails?.paymentStatus;
+      const hasPaymentMethod = req.body.paymentMethod || req.body.paymentDetails?.paymentMethod;
+      const hasTransactionId = req.body.transactionId || req.body.paymentDetails?.transactionId;
+
+      if (hasPaymentStatus || hasPaymentMethod || hasTransactionId) {
+        await tx.paymentDetail.create({
+          data: {
+            referenceId: booking.id,
+            createdById: null,
+            paymentStatus: hasPaymentStatus || "PENDING",
+            paymentMethod: hasPaymentMethod || null,
+            transactionId: hasTransactionId || null,
+          }
+        });
       }
+
+      // Save additional details
+      await saveAdditionalDetails(tx, booking.businessId, booking.branchId, booking.id, req.body);
+
+      const createdBooking = await model.findUnique({
+        where: { id: booking.id },
+        include: { [detailsRelation]: true }
+      });
+
+      return await attachDetails(tx, createdBooking);
     });
 
-    sendResponse(res, {
-      success: true,
-      statusCode: StatusCodes.CREATED,
-      message: "Order booking created successfully.",
-      data: newBooking
-    });
+    sendResponse(res, { success: true, statusCode: StatusCodes.CREATED, message: "Booking created successfully.", data: result });
   } catch (error) {
     next(error);
   }

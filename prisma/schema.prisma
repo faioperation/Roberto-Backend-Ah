@@ -56,6 +56,8 @@ model User {
   createdBranchManagers BranchManager[]    @relation("BranchManagerCreator")
   createdBranches       Branch[]           @relation("BranchCreator")
   createdOrderBookings  OrderBooking[]     @relation("OrderBookingCreator")
+  createdAppointmentBookings AppointmentBooking[] @relation("AppointmentBookingCreator")
+  createdParcelDeliveries    ParcelDelivery[]     @relation("ParcelDeliveryCreator")
   createdPricings       Pricing[]          @relation("PricingCreator")
   createdCrmLeads       CrmLead[]          @relation("CrmLeadCreator")
   auditLogs             AuditLog[]         @relation("UserAuditLogs")
@@ -269,6 +271,8 @@ model SubscriptionInvoice {
   status          String                   @default("paid")
   billingCycle    SubscriptionBillingCycle @map("billing_cycle")
   stripeInvoiceId String?                  @unique @map("stripe_invoice_id")
+  invoicePath     String?                  @map("invoice_path")
+  invoiceUrl      String?                  @map("invoice_url")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -304,28 +308,30 @@ model Business {
   planCycle    BusinessPlanType @default(MONTHLY) @map("plan_cycle")
   createdById  String?          @map("created_by_id")
   credits      Int              @default(0)
+  businessType BusinessType?    @map("business_type")
   createdAt    DateTime         @default(now()) @map("created_at")
   updatedAt    DateTime         @updatedAt @map("updated_at")
   deletedAt    DateTime?        @map("deleted_at")
 
-  owner             User                   @relation("BusinessOwner", fields: [ownerId], references: [id], onDelete: Cascade)
-  createdBy         User?                  @relation("BusinessCreator", fields: [createdById], references: [id], onDelete: SetNull)
-  branches          Branch[]
-  branchManagers    BranchManager[]        @relation("BusinessBranchManagers")
-  orderBookings     OrderBooking[]         @relation("BusinessOrderBookings")
-  pricings          Pricing[]              @relation("BusinessPricings")
-  crmLeads          CrmLead[]              @relation("BusinessCrmLeads")
-  socialConnections SocialConnection[]     @relation("BusinessSocialConnections")
-  conversations     Conversation[]         @relation("BusinessConversations")
-  subscriptions     BusinessSubscription[] @relation("BusinessSubscriptions")
-  invoices          SubscriptionInvoice[]  @relation("BusinessInvoices")
+  owner               User                   @relation("BusinessOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  createdBy           User?                  @relation("BusinessCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  branches            Branch[]
+  branchManagers      BranchManager[]        @relation("BusinessBranchManagers")
+  orderBookings       OrderBooking[]         @relation("BusinessOrderBookings")
+  appointmentBookings AppointmentBooking[]   @relation("BusinessAppointmentBookings")
+  parcelDeliveries    ParcelDelivery[]       @relation("BusinessParcelDeliveries")
+  pricings            Pricing[]              @relation("BusinessPricings")
+  crmLeads            CrmLead[]              @relation("BusinessCrmLeads")
+  socialConnections   SocialConnection[]     @relation("BusinessSocialConnections")
+  conversations       Conversation[]         @relation("BusinessConversations")
+  subscriptions       BusinessSubscription[] @relation("BusinessSubscriptions")
+  invoices            SubscriptionInvoice[]  @relation("BusinessInvoices")
 
   whatsappAccounts      WhatsappAccount[]      @relation("BusinessWhatsappAccounts")
   whatsappContacts      WhatsappContact[]      @relation("BusinessWhatsappContacts")
   whatsappConversations WhatsappConversation[] @relation("BusinessWhatsappConversations")
   whatsappMessages      WhatsappMessage[]      @relation("BusinessWhatsappMessages")
   chatSummaries         ChatSummary[]
-  workflows             Workflow[]             @relation("BusinessWorkflows")
   auditLogs             AuditLog[]             @relation("BusinessAuditLogs")
 
   @@map("businesses")
@@ -348,6 +354,8 @@ model Branch {
   manager           BranchManager?     @relation(fields: [managerId], references: [id], onDelete: SetNull)
   createdBy         User?              @relation("BranchCreator", fields: [createdById], references: [id], onDelete: SetNull)
   orderBookings     OrderBooking[]     @relation("BranchOrderBookings")
+  appointmentBookings AppointmentBooking[]   @relation("BranchAppointmentBookings")
+  parcelDeliveries    ParcelDelivery[]       @relation("BranchParcelDeliveries")
   crmLeads          CrmLead[]          @relation("BranchCrmLeads")
   pricings          Pricing[]          @relation("BranchPricings")
   socialConnections SocialConnection[] @relation("BranchSocialConnections")
@@ -376,40 +384,23 @@ model BranchManager {
   @@map("branch_managers")
 }
 
-model Workflow {
-  id          String          @id @default(uuid())
-  businessId  String          @map("business_id")
-  name        String          // e.g. "Cargo Shipments", "Student Admissions", "Legal Client Intake"
-  type        WorkflowType    @default(BOOKING) // BOOKING or CRM
-  isActive    Boolean         @default(true) @map("is_active")
-  createdAt   DateTime        @default(now()) @map("created_at")
-  updatedAt   DateTime        @updatedAt @map("updated_at")
-
-  business    Business        @relation("BusinessWorkflows", fields: [businessId], references: [id], onDelete: Cascade)
-  stages      WorkflowStage[]
-
-  @@map("workflows")
+enum BusinessType {
+  ORDER_BOOKING
+  APPOINTMENT_BOOKING
+  PARCEL_DELIVERY
 }
 
-enum WorkflowType {
-  BOOKING
-  CRM
+enum FeatureName {
+  ORDER_BOOKING
+  APPOINTMENT_BOOKING
+  PARCEL_DELIVERY
 }
 
-model WorkflowStage {
-  id          String          @id @default(uuid())
-  workflowId  String          @map("workflow_id")
-  name        String          // e.g. "Quote", "Transit", "Delivered", "Counselling"
-  order       Int             // Determines sequence (1, 2, 3...)
-  color       String?         // UI display color
-  createdAt   DateTime        @default(now()) @map("created_at")
-  updatedAt   DateTime        @updatedAt @map("updated_at")
-
-  workflow      Workflow       @relation(fields: [workflowId], references: [id], onDelete: Cascade)
-  orderBookings OrderBooking[] @relation("StageBookings")
-  crmLeads      CrmLead[]      @relation("StageLeads")
-
-  @@map("workflow_stages")
+enum LeadStatus {
+  COLD
+  WARM
+  BOOKED
+  HOT
 }
 
 enum PaymentStatus {
@@ -419,42 +410,187 @@ enum PaymentStatus {
   REFUNDED
 }
 
-enum PaymentMethod {
-  CASH_ON_DELIVERY
-  ONLINE_PAYMENT
-  BANK_TRANSFER
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
 }
 
+// ------------------------------------
+// Order Booking & Details
+// ------------------------------------
 model OrderBooking {
+  id             String        @id @default(uuid())
+  businessId     String        @map("business_id")
+  branchId       String?       @map("branch_id")
+  createdById    String?       @map("created_by")
+  customerName   String        @map("customer_name")
+  customerNumber String        @map("customer_number")
+  email          String?
+  price          String
+  note           String?       @db.Text
+  status         BookingStatus @default(PENDING)
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+  deletedAt      DateTime?     @map("deleted_at")
+
+  business       Business      @relation("BusinessOrderBookings", fields: [businessId], references: [id], onDelete: Cascade)
+  branch         Branch?       @relation("BranchOrderBookings", fields: [branchId], references: [id], onDelete: SetNull)
+  createdBy      User?         @relation("OrderBookingCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  orderDetails   OrderDetails?
+
+  @@map("order_bookings")
+}
+
+model OrderDetails {
+  id              String       @id @default(uuid())
+  businessId      String       @map("business_id")
+  branchId        String?      @map("branch_id")
+  orderId         String       @unique @map("order_id")
+  deliveryDate    String?      @map("delivery_date")
+  deliveryAddress String?      @map("delivery_address")
+  productType     String?      @map("product_type")
+  createdAt       DateTime     @default(now()) @map("created_at")
+  updatedAt       DateTime     @updatedAt @map("updated_at")
+  deletedAt       DateTime?    @map("deleted_at")
+
+  order           OrderBooking @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("order_details")
+}
+
+// ------------------------------------
+// Appointment Booking & Details
+// ------------------------------------
+model AppointmentBooking {
+  id                 String              @id @default(uuid())
+  businessId         String              @map("business_id")
+  branchId           String?             @map("branch_id")
+  createdById        String?             @map("created_by")
+  customerName       String              @map("customer_name")
+  customerNumber     String              @map("customer_number")
+  email              String?
+  price              String
+  note               String?             @db.Text
+  status             BookingStatus       @default(PENDING)
+  createdAt          DateTime            @default(now()) @map("created_at")
+  updatedAt          DateTime            @updatedAt @map("updated_at")
+  deletedAt          DateTime?           @map("deleted_at")
+
+  business           Business            @relation("BusinessAppointmentBookings", fields: [businessId], references: [id], onDelete: Cascade)
+  branch             Branch?             @relation("BranchAppointmentBookings", fields: [branchId], references: [id], onDelete: SetNull)
+  createdBy          User?               @relation("AppointmentBookingCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  appointmentDetails AppointmentDetails?
+
+  @@map("appointment_bookings")
+}
+
+model AppointmentDetails {
+  id              String             @id @default(uuid())
+  businessId      String             @map("business_id")
+  branchId        String?            @map("branch_id")
+  appointmentId   String             @unique @map("appointment_id")
+  appointmentDate String?            @map("appointment_date")
+  appointmentTime DateTime?          @map("appointment_time")
+  platform        String?
+  duration        String?
+  createdAt       DateTime           @default(now()) @map("created_at")
+  updatedAt       DateTime           @updatedAt @map("updated_at")
+  deletedAt       DateTime?          @map("deleted_at")
+
+  appointment     AppointmentBooking @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+
+  @@map("appointment_details")
+}
+
+// ------------------------------------
+// Parcel Delivery & Details
+// ------------------------------------
+model ParcelDelivery {
   id             String         @id @default(uuid())
   businessId     String         @map("business_id")
   branchId       String?        @map("branch_id")
   createdById    String?        @map("created_by")
-
   customerName   String         @map("customer_name")
   customerNumber String         @map("customer_number")
   email          String?
-  price          String         // Total computed cost
-  
-  // Status is tracked dynamically via WorkflowStage
-  stageId        String         @map("stage_id")
-  paymentStatus  PaymentStatus  @default(PENDING) @map("payment_status")
-  paymentMethod  PaymentMethod? @map("payment_method")
-  orderNote      String?        @map("order_note")
-
-  // Flexible fields for different industries
-  metadata       Json?          // Stores Cargo, Edu, Law, Real Estate fields
-
+  price          String
+  note           String?        @db.Text
+  status         BookingStatus  @default(PENDING)
   createdAt      DateTime       @default(now()) @map("created_at")
   updatedAt      DateTime       @updatedAt @map("updated_at")
   deletedAt      DateTime?      @map("deleted_at")
 
-  business       Business       @relation("BusinessOrderBookings", fields: [businessId], references: [id], onDelete: Cascade)
-  branch         Branch?        @relation("BranchOrderBookings", fields: [branchId], references: [id], onDelete: SetNull)
-  createdBy      User?          @relation("OrderBookingCreator", fields: [createdById], references: [id], onDelete: SetNull)
-  stage          WorkflowStage  @relation("StageBookings", fields: [stageId], references: [id])
+  business       Business       @relation("BusinessParcelDeliveries", fields: [businessId], references: [id], onDelete: Cascade)
+  branch         Branch?        @relation("BranchParcelDeliveries", fields: [branchId], references: [id], onDelete: SetNull)
+  createdBy      User?          @relation("ParcelDeliveryCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  parcelDetails  ParcelDetails?
 
-  @@map("order_bookings")
+  @@map("parcel_deliveries")
+}
+
+model ParcelDetails {
+  id               String         @id @default(uuid())
+  businessId       String         @map("business_id")
+  branchId         String?        @map("branch_id")
+  parcelDeliveryId String         @unique @map("parcel_delivery_id")
+  pickupAddress    String?        @map("pickup_address")
+  deliveryDate     String?        @map("delivery_date")
+  deliveryAddress  String?        @map("delivery_address")
+  productType      String?        @map("product_type")
+  productHeight    String?        @map("product_height")
+  productWeight    String?        @map("product_weight")
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+  deletedAt        DateTime?      @map("deleted_at")
+
+  parcelDelivery   ParcelDelivery @relation(fields: [parcelDeliveryId], references: [id], onDelete: Cascade)
+
+  @@map("parcel_details")
+}
+
+// ------------------------------------
+// Features, Additional Details & Payments
+// ------------------------------------
+model Feature {
+  id          String      @id @default(uuid())
+  featureName FeatureName @map("feature_name")
+
+  additionalDetails AdditionalDetail[]
+
+  @@map("features")
+}
+
+model AdditionalDetail {
+  id           String    @id @default(uuid())
+  businessId   String    @map("business_id")
+  branchId     String?   @map("branch_id")
+  featureId    String?   @map("feature_id")
+  referenceId  String    @map("reference_id") // orderBooking, appointmentBooking, parcelDelivery, or crmLead ID
+  key          String
+  value        String    @db.Text
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  deletedAt    DateTime? @map("deleted_at")
+
+  feature      Feature?  @relation(fields: [featureId], references: [id], onDelete: SetNull)
+
+  @@map("additional_details")
+}
+
+model PaymentDetail {
+  id            String        @id @default(uuid())
+  referenceId   String        @map("reference_id")
+  createdById   String?       @map("created_by")
+  paymentStatus PaymentStatus @default(PENDING) @map("payment_status")
+  paymentMethod String?       @map("payment_method")
+  transactionId String?       @map("transaction_id")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+  deletedAt     DateTime?     @map("deleted_at")
+
+  @@map("payment_details")
 }
 
 model Pricing {
@@ -492,7 +628,6 @@ model CrmLead {
   businessId  String   @map("business_id")
   createdById String?  @map("created_by")
   branchId    String?  @map("branch_id")
-  stageId     String?  @map("stage_id") // Optional dynamic stage
 
   name        String
   email       String?
@@ -500,6 +635,7 @@ model CrmLead {
   source      SourceEnum?
   address     String?
   note        String?
+  status      LeadStatus @default(COLD)
 
   metadata    Json?    // Specific lead collection fields
 
@@ -510,7 +646,6 @@ model CrmLead {
   business    Business       @relation("BusinessCrmLeads", fields: [businessId], references: [id], onDelete: Cascade)
   createdBy   User?          @relation("CrmLeadCreator", fields: [createdById], references: [id], onDelete: SetNull)
   branch      Branch?        @relation("BranchCrmLeads", fields: [branchId], references: [id], onDelete: SetNull)
-  stage       WorkflowStage? @relation("StageLeads", fields: [stageId], references: [id], onDelete: SetNull)
 
   @@map("crm_leads")
 }

@@ -51,6 +51,13 @@ passport.use(
                         business = await prisma.business.findFirst({
                             where: { ownerId: user.id }
                         });
+                        // BUSINESS_OWNER can login even if INACTIVE (to purchase subscription)
+                        // Block only if SUSPENDED or deleted
+                        if (!business || business.deletedAt || business.status === "SUSPENDED") {
+                            return done(null, false, {
+                                message: "Your business account is suspended. Please contact the administrator.",
+                            });
+                        }
                     } else if (isBranchManager) {
                         const manager = await prisma.branchManager.findUnique({
                             where: { email: user.email }
@@ -60,12 +67,12 @@ passport.use(
                                 where: { id: manager.businessId }
                             });
                         }
-                    }
-
-                    if (!business || business.deletedAt || business.status !== "ACTIVE") {
-                        return done(null, false, {
-                            message: "Your business account is suspended or inactive. Please contact the administrator.",
-                        });
+                        // BRANCH_MANAGER requires business to be ACTIVE
+                        if (!business || business.deletedAt || business.status !== "ACTIVE") {
+                            return done(null, false, {
+                                message: "Your business account is suspended or inactive. Please contact the administrator.",
+                            });
+                        }
                     }
                 }
 
@@ -124,6 +131,13 @@ passport.use(
                             business = await prisma.business.findFirst({
                                 where: { ownerId: user.id }
                             });
+                            // BUSINESS_OWNER can login even if INACTIVE (to purchase subscription)
+                            // Block only if SUSPENDED or deleted
+                            if (!business || business.deletedAt || business.status === "SUSPENDED") {
+                                return done(null, false, {
+                                    message: "Your business account is suspended. Please contact the administrator.",
+                                });
+                            }
                         } else if (isBranchManager) {
                             const manager = await prisma.branchManager.findUnique({
                                 where: { email: user.email }
@@ -133,12 +147,12 @@ passport.use(
                                     where: { id: manager.businessId }
                                 });
                             }
-                        }
-
-                        if (!business || business.deletedAt || business.status !== "ACTIVE") {
-                            return done(null, false, {
-                                message: "Your business account is suspended or inactive. Please contact the administrator.",
-                            });
+                            // BRANCH_MANAGER requires business to be ACTIVE
+                            if (!business || business.deletedAt || business.status !== "ACTIVE") {
+                                return done(null, false, {
+                                    message: "Your business account is suspended or inactive. Please contact the administrator.",
+                                });
+                            }
                         }
                     }
                 }

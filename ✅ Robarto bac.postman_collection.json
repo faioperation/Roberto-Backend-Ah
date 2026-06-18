@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "10e23959-3dc6-4dde-a3f4-5d51841b1e54",
+    "_postman_id": "3ec81c81-abfb-49f6-91c3-29909ff4c832",
     "name": "✅ Robarto bac",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "50958698"
@@ -991,7 +991,7 @@
                   "variable": [
                     {
                       "key": "businessId",
-                      "value": "83a96091-b884-448e-ab37-8af7d91506f1"
+                      "value": "3eac8607-19fd-4a78-b7b1-8b96e4b05247"
                     }
                   ]
                 }
@@ -1092,13 +1092,13 @@
                   "formdata": [
                     {
                       "key": "systemPrompt",
-                      "value": "You are a helpful AI assistant for the omnichannel platform",
+                      "value": "You are a helpful AI assistant for education and consultancy service for educational platform",
                       "type": "text",
                       "uuid": "9175bf2b-617a-426e-8709-c02890eaaf54"
                     },
                     {
                       "key": "businessInformation",
-                      "value": "We provide retail and e-commerce solutions globally",
+                      "value": "We provide institutional guide for admission and other consultancy",
                       "type": "text",
                       "uuid": "b93c7092-ded1-4616-ae83-9f55f22b26a0"
                     },
@@ -1106,23 +1106,23 @@
                       "key": "productInformation",
                       "type": "file",
                       "uuid": "fc0c7cfa-f29e-4650-9d4f-8b4d9fd2fd71",
-                      "src": "/C:/Users/Morning Shift/Downloads/Global_Link_Cargo_Solutions_Business_Document_dealafriq.pdf"
+                      "src": "/C:/Users/Morning Shift/Downloads/Education_Agent_Training_Guide_Expanded.pdf"
                     },
                     {
                       "key": "policiesGuidelines",
                       "type": "file",
                       "uuid": "faf2c690-a348-4d6e-9580-28dc8f8e6e11",
-                      "src": "/C:/Users/Morning Shift/Downloads/Global_Link_Cargo_Solutions_Business_Document_dealafriq.pdf"
+                      "value": null
                     },
                     {
                       "key": "faq",
                       "type": "file",
                       "uuid": "8df15275-10d2-427f-a209-677e09e2a336",
-                      "src": "/C:/Users/Morning Shift/Downloads/Global_Link_Cargo_Solutions_Business_Document_dealafriq.pdf"
+                      "value": null
                     },
                     {
                       "key": "businessId",
-                      "value": "1e632395-fd73-4320-ad91-0a1826a4ca06",
+                      "value": "e2267502-281c-4d76-9623-c6cd66d4ab63",
                       "type": "text",
                       "uuid": "de0ae19f-7330-4c70-8a2c-f079a71d36dc"
                     }
@@ -1310,7 +1310,7 @@
                   "formdata": [
                     {
                       "key": "businessId",
-                      "value": "1e632395-fd73-4320-ad91-0a1826a4ca06",
+                      "value": "e2267502-281c-4d76-9623-c6cd66d4ab63",
                       "type": "text",
                       "uuid": "b2523e60-2c11-4906-88f7-0899431ef82d"
                     },
@@ -1318,7 +1318,19 @@
                       "key": "rules_file",
                       "type": "file",
                       "uuid": "c13b5d86-19df-46cc-b9b6-9e8a9d196f76",
-                      "src": "/C:/Users/Morning Shift/Downloads/Global_Link_Cargo_Solutions_Business_Document_dealafriq.pdf"
+                      "src": "/C:/Users/Morning Shift/Downloads/Nova_Education_University_AI_Training_Manual.pdf"
+                    },
+                    {
+                      "key": "agentName",
+                      "value": "Ahanaf Education",
+                      "type": "text",
+                      "uuid": "a25bef3a-750b-4d7b-aed5-184de22ec75b"
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "e057481b-0032-4a39-baf0-ff426bf1b889",
+                      "type": "text",
+                      "uuid": "cb27748c-1bfd-4376-8e98-4abf91c361cd"
                     }
                   ]
                 },
@@ -1504,7 +1516,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"ahanaf.betopia@gmail.com\",\n  \"password\": \"123456\"\n}",
+                  "raw": "{\n  \"email\": \"sharah.ris@gmail.com\",\n  \"password\": \"123456\"\n}\n// {\n//   \"email\": \"ahanaf.betopia@gmail.com\",\n//   \"password\": \"123456\"\n// }",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1860,7 +1872,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n  \"name\": \"Branch Manager\",\r\n  \"email\": \"manager1@test.com\",\r\n  \"password\": \"123456\"\r\n}\r\n",
+                  "raw": "{\r\n  \"name\": \"Branch Manager\",\r\n  \"email\": \"manager2@test.com\",\r\n  \"password\": \"123456\"\r\n}\r\n",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1909,7 +1921,7 @@
                   }
                 },
                 "url": {
-                  "raw": "{{baseUrl}}/business-owner/branch-managers/all?branchId=",
+                  "raw": "{{baseUrl}}/business-owner/branch-managers/all",
                   "host": [
                     "{{baseUrl}}"
                   ],
@@ -2087,7 +2099,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n  \"name\": \"Main Branch\",\r\n  \"email\": \"branch1@test.com\",\r\n  \"phone\": \"+1234567890\",\r\n  \"address\": \"123 Business Rd\",\r\n  \"managerId\": \"32704bba-78d6-4f44-a0df-8f2beff3d07b\" \r\n}\r\n\r\n",
+                  "raw": "{\r\n  \"name\": \"Main Branch\",\r\n  \"email\": \"branch2@test.com\",\r\n  \"phone\": \"+1234567890\",\r\n  \"address\": \"123 Business Rd\",\r\n  \"managerId\": \"cc74c231-31d5-4ba4-b01d-2125c8bc3b33\" \r\n}\r\n\r\n",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2124,7 +2136,7 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/business-owner/branches/all?branchId=",
+                  "raw": "{{baseUrl}}/business-owner/branches/all",
                   "host": [
                     "{{baseUrl}}"
                   ],
@@ -2271,6 +2283,761 @@
           ]
         },
         {
+          "name": "💬🟧Social Media",
+          "item": [
+            {
+              "name": "Connect Facebook",
+              "item": [
+                {
+                  "name": "Connect Facebook",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{businessOwnerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/messenger/auth/facebook?branchId=e057481b-0032-4a39-baf0-ff426bf1b889",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "messenger",
+                        "auth",
+                        "facebook"
+                      ],
+                      "query": [
+                        {
+                          "key": "branchId",
+                          "value": "e057481b-0032-4a39-baf0-ff426bf1b889"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "See Status",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{businessOwnerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/messenger/status?branchId=01a131ce-6189-42a3-990b-a08d61ef1029",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "messenger",
+                        "status"
+                      ],
+                      "query": [
+                        {
+                          "key": "branchId",
+                          "value": "01a131ce-6189-42a3-990b-a08d61ef1029"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Conversation",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{businessOwnerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/messenger/conversations?branchId=01a131ce-6189-42a3-990b-a08d61ef1029",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "messenger",
+                        "conversations"
+                      ],
+                      "query": [
+                        {
+                          "key": "branchId",
+                          "value": "01a131ce-6189-42a3-990b-a08d61ef1029"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "message by conversation id",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{businessOwnerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/messenger/messages/:conversationId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "messenger",
+                        "messages",
+                        ":conversationId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "conversationId",
+                          "value": "e04fb9ce-7b05-4d2e-abf6-3f0e51004846"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Send Message",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{businessOwnerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "formdata",
+                      "formdata": [
+                        {
+                          "key": "recipientId",
+                          "value": "25971144789223658",
+                          "type": "text",
+                          "uuid": "1f0501ea-1bc6-429f-9fd2-d1e09b497b2c"
+                        },
+                        {
+                          "key": "message",
+                          "value": "",
+                          "type": "text",
+                          "uuid": "a0571389-99f9-436b-b9f9-b84e22bf6c0f"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/messenger/messages/send",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "messenger",
+                        "messages",
+                        "send"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Send Media/file/image",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{businessOwnerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "formdata",
+                      "formdata": [
+                        {
+                          "key": "recipientId",
+                          "value": "25971144789223658",
+                          "type": "text",
+                          "uuid": "1f0501ea-1bc6-429f-9fd2-d1e09b497b2c"
+                        },
+                        {
+                          "key": "file",
+                          "type": "file",
+                          "uuid": "883af973-c93f-41f2-bd7f-c9c5ee33a518",
+                          "src": "/C:/Users/Morning Shift/Pictures/Screenshot 2026-03-13 054002.png"
+                        },
+                        {
+                          "key": "type",
+                          "value": "image",
+                          "type": "text",
+                          "uuid": "180dd955-35d2-4e78-81c3-abe3782ee9dd"
+                        },
+                        {
+                          "key": "",
+                          "value": "video/audio/document/image",
+                          "type": "text",
+                          "uuid": "97b3d533-b396-44b2-81a1-754fcc2c57cc",
+                          "disabled": true
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/messenger/messages/media",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "messenger",
+                        "messages",
+                        "media"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Connect Whatsapp",
+              "item": [
+                {
+                  "name": "Connect  Whatsapp",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{businessOwnerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"branchId\": \"e057481b-0032-4a39-baf0-ff426bf1b889\", // ➔ ড্রপডাউন থেকে সিলেক্ট করা ব্রাঞ্চ আইডি\r\n    \"wabaId\": \"992794369947449\",\r\n    \"phoneNumberId\": \"1078482402023669\",\r\n    \"phoneNumber\": \"+880 1335 241609\",\r\n    \"accessToken\": \"EAAVZARSm2HzkBRp8FmQQd1Xh8SNRj7rOte28oXwXDTxiZBKx9yrlLWvDLTi08bdbAWOCHAbZAxd54PFERr4afoPQZC0xxNLiXzwliICIZALSj7wmZBSVZAajFiKxjA7kqxNOtbuPpwPREURnptZBaAv2bpqCp3eUjqCU34RKq06u02Bv1ZBr1TtIkuUHJMomkSNMUCwZDZD\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/whatsapp/connect",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "whatsapp",
+                        "connect"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Connection Status",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{businessOwnerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/whatsapp/status?branchId=01a131ce-6189-42a3-990b-a08d61ef1029",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "whatsapp",
+                        "status"
+                      ],
+                      "query": [
+                        {
+                          "key": "branchId",
+                          "value": "01a131ce-6189-42a3-990b-a08d61ef1029"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Conversation by branch id",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{businessOwnerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/whatsapp/conversations?branchId=01a131ce-6189-42a3-990b-a08d61ef1029",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "whatsapp",
+                        "conversations"
+                      ],
+                      "query": [
+                        {
+                          "key": "branchId",
+                          "value": "01a131ce-6189-42a3-990b-a08d61ef1029"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "message by conversation id",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{businessOwnerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/whatsapp/conversations/:conversationId/messages",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "whatsapp",
+                        "conversations",
+                        ":conversationId",
+                        "messages"
+                      ],
+                      "variable": [
+                        {
+                          "key": "conversationId",
+                          "value": "410c62fc-40fb-4b36-a73a-e8e9176a3146"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Send Message",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{businessOwnerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"conversationId\" : \"410c62fc-40fb-4b36-a73a-e8e9176a3146\",\r\n    \"message\" : \"Hello, how can I help you today by tugatai by main branch\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/whatsapp/messages/send",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "whatsapp",
+                        "messages",
+                        "send"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Send Media/file/image",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{businessOwnerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "formdata",
+                      "formdata": [
+                        {
+                          "key": "conversationId",
+                          "value": "f0507974-1aa8-430f-b0dd-8f45ddbd1c67",
+                          "type": "text",
+                          "uuid": "b4c3b232-1d0e-487a-a59e-095175a4de05"
+                        },
+                        {
+                          "key": "type",
+                          "value": "image",
+                          "type": "text",
+                          "uuid": "bfcf1896-1444-4a60-a713-d6f61c1fc7f5"
+                        },
+                        {
+                          "key": "file",
+                          "type": "file",
+                          "uuid": "c8387340-c4c4-403f-902e-a8370b6c89de",
+                          "src": "/C:/Users/Morning Shift/Pictures/Screenshot 2026-03-13 054002.png"
+                        },
+                        {
+                          "key": "ei type gulo use kora jabe > ",
+                          "value": "text, image, video, audio,",
+                          "description": "eita use korben na ... tik mark uthay rakhun",
+                          "type": "text",
+                          "uuid": "1d86f9f8-69eb-4114-9378-779ac463689c",
+                          "disabled": true
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/whatsapp/messages/media",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "whatsapp",
+                        "messages",
+                        "media"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Connect Instagram",
+              "item": [
+                {
+                  "name": "Connect Instagram",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{businessOwnerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/instagram/auth/facebook?branchId=e057481b-0032-4a39-baf0-ff426bf1b889",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "instagram",
+                        "auth",
+                        "facebook"
+                      ],
+                      "query": [
+                        {
+                          "key": "branchId",
+                          "value": "e057481b-0032-4a39-baf0-ff426bf1b889"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "See Status",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{businessOwnerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/instagram/status?branchId=01a131ce-6189-42a3-990b-a08d61ef1029",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "instagram",
+                        "status"
+                      ],
+                      "query": [
+                        {
+                          "key": "branchId",
+                          "value": "01a131ce-6189-42a3-990b-a08d61ef1029"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Conversation",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{businessOwnerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/instagram/conversations?branchId=01a131ce-6189-42a3-990b-a08d61ef1029",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "instagram",
+                        "conversations"
+                      ],
+                      "query": [
+                        {
+                          "key": "branchId",
+                          "value": "01a131ce-6189-42a3-990b-a08d61ef1029"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "message by conversation id",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{businessOwnerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/instagram/messages/:conversationId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "instagram",
+                        "messages",
+                        ":conversationId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "conversationId",
+                          "value": "f01a1198-bca4-4e8f-b96a-728b5ea71f5d"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Send Message",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{businessOwnerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"recipientId\":\"4335400436719620\",\r\n    \"message\":\"heelo dada\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/instagram/messages/send",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "instagram",
+                        "messages",
+                        "send"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Send Media/file/image",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{businessOwnerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "formdata",
+                      "formdata": [
+                        {
+                          "key": "recipientId",
+                          "value": "4335400436719620",
+                          "type": "text",
+                          "uuid": "1f0501ea-1bc6-429f-9fd2-d1e09b497b2c"
+                        },
+                        {
+                          "key": "file",
+                          "type": "file",
+                          "uuid": "883af973-c93f-41f2-bd7f-c9c5ee33a518",
+                          "src": "/C:/Users/Morning Shift/Pictures/Screenshot 2026-03-13 054120.png"
+                        },
+                        {
+                          "key": "type",
+                          "value": "image",
+                          "type": "text",
+                          "uuid": "180dd955-35d2-4e78-81c3-abe3782ee9dd"
+                        },
+                        {
+                          "key": "",
+                          "value": "video/audio/document/image",
+                          "type": "text",
+                          "uuid": "97b3d533-b396-44b2-81a1-754fcc2c57cc",
+                          "disabled": true
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/instagram/messages/media",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "instagram",
+                        "messages",
+                        "media"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            }
+          ]
+        },
+        {
           "name": "Pricing",
           "item": [
             {
@@ -2290,7 +3057,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "// for curiar or cargo or percel delivery\r\n{\r\n  \"ruleName\": \"Cargo Standard Pricing\",\r\n  \"type\": \"DISTANCE_AND_WEIGHT\",\r\n  \"configuration\": {\r\n    \"baseFare\": 100,\r\n    \"perKmFare\": 15,\r\n    \"perKgFare\": 5,\r\n    \"freeWeightLimitKg\": 2\r\n  }\r\n}\r\n\r\n// : আইনি পরামর্শক বা লিগ্যাল ফার্ম টেন্যান্ট (ঘণ্টা ভিত্তিক)\r\n\r\n// {\r\n//   \"ruleName\": \"Senior Lawyer Hourly Rate\",\r\n//   \"type\": \"HOURLY\",\r\n//   \"configuration\": {\r\n//     \"hourlyRate\": 150,\r\n//     \"minimumHours\": 1,\r\n//     \"vatPercent\": 15\r\n//   }\r\n// }\r\n//  এডুকেশনাল বা এডমিশন কোচিং টেন্যান্ট (ওয়ান-টাইম বা কোর্স ফি)\r\n\r\n// {\r\n//   \"ruleName\": \"HSC Batch Admission Fee\",\r\n//   \"type\": \"FLAT\",\r\n//   \"configuration\": {\r\n//     \"totalFee\": 5000,\r\n//     \"installmentsAllowed\": true,\r\n//     \"installmentDetails\": [\r\n//       { \"name\": \"1st Installment\", \"amount\": 3000 },\r\n//       { \"name\": \"2nd Installment\", \"amount\": 2000 }\r\n//     ]\r\n//   }\r\n// }\r\n\r\n// জেনারেল বনাম স্পেশালিস্ট কনসালটেশন প্রাইজ (Tiered Consultation Fee\r\n\r\n// {\r\n//   \"ruleName\": \"Doctor Consultation Rates\",\r\n//   \"type\": \"CONSULTATION_TIERED\",\r\n//   \"configuration\": {\r\n//     \"newPatientFee\": 1000,       // নতুন রোগীর জন্য ফি\r\n//     \"returningPatientFee\": 600,  // পুরাতন রোগীর জন্য ফি\r\n//     \"specialistPremium\": 500,    // স্পেশালিস্ট হলে অতিরিক্ত চার্জ\r\n//     \"reportShowFee\": 200,        // শুধু রিপোর্ট দেখানোর ফি\r\n//     \"vatPercentage\": 5           // ভ্যাট পার্সেন্টেজ\r\n//   }\r\n// }\r\n\r\n\r\n\r\n\r\n",
+                  "raw": "// for curiar or cargo or percel delivery\r\n// {\r\n//   \"ruleName\": \"Cargo Standard Pricing\",\r\n//    \"branchId\": \"e057481b-0032-4a39-baf0-ff426bf1b889\" ,\r\n//   \"type\": \"DISTANCE_AND_WEIGHT\",\r\n//   \"configuration\": {\r\n//     \"baseFare\": 100,\r\n//     \"perKmFare\": 15,\r\n//     \"perKgFare\": 5,\r\n//     \"freeWeightLimitKg\": 2\r\n//   }\r\n// }\r\n\r\n// : আইনি পরামর্শক বা লিগ্যাল ফার্ম টেন্যান্ট (ঘণ্টা ভিত্তিক)\r\n\r\n// {\r\n//   \"ruleName\": \"Senior Lawyer Hourly Rate\",\r\n//   \"type\": \"HOURLY\",\r\n//   \"configuration\": {\r\n//     \"hourlyRate\": 150,\r\n//     \"minimumHours\": 1,\r\n//     \"vatPercent\": 15\r\n//   }\r\n// }\r\n//  এডুকেশনাল বা এডমিশন কোচিং টেন্যান্ট (ওয়ান-টাইম বা কোর্স ফি)\r\n\r\n{\r\n  \"ruleName\": \"BSC 1st semester student\",\r\n  \"branchId\": \"e057481b-0032-4a39-baf0-ff426bf1b889\" ,\r\n  \"type\": \"FLAT\",\r\n  \"configuration\": {\r\n    \"totalFee\": 5000,\r\n    \"installmentsAllowed\": true,\r\n    \"installmentDetails\": [\r\n      { \"name\": \"1st Installment\", \"amount\": 3000 },\r\n      { \"name\": \"2nd Installment\", \"amount\": 2000 }\r\n    ]\r\n  }\r\n}\r\n\r\n// জেনারেল বনাম স্পেশালিস্ট কনসালটেশন প্রাইজ (Tiered Consultation Fee\r\n\r\n// {\r\n//   \"ruleName\": \"Doctor Consultation Rates\",\r\n//   \"type\": \"CONSULTATION_TIERED\",\r\n//   \"configuration\": {\r\n//     \"newPatientFee\": 1000,       // নতুন রোগীর জন্য ফি\r\n//     \"returningPatientFee\": 600,  // পুরাতন রোগীর জন্য ফি\r\n//     \"specialistPremium\": 500,    // স্পেশালিস্ট হলে অতিরিক্ত চার্জ\r\n//     \"reportShowFee\": 200,        // শুধু রিপোর্ট দেখানোর ফি\r\n//     \"vatPercentage\": 5           // ভ্যাট পার্সেন্টেজ\r\n//   }\r\n// }\r\n\r\n\r\n\r\n\r\n",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2327,7 +3094,7 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/business-owner/pricings/all?branchId=",
+                  "raw": "{{baseUrl}}/business-owner/pricings/all?branchId=e057481b-0032-4a39-baf0-ff426bf1b889",
                   "host": [
                     "{{baseUrl}}"
                   ],
@@ -2342,6 +3109,10 @@
                       "value": "",
                       "description": "Filter by branch ID (optional)",
                       "disabled": true
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "e057481b-0032-4a39-baf0-ff426bf1b889"
                     }
                   ]
                 }
@@ -2511,7 +3282,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"name\": \"Cargo Shipments\",\n  \"type\": \"CRM\"\n}",
+                  "raw": "{\n  \"name\": \"Education\",\n  \"type\": \"CRM\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2554,7 +3325,7 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{baseUrl}}/business-owner/workflows/all?branchId=",
+                  "raw": "{{baseUrl}}/business-owner/workflows/all",
                   "host": [
                     "{{baseUrl}}"
                   ],
@@ -2598,7 +3369,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"name\": \"Cold\",\n  \"order\": 1,\n  \"color\": \"#FFC107\"\n}",
+                  "raw": "{\n  \"name\": \"BAD\",\n  \"order\": 1,\n  \"color\": \"#FFC107\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2619,7 +3390,7 @@
                   "variable": [
                     {
                       "key": "workflowId",
-                      "value": "4741bee2-06d9-4511-ba32-c259a6ab87ca"
+                      "value": "9c623619-d161-4ab9-a50e-937d0b7b69a4"
                     }
                   ]
                 }
@@ -2648,7 +3419,7 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{baseUrl}}/business-owner/workflows/all?branchId=",
+                  "raw": "{{baseUrl}}/business-owner/workflows/all",
                   "host": [
                     "{{baseUrl}}"
                   ],
@@ -2726,7 +3497,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"customerName\": \"Rahim Uddin\",\n  \"customerNumber\": \"01711223344\",\n  \"email\": \"rahim@example.com\",\n  \"price\": \"1200\",\n  \"stageId\": \"stage-uuid-from-workflow-stages\",\n  \"paymentStatus\": \"PENDING\",\n  \"paymentMethod\": \"CASH_ON_DELIVERY\",\n  \"orderNote\": \"Please deliver between 2 PM to 5 PM\",\n  \"branchId\": \"01a131ce-6189-42a3-990b-a08d61ef1029\",\n  \"metadata\": {\n    \"address\": \"House 12, Road 5, Dhanmondi, Dhaka\",\n    \"deliveryFromAddress\": \"Mirpur 10 Branch, Dhaka\",\n    \"productName\": \"Premium Cotton T-Shirt\",\n    \"quantity\": 2,\n    \"size\": \"XL\",\n    \"shippingCharge\": 100,\n    \"deliveryTime\": \"2026-05-30T10:00:00.000Z\"\n  }\n}",
+                  "raw": "{\n  \"customerName\": \"Rahim Uddin\",\n  \"customerNumber\": \"01711223344\",\n  \"email\": \"rahim@example.com\",\n  \"price\": \"1200\",\n  \"note\": \"Please deliver between 2 PM to 5 PM\",\n  \"branchId\": \"01a131ce-6189-42a3-990b-a08d61ef1029\",\n\n  \"deliveryDate\": \"2026-07-01\",\n  \"deliveryAddress\": \"House 12, Road 5, Dhanmondi, Dhaka\",\n  \"productType\": \"T-Shirt\",\n\n  \"appointmentDate\": \"2026-07-01\",\n  \"appointmentTime\": \"2026-07-01T14:00:00.000Z\",\n  \"platform\": \"Zoom\",\n  \"duration\": \"60 mins\",\n\n  \"pickupAddress\": \"Mirpur 10 Branch, Dhaka\",\n  \"productHeight\": \"30cm\",\n  \"productWeight\": \"2kg\",\n\n  \"paymentStatus\": \"PENDING\",\n  \"paymentMethod\": \"CASH_ON_DELIVERY\",\n  \"transactionId\": \"\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2734,13 +3505,13 @@
                   }
                 },
                 "url": {
-                  "raw": "{{baseUrl}}/business-owner/order-bookings/create",
+                  "raw": "{{baseUrl}}/business-owner/bookings/create",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
                     "business-owner",
-                    "order-bookings",
+                    "bookings",
                     "create"
                   ]
                 }
@@ -2763,21 +3534,20 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/business-owner/order-bookings/all?branchId=",
+                  "raw": "{{baseUrl}}/business-owner/bookings/all?branchId=e057481b-0032-4a39-baf0-ff426bf1b889",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
                     "business-owner",
-                    "order-bookings",
+                    "bookings",
                     "all"
                   ],
                   "query": [
                     {
                       "key": "branchId",
-                      "value": "",
-                      "description": "Filter by branch ID (optional)",
-                      "disabled": true
+                      "value": "e057481b-0032-4a39-baf0-ff426bf1b889",
+                      "description": "Filter by branch ID (optional)"
                     }
                   ]
                 }
@@ -2812,13 +3582,13 @@
                   }
                 },
                 "url": {
-                  "raw": "{{baseUrl}}/business-owner/order-bookings/:id",
+                  "raw": "{{baseUrl}}/business-owner/bookings/:id",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
                     "business-owner",
-                    "order-bookings",
+                    "bookings",
                     ":id"
                   ],
                   "variable": [
@@ -2900,19 +3670,19 @@
                   }
                 },
                 "url": {
-                  "raw": "{{baseUrl}}/business-owner/order-bookings/:id",
+                  "raw": "{{baseUrl}}/business-owner/bookings/:id",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
                     "business-owner",
-                    "order-bookings",
+                    "bookings",
                     ":id"
                   ],
                   "variable": [
                     {
                       "key": "id",
-                      "value": ""
+                      "value": "aee06a9e-ffbd-42f5-a6b1-df8469b1e33c"
                     }
                   ]
                 }
@@ -2941,7 +3711,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"name\": \"Rashedul Islam\",\n  \"email\": \"rashed@example.com\",\n  \"phone\": \"01711223344\",\n  \"source\": \"SOCIAL_MEDIA\",\n  \"address\": \"House 45, Road 11, Banani, Dhaka\",\n  \"note\": \"Wants to talk with sales manager.\",\n  \"stageId\": \"da3672a4-a3ee-43be-ada4-48bda960a140\", // সরাসরি স্পেসিফিক স্টেজের আইডি পাঠাতে চাইলে\n  \"branchId\": \"01a131ce-6189-42a3-990b-a08d61ef1029\",\n  \"metadata\": {\n    \"interestedProduct\": \"MERN Stack Course\",\n    \"referredBy\": \"Facebook Ad Campaign\",\n    \"callAttemptsCount\": 1\n  }\n}\n",
+                  "raw": "{\n  \"name\": \"Rashedul Islam\",\n  \"email\": \"rashed@example.com\",\n  \"phone\": \"01711223344\",\n  \"source\": \"SOCIAL_MEDIA\",\n  \"address\": \"House 45, Road 11, Banani, Dhaka\",\n  \"note\": \"Wants to talk with sales manager.\",\n  \"status\": \"COLD\",\n  \"branchId\": \"01a131ce-6189-42a3-990b-a08d61ef1029\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2978,7 +3748,7 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/business-owner/crm-leads/all?branchId=",
+                  "raw": "{{baseUrl}}/business-owner/crm-leads/all?branchId=e057481b-0032-4a39-baf0-ff426bf1b889",
                   "host": [
                     "{{baseUrl}}"
                   ],
@@ -2993,6 +3763,10 @@
                       "value": "",
                       "description": "Filter by branch ID (optional)",
                       "disabled": true
+                    },
+                    {
+                      "key": "branchId",
+                      "value": "e057481b-0032-4a39-baf0-ff426bf1b889"
                     }
                   ]
                 }
@@ -3137,756 +3911,6 @@
           ]
         },
         {
-          "name": "Connect Facebook",
-          "item": [
-            {
-              "name": "Connect Facebook",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{businessOwnerToken}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/v1/messenger/auth/facebook?branchId=01a131ce-6189-42a3-990b-a08d61ef1029",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "v1",
-                    "messenger",
-                    "auth",
-                    "facebook"
-                  ],
-                  "query": [
-                    {
-                      "key": "branchId",
-                      "value": "01a131ce-6189-42a3-990b-a08d61ef1029"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "See Status",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{businessOwnerToken}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/v1/messenger/status?branchId=01a131ce-6189-42a3-990b-a08d61ef1029",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "v1",
-                    "messenger",
-                    "status"
-                  ],
-                  "query": [
-                    {
-                      "key": "branchId",
-                      "value": "01a131ce-6189-42a3-990b-a08d61ef1029"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Conversation",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{businessOwnerToken}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/v1/messenger/conversations?branchId=01a131ce-6189-42a3-990b-a08d61ef1029",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "v1",
-                    "messenger",
-                    "conversations"
-                  ],
-                  "query": [
-                    {
-                      "key": "branchId",
-                      "value": "01a131ce-6189-42a3-990b-a08d61ef1029"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "message by conversation id",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{businessOwnerToken}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/v1/messenger/messages/:conversationId",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "v1",
-                    "messenger",
-                    "messages",
-                    ":conversationId"
-                  ],
-                  "variable": [
-                    {
-                      "key": "conversationId",
-                      "value": "e04fb9ce-7b05-4d2e-abf6-3f0e51004846"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Send Message",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{businessOwnerToken}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "formdata",
-                  "formdata": [
-                    {
-                      "key": "recipientId",
-                      "value": "25971144789223658",
-                      "type": "text",
-                      "uuid": "1f0501ea-1bc6-429f-9fd2-d1e09b497b2c"
-                    },
-                    {
-                      "key": "message",
-                      "value": "",
-                      "type": "text",
-                      "uuid": "a0571389-99f9-436b-b9f9-b84e22bf6c0f"
-                    }
-                  ]
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/v1/messenger/messages/send",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "v1",
-                    "messenger",
-                    "messages",
-                    "send"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Send Media/file/image",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{businessOwnerToken}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "formdata",
-                  "formdata": [
-                    {
-                      "key": "recipientId",
-                      "value": "25971144789223658",
-                      "type": "text",
-                      "uuid": "1f0501ea-1bc6-429f-9fd2-d1e09b497b2c"
-                    },
-                    {
-                      "key": "file",
-                      "type": "file",
-                      "uuid": "883af973-c93f-41f2-bd7f-c9c5ee33a518",
-                      "src": "/C:/Users/Morning Shift/Pictures/Screenshot 2026-03-13 054002.png"
-                    },
-                    {
-                      "key": "type",
-                      "value": "image",
-                      "type": "text",
-                      "uuid": "180dd955-35d2-4e78-81c3-abe3782ee9dd"
-                    },
-                    {
-                      "key": "",
-                      "value": "video/audio/document/image",
-                      "type": "text",
-                      "uuid": "97b3d533-b396-44b2-81a1-754fcc2c57cc",
-                      "disabled": true
-                    }
-                  ]
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/v1/messenger/messages/media",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "v1",
-                    "messenger",
-                    "messages",
-                    "media"
-                  ]
-                }
-              },
-              "response": []
-            }
-          ]
-        },
-        {
-          "name": "Connect Whatsapp",
-          "item": [
-            {
-              "name": "Connect  Whatsapp",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{businessOwnerToken}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"branchId\": \"01a131ce-6189-42a3-990b-a08d61ef1029\", // ➔ ড্রপডাউন থেকে সিলেক্ট করা ব্রাঞ্চ আইডি\r\n    \"wabaId\": \"992794369947449\",\r\n    \"phoneNumberId\": \"1078482402023669\",\r\n    \"phoneNumber\": \"+880 1335 241609\",\r\n    \"accessToken\": \"EAAVZARSm2HzkBRp8FmQQd1Xh8SNRj7rOte28oXwXDTxiZBKx9yrlLWvDLTi08bdbAWOCHAbZAxd54PFERr4afoPQZC0xxNLiXzwliICIZALSj7wmZBSVZAajFiKxjA7kqxNOtbuPpwPREURnptZBaAv2bpqCp3eUjqCU34RKq06u02Bv1ZBr1TtIkuUHJMomkSNMUCwZDZD\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/v1/whatsapp/connect",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "v1",
-                    "whatsapp",
-                    "connect"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Connection Status",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{businessOwnerToken}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/v1/whatsapp/status?branchId=01a131ce-6189-42a3-990b-a08d61ef1029",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "v1",
-                    "whatsapp",
-                    "status"
-                  ],
-                  "query": [
-                    {
-                      "key": "branchId",
-                      "value": "01a131ce-6189-42a3-990b-a08d61ef1029"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Conversation by branch id",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{businessOwnerToken}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/v1/whatsapp/conversations?branchId=01a131ce-6189-42a3-990b-a08d61ef1029",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "v1",
-                    "whatsapp",
-                    "conversations"
-                  ],
-                  "query": [
-                    {
-                      "key": "branchId",
-                      "value": "01a131ce-6189-42a3-990b-a08d61ef1029"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "message by conversation id",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{businessOwnerToken}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/v1/whatsapp/conversations/:conversationId/messages",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "v1",
-                    "whatsapp",
-                    "conversations",
-                    ":conversationId",
-                    "messages"
-                  ],
-                  "variable": [
-                    {
-                      "key": "conversationId",
-                      "value": "410c62fc-40fb-4b36-a73a-e8e9176a3146"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Send Message",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{businessOwnerToken}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"conversationId\" : \"410c62fc-40fb-4b36-a73a-e8e9176a3146\",\r\n    \"message\" : \"Hello, how can I help you today by tugatai by main branch\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/v1/whatsapp/messages/send",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "v1",
-                    "whatsapp",
-                    "messages",
-                    "send"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Send Media/file/image",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{businessOwnerToken}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "formdata",
-                  "formdata": [
-                    {
-                      "key": "conversationId",
-                      "value": "f0507974-1aa8-430f-b0dd-8f45ddbd1c67",
-                      "type": "text",
-                      "uuid": "b4c3b232-1d0e-487a-a59e-095175a4de05"
-                    },
-                    {
-                      "key": "type",
-                      "value": "image",
-                      "type": "text",
-                      "uuid": "bfcf1896-1444-4a60-a713-d6f61c1fc7f5"
-                    },
-                    {
-                      "key": "file",
-                      "type": "file",
-                      "uuid": "c8387340-c4c4-403f-902e-a8370b6c89de",
-                      "src": "/C:/Users/Morning Shift/Pictures/Screenshot 2026-03-13 054002.png"
-                    },
-                    {
-                      "key": "ei type gulo use kora jabe > ",
-                      "value": "text, image, video, audio,",
-                      "description": "eita use korben na ... tik mark uthay rakhun",
-                      "type": "text",
-                      "uuid": "1d86f9f8-69eb-4114-9378-779ac463689c",
-                      "disabled": true
-                    }
-                  ]
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/v1/whatsapp/messages/media",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "v1",
-                    "whatsapp",
-                    "messages",
-                    "media"
-                  ]
-                }
-              },
-              "response": []
-            }
-          ]
-        },
-        {
-          "name": "Connect Instagram",
-          "item": [
-            {
-              "name": "Connect Instagram",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{businessOwnerToken}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/v1/instagram/auth/facebook?branchId=01a131ce-6189-42a3-990b-a08d61ef1029",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "v1",
-                    "instagram",
-                    "auth",
-                    "facebook"
-                  ],
-                  "query": [
-                    {
-                      "key": "branchId",
-                      "value": "01a131ce-6189-42a3-990b-a08d61ef1029"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "See Status",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{businessOwnerToken}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/v1/instagram/status?branchId=01a131ce-6189-42a3-990b-a08d61ef1029",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "v1",
-                    "instagram",
-                    "status"
-                  ],
-                  "query": [
-                    {
-                      "key": "branchId",
-                      "value": "01a131ce-6189-42a3-990b-a08d61ef1029"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Conversation",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{businessOwnerToken}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/v1/instagram/conversations?branchId=01a131ce-6189-42a3-990b-a08d61ef1029",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "v1",
-                    "instagram",
-                    "conversations"
-                  ],
-                  "query": [
-                    {
-                      "key": "branchId",
-                      "value": "01a131ce-6189-42a3-990b-a08d61ef1029"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "message by conversation id",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{businessOwnerToken}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/v1/instagram/messages/:conversationId",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "v1",
-                    "instagram",
-                    "messages",
-                    ":conversationId"
-                  ],
-                  "variable": [
-                    {
-                      "key": "conversationId",
-                      "value": "f01a1198-bca4-4e8f-b96a-728b5ea71f5d"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Send Message",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{businessOwnerToken}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"recipientId\":\"4335400436719620\",\r\n    \"message\":\"heelo dada\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/v1/instagram/messages/send",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "v1",
-                    "instagram",
-                    "messages",
-                    "send"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Send Media/file/image",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{businessOwnerToken}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "formdata",
-                  "formdata": [
-                    {
-                      "key": "recipientId",
-                      "value": "4335400436719620",
-                      "type": "text",
-                      "uuid": "1f0501ea-1bc6-429f-9fd2-d1e09b497b2c"
-                    },
-                    {
-                      "key": "file",
-                      "type": "file",
-                      "uuid": "883af973-c93f-41f2-bd7f-c9c5ee33a518",
-                      "src": "/C:/Users/Morning Shift/Pictures/Screenshot 2026-03-13 054120.png"
-                    },
-                    {
-                      "key": "type",
-                      "value": "image",
-                      "type": "text",
-                      "uuid": "180dd955-35d2-4e78-81c3-abe3782ee9dd"
-                    },
-                    {
-                      "key": "",
-                      "value": "video/audio/document/image",
-                      "type": "text",
-                      "uuid": "97b3d533-b396-44b2-81a1-754fcc2c57cc",
-                      "disabled": true
-                    }
-                  ]
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/v1/instagram/messages/media",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "v1",
-                    "instagram",
-                    "messages",
-                    "media"
-                  ]
-                }
-              },
-              "response": []
-            }
-          ]
-        },
-        {
           "name": "🙌buy subscription.",
           "item": [
             {
@@ -3906,7 +3930,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n  \"planId\": \"cmqg1mbrf00005ol64cixm4k0\" , // The ID of the CONNECT/CONVERT plan from your database\r\n  \"billingCycle\": \"monthly\"          // Must be exactly \"monthly\" or \"yearly\"\r\n}\r\n",
+                  "raw": "{\r\n  \"planId\": \"cmqg26qhd0000k8l64eqv1zoy\" , // The ID of the CONNECT/CONVERT plan from your database\r\n  \"billingCycle\": \"monthly\"          // Must be exactly \"monthly\" or \"yearly\"\r\n}\r\n",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -3953,6 +3977,68 @@
                 }
               },
               "response": []
+            },
+            {
+              "name": "Get Subscription Copy",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/payment/my-subscription",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "payment",
+                    "my-subscription"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Dashboard Overview",
+          "item": [
+            {
+              "name": "overview",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{businessOwnerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/business-owner/dashboard/overview",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "business-owner",
+                    "dashboard",
+                    "overview"
+                  ]
+                }
+              },
+              "response": []
             }
           ]
         }
@@ -3971,7 +4057,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"email\" : \"manager1@test.com\",\r\n    \"password\" : \"123456\"\r\n}",
+                  "raw": "{\r\n    \"email\" : \"manager2@test.com\",\r\n    \"password\" : \"123456\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -4308,48 +4394,10 @@
           ]
         },
         {
-          "name": "Pricing Branch",
+          "name": "Dashboard Overview",
           "item": [
             {
-              "name": "Create",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{branchManager}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n  \"ruleName\": \"Summer Discount Rule\",\r\n  \"type\": \"PERCENTAGE\",\r\n  \"configuration\": \"{\\\"percentage\\\": 15, \\\"maxDiscount\\\": 500}\",\r\n  \"status\": true\r\n}\r\n",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/branch-manager/pricing/create",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "branch-manager",
-                    "pricing",
-                    "create"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Get all",
+              "name": "overview",
               "request": {
                 "auth": {
                   "type": "bearer",
@@ -4364,554 +4412,18 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/branch-manager/pricing/all",
+                  "raw": "{{baseUrl}}/branch-manager/dashboard/overview",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
                     "branch-manager",
-                    "pricing",
-                    "all"
+                    "dashboard",
+                    "overview"
                   ]
                 }
               },
               "response": []
-            },
-            {
-              "name": "Single",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{branchManager}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/branch-manager/pricing/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "branch-manager",
-                    "pricing",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "06701a8e-01ec-4752-a46c-d4f797745f1b"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Update",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{branchManager}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "PATCH",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n  \"ruleName\": \"Winter Discount Rule\"\r\n}\r\n",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/branch-manager/pricing/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "branch-manager",
-                    "pricing",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "06701a8e-01ec-4752-a46c-d4f797745f1b"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Delete 1",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{branchManager}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "DELETE",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n  \"businessName\": \"Belon IT\",\r\n  \"businessType\": \"Tech\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Jane Doe\",\r\n  \"ownerEmail\": \"belon@test.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+1234567890\",\r\n  \"planId\": \"plan_12345abcde\",\r\n  \"planCycle\": \"YEARLY\",\r\n  \"status\": \"ACTIVE\",\r\n  \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/branch-manager/pricing/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "branch-manager",
-                    "pricing",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": ""
-                    }
-                  ]
-                }
-              },
-              "response": []
-            }
-          ]
-        },
-        {
-          "name": "CRM Leads Branch",
-          "item": [
-            {
-              "name": "Create",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{branchManager}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"johndoe@example.com\",\n  \"phone\": \"+1234567890\",\n  \"source\": \"SOCIAL_MEDIA\",\n  \"stageId\": \"stage-uuid-from-crm-workflow-stages\",\n  \"address\": \"123 Marketing Ave, Suite 1\",\n  \"note\": \"Client found us via a Facebook Ad campaign.\",\n  \"metadata\": {\n    \"campaignName\": \"FB Promo 2026\"\n  }\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/branch-manager/crm-leads/create",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "branch-manager",
-                    "crm-leads",
-                    "create"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Get all",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{branchManager}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/branch-manager/crm-leads/all",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "branch-manager",
-                    "crm-leads",
-                    "all"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Single",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{branchManager}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "GET",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n  \"businessName\": \"Belon IT\",\r\n  \"businessType\": \"Tech\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Jane Doe\",\r\n  \"ownerEmail\": \"belon@test.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+1234567890\",\r\n  \"planId\": \"plan_12345abcde\",\r\n  \"planCycle\": \"YEARLY\",\r\n  \"status\": \"ACTIVE\",\r\n  \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/branch-manager/crm-leads/:jd",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "branch-manager",
-                    "crm-leads",
-                    ":jd"
-                  ],
-                  "variable": [
-                    {
-                      "key": "jd",
-                      "value": ""
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Update",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{branchManager}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "PATCH",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n  \"name\": \"John Doe Jr\",\r\n  \"email\": \"johndoe.new@example.com\",\r\n  \"phone\": \"+0987654321\",\r\n  \"source\": \"WEBSITE\",\r\n  \"status\": \"CONTACTED\",\r\n  \"address\": \"456 Updated St\",\r\n  \"note\": \"Called the client, waiting for proposal.\"\r\n}\r\n\r\n\r\n// enum SourceEnum {\r\n//   WEBSITE\r\n//   SOCIAL_MEDIA\r\n//   REFERRAL\r\n//   COLD_CALL\r\n//   OTHER\r\n// }\r\n\r\n// enum CrmStatus {\r\n//   NEW\r\n//   CONTACTED\r\n//   QUALIFIED\r\n//   PROPOSAL\r\n//   WON\r\n//   LOST\r\n// }",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/branch-manager/crm-leads/:jd",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "branch-manager",
-                    "crm-leads",
-                    ":jd"
-                  ],
-                  "variable": [
-                    {
-                      "key": "jd",
-                      "value": ""
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Delete 1",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{branchManager}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "DELETE",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n  \"businessName\": \"Belon IT\",\r\n  \"businessType\": \"Tech\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Jane Doe\",\r\n  \"ownerEmail\": \"belon@test.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+1234567890\",\r\n  \"planId\": \"plan_12345abcde\",\r\n  \"planCycle\": \"YEARLY\",\r\n  \"status\": \"ACTIVE\",\r\n  \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/branch-manager/crm-leads/:jd",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "branch-manager",
-                    "crm-leads",
-                    ":jd"
-                  ],
-                  "variable": [
-                    {
-                      "key": "jd",
-                      "value": "3d4e7f11-0a07-4b17-8f5b-4a5d61c95322"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            }
-          ]
-        },
-        {
-          "name": "Order Booking branch",
-          "item": [
-            {
-              "name": "Create",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{branchManager}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"customerName\": \"Rahim Uddin\",\n  \"customerNumber\": \"01711223344\",\n  \"email\": \"rahim@example.com\",\n  \"price\": \"1200\",\n  \"stageId\": \"stage-uuid-from-workflow-stages\",\n  \"paymentStatus\": \"PENDING\",\n  \"paymentMethod\": \"CASH_ON_DELIVERY\",\n  \"orderNote\": \"Please deliver between 2 PM to 5 PM\",\n  \"branchId\": \"01a131ce-6189-42a3-990b-a08d61ef1029\",\n  \"metadata\": {\n    \"address\": \"House 12, Road 5, Dhanmondi, Dhaka\",\n    \"deliveryFromAddress\": \"Mirpur 10 Branch, Dhaka\",\n    \"productName\": \"Premium Cotton T-Shirt\",\n    \"quantity\": 2,\n    \"size\": \"XL\",\n    \"shippingCharge\": 100,\n    \"deliveryTime\": \"2026-05-30T10:00:00.000Z\"\n  }\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/branch-manager/order-bookings/create",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "branch-manager",
-                    "order-bookings",
-                    "create"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Get all",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{branchManager}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/branch-manager/order-bookings/all",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "branch-manager",
-                    "order-bookings",
-                    "all"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Single",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{branchManager}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "GET",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n  \"businessName\": \"Belon IT\",\r\n  \"businessType\": \"Tech\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Jane Doe\",\r\n  \"ownerEmail\": \"belon@test.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+1234567890\",\r\n  \"planId\": \"plan_12345abcde\",\r\n  \"planCycle\": \"YEARLY\",\r\n  \"status\": \"ACTIVE\",\r\n  \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/branch-manager/order-bookings/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "branch-manager",
-                    "order-bookings",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "f2f8c267-c7fd-475e-9a06-67381e5ff3f8"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Update",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{branchManager}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "PATCH",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n  \"name\": \"Main Branch\",\r\n  \"managerId\": \"uuid-of-existing-branch-manager-user\" \r\n}\r\n",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/branch-manager/order-bookings/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "branch-manager",
-                    "order-bookings",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": ""
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Delete 1",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{branchManager}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "DELETE",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n  \"businessName\": \"Belon IT\",\r\n  \"businessType\": \"Tech\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Jane Doe\",\r\n  \"ownerEmail\": \"belon@test.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+1234567890\",\r\n  \"planId\": \"plan_12345abcde\",\r\n  \"planCycle\": \"YEARLY\",\r\n  \"status\": \"ACTIVE\",\r\n  \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/branch-manager/order-bookings/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "branch-manager",
-                    "order-bookings",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": ""
-                    }
-                  ]
-                }
-              }
             }
           ]
         },
@@ -5451,11 +4963,620 @@
               ]
             }
           ]
+        },
+        {
+          "name": "Order Booking branch",
+          "item": [
+            {
+              "name": "Create",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerName\": \"Rahim Uddin\",\n  \"customerNumber\": \"01711223344\",\n  \"email\": \"rahim@example.com\",\n  \"price\": \"1200\",\n  \"stageId\": \"stage-uuid-from-workflow-stages\",\n  \"paymentStatus\": \"PENDING\",\n  \"paymentMethod\": \"CASH_ON_DELIVERY\",\n  \"orderNote\": \"Please deliver between 2 PM to 5 PM\",\n  \"branchId\": \"01a131ce-6189-42a3-990b-a08d61ef1029\",\n  \"metadata\": {\n    \"address\": \"House 12, Road 5, Dhanmondi, Dhaka\",\n    \"deliveryFromAddress\": \"Mirpur 10 Branch, Dhaka\",\n    \"productName\": \"Premium Cotton T-Shirt\",\n    \"quantity\": 2,\n    \"size\": \"XL\",\n    \"shippingCharge\": 100,\n    \"deliveryTime\": \"2026-05-30T10:00:00.000Z\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/bookings/create",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "bookings",
+                    "create"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get all",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/bookings/all",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "bookings",
+                    "all"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Single",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"businessName\": \"Belon IT\",\r\n  \"businessType\": \"Tech\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Jane Doe\",\r\n  \"ownerEmail\": \"belon@test.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+1234567890\",\r\n  \"planId\": \"plan_12345abcde\",\r\n  \"planCycle\": \"YEARLY\",\r\n  \"status\": \"ACTIVE\",\r\n  \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/bookings/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "bookings",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "f2f8c267-c7fd-475e-9a06-67381e5ff3f8"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n \"price\" : \"2000\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/bookings/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "bookings",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "5cd0ada3-064b-413b-91e6-faeea6ae94a1"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete 1",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"businessName\": \"Belon IT\",\r\n  \"businessType\": \"Tech\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Jane Doe\",\r\n  \"ownerEmail\": \"belon@test.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+1234567890\",\r\n  \"planId\": \"plan_12345abcde\",\r\n  \"planCycle\": \"YEARLY\",\r\n  \"status\": \"ACTIVE\",\r\n  \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/bookings/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "bookings",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Pricing Branch",
+          "item": [
+            {
+              "name": "Create",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"ruleName\": \"Summer Discount Rule\",\r\n  \"type\": \"PERCENTAGE\",\r\n  \"configuration\": \"{\\\"percentage\\\": 15, \\\"maxDiscount\\\": 500}\",\r\n  \"status\": true\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/pricing/create",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "pricing",
+                    "create"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get all",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/pricing/all",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "pricing",
+                    "all"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Single",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/pricing/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "pricing",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "06701a8e-01ec-4752-a46c-d4f797745f1b"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"ruleName\": \"Winter Discount Rule\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/pricing/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "pricing",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "06701a8e-01ec-4752-a46c-d4f797745f1b"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete 1",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"businessName\": \"Belon IT\",\r\n  \"businessType\": \"Tech\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Jane Doe\",\r\n  \"ownerEmail\": \"belon@test.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+1234567890\",\r\n  \"planId\": \"plan_12345abcde\",\r\n  \"planCycle\": \"YEARLY\",\r\n  \"status\": \"ACTIVE\",\r\n  \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/pricing/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "pricing",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "CRM Leads Branch",
+          "item": [
+            {
+              "name": "Create",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"johndoe@example.com\",\n  \"phone\": \"+1234567890\",\n  \"source\": \"SOCIAL_MEDIA\",\n  \"stageId\": \"stage-uuid-from-crm-workflow-stages\",\n  \"address\": \"123 Marketing Ave, Suite 1\",\n  \"note\": \"Client found us via a Facebook Ad campaign.\",\n  \"metadata\": {\n    \"campaignName\": \"FB Promo 2026\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/crm-leads/create",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "crm-leads",
+                    "create"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get all",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/crm-leads/all",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "crm-leads",
+                    "all"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Single",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"businessName\": \"Belon IT\",\r\n  \"businessType\": \"Tech\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Jane Doe\",\r\n  \"ownerEmail\": \"belon@test.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+1234567890\",\r\n  \"planId\": \"plan_12345abcde\",\r\n  \"planCycle\": \"YEARLY\",\r\n  \"status\": \"ACTIVE\",\r\n  \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/crm-leads/:jd",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "crm-leads",
+                    ":jd"
+                  ],
+                  "variable": [
+                    {
+                      "key": "jd",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"John Doe Jr\",\r\n  \"email\": \"johndoe.new@example.com\",\r\n  \"phone\": \"+0987654321\",\r\n  \"source\": \"WEBSITE\",\r\n  \"status\": \"CONTACTED\",\r\n  \"address\": \"456 Updated St\",\r\n  \"note\": \"Called the client, waiting for proposal.\"\r\n}\r\n\r\n\r\n// enum SourceEnum {\r\n//   WEBSITE\r\n//   SOCIAL_MEDIA\r\n//   REFERRAL\r\n//   COLD_CALL\r\n//   OTHER\r\n// }\r\n\r\n// enum CrmStatus {\r\n//   NEW\r\n//   CONTACTED\r\n//   QUALIFIED\r\n//   PROPOSAL\r\n//   WON\r\n//   LOST\r\n// }",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/crm-leads/:jd",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "crm-leads",
+                    ":jd"
+                  ],
+                  "variable": [
+                    {
+                      "key": "jd",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete 1",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{branchManager}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"businessName\": \"Belon IT\",\r\n  \"businessType\": \"Tech\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Jane Doe\",\r\n  \"ownerEmail\": \"belon@test.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+1234567890\",\r\n  \"planId\": \"plan_12345abcde\",\r\n  \"planCycle\": \"YEARLY\",\r\n  \"status\": \"ACTIVE\",\r\n  \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/branch-manager/crm-leads/:jd",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "branch-manager",
+                    "crm-leads",
+                    ":jd"
+                  ],
+                  "variable": [
+                    {
+                      "key": "jd",
+                      "value": "3d4e7f11-0a07-4b17-8f5b-4a5d61c95322"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
         }
       ]
     },
     {
-      "name": "📒📒📒📒📒For Landing Page Create or signup business",
+      "name": "📒For Landing Page",
       "item": [
         {
           "name": "Create Business",
@@ -5467,7 +5588,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"businessName\": \"Ahanaf Transport LTD\",\r\n  \"businessType\": \"Education\",\r\n  \"description\": \"A leading technology company specializing in AI solutions.\",\r\n  \"selectedBranch\": \"6\",\r\n  \"ownerName\": \"Ahanaf Mubasshir\",\r\n  \"ownerEmail\": \"ahanaf.betopia@gmail.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+1234567890\"\r\n//   \"planId\": \"plan_12345abcde\",\r\n//   \"planCycle\": \"MONTHLY\",\r\n//   \"credits\": 100\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
+              "raw": "{\r\n  \"businessName\": \"Ahanaf Education\",\r\n  \"industry\": \"EDUCATION\",\r\n  \"description\": \"Providing international language course 'english', 'french'\",\r\n  \"ownerName\": \"Sharah Ris\",\r\n  \"ownerEmail\": \"sharah.ris@gmail.com\",\r\n  \"ownerPassword\": \"123456\",\r\n  \"ownerPhone\": \"+8801711223344\",\r\n  \"country\": \"BD\",\r\n  \"address\": \"Dhaka\"\r\n}\r\n\r\n\r\n// businessType: \"Retail\", \"Service\", \"Manufacturing\", \"Tech\", \"Other\"\r\n// planCycle: \"MONTHLY\", \"YEARLY\"\r\n// status: \"ACTIVE\", \"INACTIVE\", \"SUSPENDED\", \"PENDING\"\r\n",
               "options": {
                 "raw": {
                   "language": "json"
@@ -5475,13 +5596,13 @@
               }
             },
             "url": {
-              "raw": "{{baseUrl}}/system-owner/businesses/create",
+              "raw": "{{baseUrl}}/global/business/create",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "system-owner",
-                "businesses",
+                "global",
+                "business",
                 "create"
               ]
             }
@@ -5554,6 +5675,69 @@
               "body": "{\n    \"message\": \"Business created successfully\",\n    \"success\": true,\n    \"statusCode\": 201,\n    \"data\": {\n        \"id\": \"222d1e54-b9d2-4f58-b406-817a451098e3\",\n        \"businessName\": \"BD Calling\",\n        \"businessType\": \"Tech\",\n        \"description\": \"A leading technology company specializing in AI solutions.\",\n        \"ownerName\": \"Jane Doe\",\n        \"ownerEmail\": \"jane.doe@acmeinnovations.com\",\n        \"ownerPassword\": \"SecurePassword123!\",\n        \"ownerPhone\": \"+1234567890\",\n        \"selectedBranch\": \"6\",\n        \"planId\": \"plan_12345abcde\",\n        \"planCycle\": \"YEARLY\",\n        \"status\": \"ACTIVE\",\n        \"createdById\": \"5622a782-9080-4d6a-8dba-51618d8e788a\",\n        \"credits\": 100,\n        \"createdAt\": \"2026-05-24T09:10:58.809Z\",\n        \"updatedAt\": \"2026-05-24T09:10:58.809Z\"\n    }\n}"
             }
           ]
+        },
+        {
+          "name": "Get All Subscription",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/public/subscription-plans",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "public",
+                "subscription-plans"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Single Subscription",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/public/subscription-plans/:subscriptionId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "public",
+                "subscription-plans",
+                ":subscriptionId"
+              ],
+              "variable": [
+                {
+                  "key": "subscriptionId",
+                  "value": "cmqg26qhd0000k8l64eqv1zoy"
+                }
+              ]
+            }
+          },
+          "response": []
         }
       ]
     }

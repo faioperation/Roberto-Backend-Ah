@@ -96,6 +96,9 @@ export const checkAuthMiddleware =
               });
             }
           }
+
+          // Attach business to req so controllers can use it directly
+          req.business = business;
         }
 
         req.user = user;

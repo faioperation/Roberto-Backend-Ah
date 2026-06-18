@@ -30,7 +30,7 @@ const startServer = async () => {
 };
 
 // Start server
-startServer();
+startServer(); // trigger restart
 
 /**
  * 🔴 Unhandled Promise Rejection

@@ -1,70 +1,9 @@
 import prisma from "../prisma/client.js";
 
 /**
- * Resolves a workflow stage ID for a given business and type.
- * If stageId is provided, verifies it belongs to this business.
- * If statusName is provided, maps it to a stage name in the active workflow (case-insensitive).
- * If neither is provided or found, uses/creates a default stage.
- */
-export const resolveWorkflowStage = async (businessId, type, stageId, statusName) => {
-  if (!businessId) return null;
-
-  // 1. If stageId is provided, verify it exists and is under the business's workflow
-  if (stageId) {
-    const stage = await prisma.workflowStage.findFirst({
-      where: {
-        id: stageId,
-        workflow: { businessId }
-      }
-    });
-    if (stage) return stage.id;
-  }
-
-  // 2. Find or create active workflow of this type for this business
-  let workflow = await prisma.workflow.findFirst({
-    where: { businessId, type, isActive: true },
-    include: { stages: { orderBy: { order: "asc" } } }
-  });
-
-  if (!workflow) {
-    workflow = await prisma.workflow.create({
-      data: {
-        businessId,
-        name: type === "BOOKING" ? "Default Booking Workflow" : "Default CRM Workflow",
-        type,
-        isActive: true
-      },
-      include: { stages: { orderBy: { order: "asc" } } }
-    });
-  }
-
-  // 3. Find or create the stage with statusName
-  const cleanStatusName = (statusName || (type === "BOOKING" ? "PENDING" : "NEW")).trim();
-  let stage = workflow.stages.find(
-    s => s.name.trim().toUpperCase() === cleanStatusName.toUpperCase()
-  );
-
-  if (!stage) {
-    const nextOrder = workflow.stages.length + 1;
-    stage = await prisma.workflowStage.create({
-      data: {
-        workflowId: workflow.id,
-        name: cleanStatusName,
-        order: nextOrder,
-        color: "#17a2b8" // Default info color
-      }
-    });
-  }
-
-  return stage.id;
-};
-
-/**
- * Standardizes booking payload: maps flat properties into `metadata` Json
- * and resolves `stageId` dynamically.
+ * Standardizes booking payload (simplified for order booking schema).
  */
 export const extractBookingPayload = async (businessId, payload) => {
-  // Normalize snake_case keys to camelCase standard keys
   const normalizedPayload = { ...payload };
   const keyMap = {
     branch_id: "branchId",
@@ -72,11 +11,8 @@ export const extractBookingPayload = async (businessId, payload) => {
     created_by: "createdById",
     customer_name: "customerName",
     customer_number: "customerNumber",
-    payment_status: "paymentStatus",
-    payment_method: "paymentMethod",
-    order_note: "orderNote",
-    stage_id: "stageId",
-    order_status: "orderStatus",
+    note: "note",
+    order_note: "note",
   };
 
   for (const [snakeKey, camelKey] of Object.entries(keyMap)) {
@@ -93,57 +29,37 @@ export const extractBookingPayload = async (businessId, payload) => {
     "customerNumber",
     "email",
     "price",
-    "stageId",
-    "paymentStatus",
-    "paymentMethod",
-    "orderNote",
-    "metadata"
+    "note"
   ];
 
   const extracted = {};
-  const metadata = normalizedPayload.metadata && typeof normalizedPayload.metadata === "object" ? { ...normalizedPayload.metadata } : {};
 
   // Extract standard keys
   for (const key of standardKeys) {
-    if (key !== "stageId" && key !== "metadata" && normalizedPayload[key] !== undefined) {
+    if (normalizedPayload[key] !== undefined) {
       extracted[key] = normalizedPayload[key];
     }
   }
 
-  // Put non-standard fields in metadata (excluding orderStatus/status which are used for workflow resolution and snake_case keys)
-  for (const [key, value] of Object.entries(normalizedPayload)) {
-    if (!standardKeys.includes(key) && key !== "orderStatus" && key !== "status" && !keyMap[key]) {
-      metadata[key] = value;
-    }
-  }
-
-  // Resolve stageId
-  const statusName = normalizedPayload.orderStatus || normalizedPayload.status;
-  extracted.stageId = await resolveWorkflowStage(businessId, "BOOKING", normalizedPayload.stageId, statusName);
-
-  // Set price as string since Prisma expects String for price
+  // Set price as string
   if (extracted.price !== undefined) {
     extracted.price = String(extracted.price);
   }
 
-  extracted.metadata = metadata;
   extracted.businessId = businessId;
 
   return extracted;
 };
 
 /**
- * Standardizes CRM Lead payload: maps flat properties into `metadata` Json
- * and resolves `stageId` dynamically.
+ * Standardizes CRM Lead payload.
  */
 export const extractLeadPayload = async (businessId, payload) => {
-  // Normalize snake_case keys to camelCase standard keys
   const normalizedPayload = { ...payload };
   const keyMap = {
     branch_id: "branchId",
     created_by_id: "createdById",
     created_by: "createdById",
-    stage_id: "stageId",
   };
 
   for (const [snakeKey, camelKey] of Object.entries(keyMap)) {
@@ -156,13 +72,13 @@ export const extractLeadPayload = async (businessId, payload) => {
     "businessId",
     "createdById",
     "branchId",
-    "stageId",
     "name",
     "email",
     "phone",
     "source",
     "address",
     "note",
+    "status",
     "metadata"
   ];
 
@@ -171,20 +87,35 @@ export const extractLeadPayload = async (businessId, payload) => {
 
   // Extract standard keys
   for (const key of standardKeys) {
-    if (key !== "stageId" && key !== "metadata" && normalizedPayload[key] !== undefined) {
+    if (key !== "metadata" && normalizedPayload[key] !== undefined) {
       extracted[key] = normalizedPayload[key];
     }
   }
 
-  // Put non-standard fields in metadata (excluding status which is used for workflow resolution and snake_case keys)
+  // Put non-standard fields in metadata
   for (const [key, value] of Object.entries(normalizedPayload)) {
-    if (!standardKeys.includes(key) && key !== "status" && !keyMap[key]) {
+    if (!standardKeys.includes(key) && !keyMap[key]) {
       metadata[key] = value;
     }
   }
 
-  // Resolve stageId
-  extracted.stageId = await resolveWorkflowStage(businessId, "CRM", normalizedPayload.stageId, normalizedPayload.status);
+  if (extracted.status) {
+    const statusUpper = String(extracted.status).toUpperCase();
+    if (["COLD", "WARM", "BOOKED", "HOT"].includes(statusUpper)) {
+      extracted.status = statusUpper;
+    } else {
+      extracted.status = "COLD";
+    }
+  }
+
+  if (extracted.source) {
+    const sourceUpper = String(extracted.source).toUpperCase().replace(/[-\s]/g, "_");
+    if (["WEBSITE", "SOCIAL_MEDIA", "REFERRAL", "COLD_CALL", "OTHER"].includes(sourceUpper)) {
+      extracted.source = sourceUpper;
+    } else {
+      extracted.source = "OTHER";
+    }
+  }
 
   extracted.metadata = metadata;
   extracted.businessId = businessId;
