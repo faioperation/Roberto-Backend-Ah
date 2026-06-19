@@ -247,7 +247,38 @@ const getAllBusinessesService = async (query = {}) => {
         return formatBusinessResponse(item);
     });
 
-    return { meta: queryBuilder.getMeta(total), data: formatted };
+    const totalTenants = await prisma.business.count();
+    const activeTenants = await prisma.business.count({ where: { status: "ACTIVE" } });
+
+    // Calculate MRR from active subscriptions
+    const activeSubscriptions = await prisma.businessSubscription.findMany({
+        where: {
+            status: "ACTIVE",
+        },
+        include: {
+            plan: true,
+        },
+    });
+
+    let mrr = 0;
+    for (const sub of activeSubscriptions) {
+        if (sub.plan) {
+            if (sub.billingCycle === "MONTHLY") {
+                mrr += sub.plan.monthlyPrice || 0;
+            } else if (sub.billingCycle === "YEARLY") {
+                const yearlyPrice = sub.plan.yearlyPrice || (sub.plan.monthlyPrice * 12);
+                mrr += (yearlyPrice / 12);
+            }
+        }
+    }
+
+    return {
+        meta: queryBuilder.getMeta(total),
+        data: formatted,
+        totalTenants,
+        activeTenants,
+        mrr: Math.round(mrr * 100) / 100,
+    };
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
