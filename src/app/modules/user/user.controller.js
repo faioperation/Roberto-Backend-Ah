@@ -53,10 +53,12 @@ const getUserInfo = async (req, res, next) => {
       }
     } else if (userRoleNames.includes("BRANCH_MANAGER")) {
       const manager = await prisma.branchManager.findUnique({
-        where: { email: user.email }
+        where: { email: user.email },
+        include: { branches: { select: { id: true } } }
       });
       if (manager) {
         user.businessId = manager.businessId;
+        user.branchId = manager.branches?.[0]?.id || null;
       }
     }
 

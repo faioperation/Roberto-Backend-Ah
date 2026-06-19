@@ -8,6 +8,7 @@ const createAgentSchema = z.object({
         agentName: z.string({
             required_error: "agentName is required",
         }),
+        branchId: z.string().optional(),
     }),
 });
 
@@ -15,6 +16,7 @@ const updateAgentSchema = z.object({
     body: z.object({
         businessId: z.string().optional(),
         agentName: z.string().optional(),
+        branchId: z.string().optional(),
     }),
 });
 

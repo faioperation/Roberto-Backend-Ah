@@ -1,7 +1,7 @@
 import express from "express";
-import { OrderBookingController } from "./orderBooking.controller.js";
+import { BookingController } from "./orderBooking.controller.js";
 import validateRequest from "../../../middleware/validateRequest.js";
-import { OrderBookingValidation } from "./orderBooking.validation.js";
+import { BookingValidation } from "./orderBooking.validation.js";
 import { checkAuthMiddleware } from "../../../middleware/checkAuthMiddleware.js";
 import { Role } from "../../../utils/role.js";
 
@@ -10,33 +10,33 @@ const router = express.Router();
 router.post(
     "/create",
     checkAuthMiddleware(Role.BUSINESS_OWNER),
-    validateRequest(OrderBookingValidation.createOrderBookingSchema),
-    OrderBookingController.createOrderBooking
+    validateRequest(BookingValidation.createBookingSchema),
+    BookingController.createBooking
 );
 
 router.get(
     "/all",
     checkAuthMiddleware(Role.BUSINESS_OWNER),
-    OrderBookingController.getAllOrderBookings
+    BookingController.getAllBookings
 );
 
 router.get(
     "/:id",
     checkAuthMiddleware(Role.BUSINESS_OWNER),
-    OrderBookingController.getOrderBookingById
+    BookingController.getBookingById
 );
 
 router.patch(
     "/:id",
     checkAuthMiddleware(Role.BUSINESS_OWNER),
-    validateRequest(OrderBookingValidation.updateOrderBookingSchema),
-    OrderBookingController.updateOrderBooking
+    validateRequest(BookingValidation.updateBookingSchema),
+    BookingController.updateBooking
 );
 
 router.delete(
     "/:id",
     checkAuthMiddleware(Role.BUSINESS_OWNER),
-    OrderBookingController.deleteOrderBooking
+    BookingController.deleteBooking
 );
 
 export const OrderBookingRoutes = router;

@@ -1,107 +1,54 @@
 import { sendResponse } from "../../../utils/sendResponse.js";
 import { StatusCodes } from "http-status-codes";
-import { OrderBookingService } from "./orderBooking.service.js";
-import prisma from "../../../prisma/client.js";
+import { BookingService } from "./orderBooking.service.js";
 import DevBuildError from "../../../lib/DevBuildError.js";
 
-const createOrderBooking = async (req, res, next) => {
+const createBooking = async (req, res, next) => {
     try {
-        const userId = req.user?.id;
-        
-        if (!userId) {
-            throw new DevBuildError("User is not authenticated", StatusCodes.UNAUTHORIZED);
-        }
+        req.body.businessId = req.business.id;
+        req.body.businessType = req.business.businessType;
+        req.body.createdById = req.user.id;
 
-        // Find the business owned by the logged-in user
-        const business = await prisma.business.findFirst({
-            where: { ownerId: userId }
-        });
-
-        if (!business) {
-            throw new DevBuildError("No business found for the logged-in user", StatusCodes.BAD_REQUEST);
-        }
-
-        req.body.businessId = business.id;
-        req.body.createdById = userId;
-
-        const result = await OrderBookingService.createOrderBookingService(req.body);
-
-        sendResponse(res, {
-            statusCode: StatusCodes.CREATED,
-            success: true,
-            message: "Order booking created successfully",
-            data: result,
-        });
-    } catch (error) {
-        next(error);
-    }
+        const result = await BookingService.createBookingService(req.body);
+        sendResponse(res, { statusCode: StatusCodes.CREATED, success: true, message: "Booking created successfully", data: result });
+    } catch (error) { next(error); }
 };
 
-const getAllOrderBookings = async (req, res, next) => {
+const getAllBookings = async (req, res, next) => {
     try {
-        const result = await OrderBookingService.getAllOrderBookingsService(req.query);
-
-        sendResponse(res, {
-            statusCode: StatusCodes.OK,
-            success: true,
-            message: "Order bookings retrieved successfully",
-            meta: result.meta,
-            data: result.data,
-        });
-    } catch (error) {
-        next(error);
-    }
+        req.query.businessId = req.business.id;
+        const result = await BookingService.getAllBookingsService(req.query);
+        sendResponse(res, { statusCode: StatusCodes.OK, success: true, message: "Bookings retrieved successfully", meta: result.meta, data: result.data });
+    } catch (error) { next(error); }
 };
 
-const getOrderBookingById = async (req, res, next) => {
+const getBookingById = async (req, res, next) => {
     try {
-        const result = await OrderBookingService.getOrderBookingByIdService(req.params.id, req.query);
-
-        sendResponse(res, {
-            statusCode: StatusCodes.OK,
-            success: true,
-            message: "Order booking retrieved successfully",
-            data: result,
-        });
-    } catch (error) {
-        next(error);
-    }
+        const result = await BookingService.getBookingByIdService(req.business.id, req.params.id, req.query);
+        if (result.businessId !== req.business.id) throw new DevBuildError("Unauthorized", StatusCodes.FORBIDDEN);
+        sendResponse(res, { statusCode: StatusCodes.OK, success: true, message: "Booking retrieved successfully", data: result });
+    } catch (error) { next(error); }
 };
 
-const updateOrderBooking = async (req, res, next) => {
+const updateBooking = async (req, res, next) => {
     try {
-        const result = await OrderBookingService.updateOrderBookingService(req.params.id, req.body);
-
-        sendResponse(res, {
-            statusCode: StatusCodes.OK,
-            success: true,
-            message: "Order booking updated successfully",
-            data: result,
-        });
-    } catch (error) {
-        next(error);
-    }
+        req.body.userId = req.user.id;
+        const result = await BookingService.updateBookingService(req.business.id, req.params.id, req.body);
+        sendResponse(res, { statusCode: StatusCodes.OK, success: true, message: "Booking updated successfully", data: result });
+    } catch (error) { next(error); }
 };
 
-const deleteOrderBooking = async (req, res, next) => {
+const deleteBooking = async (req, res, next) => {
     try {
-        const result = await OrderBookingService.deleteOrderBookingService(req.params.id);
-
-        sendResponse(res, {
-            statusCode: StatusCodes.OK,
-            success: true,
-            message: "Order booking deleted successfully",
-            data: result,
-        });
-    } catch (error) {
-        next(error);
-    }
+        const result = await BookingService.deleteBookingService(req.business.id, req.params.id);
+        sendResponse(res, { statusCode: StatusCodes.OK, success: true, message: "Booking deleted successfully", data: result });
+    } catch (error) { next(error); }
 };
 
-export const OrderBookingController = {
-    createOrderBooking,
-    getAllOrderBookings,
-    getOrderBookingById,
-    updateOrderBooking,
-    deleteOrderBooking,
+export const BookingController = {
+    createBooking,
+    getAllBookings,
+    getBookingById,
+    updateBooking,
+    deleteBooking,
 };

@@ -44,10 +44,12 @@ const credentialLogin = async (req, res, next) => {
           }
         } else if (userRoleNames.includes("BRANCH_MANAGER")) {
           const manager = await prisma.branchManager.findUnique({
-            where: { email: user.email }
+            where: { email: user.email },
+            include: { branches: { select: { id: true } } }
           });
           if (manager) {
             saveUser.businessId = manager.businessId;
+            saveUser.branchId = manager.branches?.[0]?.id || null;
           }
         }
 
@@ -114,27 +116,35 @@ const getNewAccessToken = async (req, res, next) => {
     const isBranchManager = userRoleNames.includes("BRANCH_MANAGER");
 
     if (isBusinessOwner || isBranchManager) {
-      let business = null;
       if (isBusinessOwner) {
-        business = await prisma.business.findFirst({
+        const business = await prisma.business.findFirst({
           where: { ownerId: user.id }
         });
+        // BUSINESS_OWNER can refresh token even if INACTIVE (to purchase subscription)
+        // Block only if SUSPENDED or deleted
+        if (!business || business.deletedAt || business.status === "SUSPENDED") {
+          throw new DevBuildError(
+            "Your business account is suspended. Please contact the administrator.",
+            StatusCodes.FORBIDDEN
+          );
+        }
       } else if (isBranchManager) {
         const manager = await prisma.branchManager.findUnique({
           where: { email: user.email }
         });
+        let business = null;
         if (manager) {
           business = await prisma.business.findUnique({
             where: { id: manager.businessId }
           });
         }
-      }
-
-      if (!business || business.deletedAt || business.status !== "ACTIVE") {
-        throw new DevBuildError(
-          "Your business account is suspended or inactive. Please contact the administrator.",
-          StatusCodes.FORBIDDEN
-        );
+        // BRANCH_MANAGER requires business to be ACTIVE
+        if (!business || business.deletedAt || business.status !== "ACTIVE") {
+          throw new DevBuildError(
+            "Your business account is suspended or inactive. Please contact the administrator.",
+            StatusCodes.FORBIDDEN
+          );
+        }
       }
     }
 

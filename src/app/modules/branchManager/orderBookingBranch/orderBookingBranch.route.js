@@ -1,7 +1,7 @@
 import express from "express";
 import { OrderBookingBranchController } from "./orderBookingBranch.controller.js";
 import validateRequest from "../../../middleware/validateRequest.js";
-import { OrderBookingBranchValidation } from "./orderBookingBranch.validation.js";
+import { BookingValidation } from "../../businessOwner/orderBooking/orderBooking.validation.js";
 import { checkAuthMiddleware } from "../../../middleware/checkAuthMiddleware.js";
 import { Role } from "../../../utils/role.js";
 
@@ -10,33 +10,33 @@ const router = express.Router();
 router.post(
     "/create",
     checkAuthMiddleware(Role.BRANCH_MANAGER),
-    validateRequest(OrderBookingBranchValidation.createOrderBookingSchema),
-    OrderBookingBranchController.createOrderBooking
+    validateRequest(BookingValidation.createBookingSchema),
+    OrderBookingBranchController.createBooking
 );
 
 router.get(
     "/all",
     checkAuthMiddleware(Role.BRANCH_MANAGER),
-    OrderBookingBranchController.getAllOrderBookings
+    OrderBookingBranchController.getAllBookings
 );
 
 router.get(
     "/:id",
     checkAuthMiddleware(Role.BRANCH_MANAGER),
-    OrderBookingBranchController.getOrderBookingById
+    OrderBookingBranchController.getBookingById
 );
 
 router.patch(
     "/:id",
     checkAuthMiddleware(Role.BRANCH_MANAGER),
-    validateRequest(OrderBookingBranchValidation.updateOrderBookingSchema),
-    OrderBookingBranchController.updateOrderBooking
+    validateRequest(BookingValidation.updateBookingSchema),
+    OrderBookingBranchController.updateBooking
 );
 
 router.delete(
     "/:id",
     checkAuthMiddleware(Role.BRANCH_MANAGER),
-    OrderBookingBranchController.deleteOrderBooking
+    OrderBookingBranchController.deleteBooking
 );
 
 export const OrderBookingBranchRoutes = router;

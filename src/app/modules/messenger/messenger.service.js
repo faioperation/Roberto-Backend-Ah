@@ -35,9 +35,11 @@ export const handleIncomingMessage = async (pageId, webhookEvent) => {
     update: {
       lastMessage: messageText || "Attachment/Other",
       lastMessageAt: new Date(),
+      branchId: connection.branchId || null,
     },
     create: {
       businessId,
+      branchId: connection.branchId || null,
       platform: "messenger",
       customerId: senderId,
       lastMessage: messageText || "Attachment/Other",
@@ -207,9 +209,14 @@ export const sendMediaMessageToUser = async (businessId, recipientId, type, medi
   }
 };
 
-export const getConversations = async (businessId) => {
+export const getConversations = async (businessId, branchId) => {
+  const whereClause = { businessId, platform: "messenger" };
+  if (branchId) {
+    whereClause.branchId = branchId;
+  }
+
   const conversations = await prisma.conversation.findMany({
-    where: { businessId, platform: "messenger" },
+    where: whereClause,
     orderBy: { lastMessageAt: 'desc' },
   });
 

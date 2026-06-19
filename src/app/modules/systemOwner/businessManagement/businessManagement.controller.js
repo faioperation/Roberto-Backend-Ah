@@ -59,7 +59,12 @@ const getAllBusinesses = async (req, res, next) => {
             success: true,
             message: "Businesses retrieved successfully",
             statusCode: StatusCodes.OK,
-            data: result.data,
+            data: {
+                businesses: result.data,
+                totalTenants: result.totalTenants,
+                activeTenants: result.activeTenants,
+                mrr: result.mrr,
+            },
             meta: result.meta,
         });
     } catch (error) {

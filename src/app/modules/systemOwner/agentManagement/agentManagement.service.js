@@ -85,7 +85,7 @@ const mergeRulesFiles = async (files) => {
     };
 };
 
-const createAgentService = async (businessId, agentName, files) => {
+const createAgentService = async (businessId, agentName, files, branchId) => {
     if (!files || files.length === 0) {
         throw new DevBuildError("rules_file is required for agent creation", StatusCodes.BAD_REQUEST);
     }
@@ -106,6 +106,7 @@ const createAgentService = async (businessId, agentName, files) => {
     const result = await prisma.agent.create({
         data: {
             businessId,
+            branchId: branchId || null,
             rulesFile: relativePath,
             vapiId,
             metadata: externalResponse ? { ...externalResponse, agentName } : { agentName },
@@ -166,6 +167,9 @@ const updateAgentService = async (id, payload, files) => {
     const updateData = {};
     if (payload.businessId) {
         updateData.businessId = payload.businessId;
+    }
+    if (payload.branchId !== undefined) {
+        updateData.branchId = payload.branchId;
     }
 
     const existingMetadata = existingAgent.metadata || {};

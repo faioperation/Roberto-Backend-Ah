@@ -15,9 +15,11 @@ export const WhatsappService = {
         phoneNumber: payload.phoneNumber,
         accessToken: payload.accessToken,
         status: "ACTIVE",
+        branchId: payload.branchId || null,
       },
       create: {
         businessId,
+        branchId: payload.branchId || null,
         wabaId: payload.wabaId,
         phoneNumberId: payload.phoneNumberId,
         phoneNumber: payload.phoneNumber,
@@ -46,9 +48,14 @@ export const WhatsappService = {
     });
   },
 
-  getConversations: async (businessId) => {
+  getConversations: async (businessId, branchId) => {
+    const whereClause = { businessId };
+    if (branchId) {
+      whereClause.whatsappAccount = { branchId };
+    }
+
     const conversations = await prisma.whatsappConversation.findMany({
-      where: { businessId },
+      where: whereClause,
       include: { contact: true },
     });
 

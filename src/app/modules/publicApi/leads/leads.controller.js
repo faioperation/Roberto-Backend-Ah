@@ -2,52 +2,29 @@ import prisma from "../../../prisma/client.js";
 import { StatusCodes } from "http-status-codes";
 import { sendResponse } from "../../../utils/sendResponse.js";
 import { AppError } from "../../../errorHelper/appError.js";
+import { extractLeadPayload } from "../../../utils/workflowHelpers.js";
 
 export const createLead = async (req, res, next) => {
   try {
-    const { businessId, branchId, name, email, phone, source, status, address, note } = req.body;
+    console.log("📥 [Public API - Create Lead] Incoming Request Data:", JSON.stringify(req.body, null, 2));
+    const { businessId, name } = req.body;
 
-    if (!businessId) {
-      throw new AppError(StatusCodes.BAD_REQUEST, "businessId is required.");
-    }
+    if (!businessId) throw new AppError(StatusCodes.BAD_REQUEST, "businessId is required.");
+    if (!name) throw new AppError(StatusCodes.BAD_REQUEST, "name is required.");
 
-    if (!name) {
-      throw new AppError(StatusCodes.BAD_REQUEST, "name is required.");
-    }
+    const businessExists = await prisma.business.findUnique({ where: { id: businessId } });
+    if (!businessExists) throw new AppError(StatusCodes.NOT_FOUND, `Business with ID ${businessId} not found.`);
 
-    // Verify if business exists
-    const businessExists = await prisma.business.findUnique({
-      where: { id: businessId }
-    });
+    const cleanPayload = await extractLeadPayload(businessId, req.body);
 
-    if (!businessExists) {
-      throw new AppError(StatusCodes.NOT_FOUND, `Business with ID ${businessId} not found.`);
-    }
-
-    if (branchId) {
+    if (cleanPayload.branchId) {
       const branchExists = await prisma.branch.findFirst({
-        where: { id: branchId, businessId }
+        where: { id: cleanPayload.branchId, businessId }
       });
-      if (!branchExists) {
-        throw new AppError(StatusCodes.NOT_FOUND, `Branch with ID ${branchId} not found in this business.`);
-      }
+      if (!branchExists) throw new AppError(StatusCodes.NOT_FOUND, `Branch not found in this business.`);
     }
 
-    const payload = {
-      businessId,
-      branchId: branchId || null,
-      name,
-      email: email || null,
-      phone: phone || null,
-      source: source || "WEBSITE", // Default to WEBSITE for public submissions
-      status: status || "NEW",
-      address: address || null,
-      note: note || null,
-    };
-
-    const newLead = await prisma.crmLead.create({
-      data: payload
-    });
+    const newLead = await prisma.crmLead.create({ data: cleanPayload });
 
     sendResponse(res, {
       success: true,

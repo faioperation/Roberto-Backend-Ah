@@ -23,6 +23,7 @@ app.use(express.json({
     req.rawBody = buf.toString("utf8");
   }
 }));
+app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
 
 // Routes

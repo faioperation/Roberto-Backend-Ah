@@ -57,9 +57,77 @@ const getAllSubscriptionPlansService = async (query = {}) => {
     const result = await prisma.subscriptionPlan.findMany(queryParams);
     const total = await prisma.subscriptionPlan.count({ where: queryBuilder.where });
 
+    // Calculate MRR, ARR, Active Subs
+    const activeSubscriptions = await prisma.businessSubscription.findMany({
+        where: {
+            status: "ACTIVE",
+        },
+        include: {
+            plan: true,
+        },
+    });
+
+    let mrr = 0;
+    const activeSubsCount = activeSubscriptions.length;
+
+    for (const sub of activeSubscriptions) {
+        if (sub.plan) {
+            if (sub.billingCycle === "MONTHLY") {
+                mrr += sub.plan.monthlyPrice || 0;
+            } else if (sub.billingCycle === "YEARLY") {
+                const yearlyPrice = sub.plan.yearlyPrice || (sub.plan.monthlyPrice * 12);
+                mrr += (yearlyPrice / 12);
+            }
+        }
+    }
+
+    const arr = mrr * 12;
+
+    // Fetch Billing History (all transactions/invoices)
+    const invoices = await prisma.subscriptionInvoice.findMany({
+        include: {
+            business: {
+                select: {
+                    name: true,
+                },
+            },
+            subscription: {
+                include: {
+                    plan: {
+                        select: {
+                            name: true,
+                        },
+                    },
+                },
+            },
+        },
+        orderBy: {
+            createdAt: "desc",
+        },
+    });
+
+    const billingHistory = invoices.map((invoice) => {
+        const planName = invoice.subscription?.plan?.name || "Subscription";
+        const billingCycleStr = invoice.billingCycle === "MONTHLY" ? "Monthly" : "Yearly";
+        return {
+            id: invoice.id,
+            date: invoice.createdAt,
+            description: `${planName} - ${billingCycleStr}`,
+            client: invoice.business?.name || "N/A",
+            amount: invoice.amount,
+            status: invoice.status ? invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1) : "Paid",
+            invoiceUrl: invoice.invoiceUrl,
+            invoicePath: invoice.invoicePath,
+        };
+    });
+
     return {
         meta: queryBuilder.getMeta(total),
         data: result,
+        mrr: Math.round(mrr * 100) / 100,
+        arr: Math.round(arr * 100) / 100,
+        activeSubs: activeSubsCount,
+        billingHistory,
     };
 };
 

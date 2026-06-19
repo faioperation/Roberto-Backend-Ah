@@ -6,6 +6,7 @@ import { processWebhookEvent } from "./webhook.service.js";
 import { sendMessageToUser, sendMediaMessageToUser, getConversations as getConversationsService, getMessages as getMessagesService } from "./instagram.service.js";
 import { sendResponse } from "../../utils/sendResponse.js";
 import { AppError } from "../../errorHelper/appError.js";
+import { getBusinessAndBranchForUser } from "../../utils/workflowHelpers.js";
 
 // --- OAuth ---
 export const authFacebook = async (req, res, next) => {
@@ -15,14 +16,15 @@ export const authFacebook = async (req, res, next) => {
       throw new AppError(404, "Business not found for this user");
     }
     const businessId = business.id;
+    const branchId = req.query.branchId || null;
 
     const redirectUri = envVars.INSTAGRAM_REDIRECT_URI;
     const appId = envVars.META_APP_ID;
     // Scopes needed for Instagram Messaging
     const permissions = "instagram_basic,instagram_manage_messages,pages_show_list,pages_manage_metadata,business_management";
     
-    // Using state to pass businessId to callback
-    const state = JSON.stringify({ businessId });
+    // Using state to pass businessId and branchId to callback
+    const state = JSON.stringify({ businessId, branchId });
     const graphVersion = envVars.META_GRAPH_VERSION || "v23.0";
 
     const authUrl = `https://www.facebook.com/${graphVersion}/dialog/oauth?client_id=${appId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${permissions}&state=${encodeURIComponent(state)}`;
@@ -52,6 +54,7 @@ export const authFacebookCallback = async (req, res, next) => {
 
     const parsedState = JSON.parse(state);
     const businessId = parsedState.businessId;
+    const branchId = parsedState.branchId || null;
     const redirectUri = envVars.INSTAGRAM_REDIRECT_URI;
     const graphVersion = envVars.META_GRAPH_VERSION || "v23.0";
 
@@ -93,6 +96,7 @@ export const authFacebookCallback = async (req, res, next) => {
               accessToken: page.access_token, // We use the Facebook Page Token to interact with IG Graph API
               pageName: page.name + " (Instagram)",
               isActive: true,
+              branchId: branchId || undefined,
             },
           });
         } else {
@@ -100,6 +104,7 @@ export const authFacebookCallback = async (req, res, next) => {
           await prisma.socialConnection.create({
             data: {
               businessId,
+              branchId,
               provider: "instagram",
               pageId: igAccountId,
               pageName: page.name + " (Instagram)",
@@ -167,10 +172,9 @@ export const handleWebhookEvent = async (req, res, next) => {
 // --- Messaging API ---
 export const sendMessengerMessage = async (req, res, next) => {
   try {
-    const business = await prisma.business.findFirst({ where: { ownerId: req.user.id } });
-    if (!business) throw new AppError(404, "Business not found for this user");
+    const { businessId } = await getBusinessAndBranchForUser(req.user);
+    if (!businessId) throw new AppError(404, "Business not found for this user");
     
-    const businessId = business.id;
     const { recipientId, message } = req.body;
 
     if (!recipientId || !message) {
@@ -192,10 +196,9 @@ export const sendMessengerMessage = async (req, res, next) => {
 
 export const sendMediaMessage = async (req, res, next) => {
   try {
-    const business = await prisma.business.findFirst({ where: { ownerId: req.user.id } });
-    if (!business) throw new AppError(404, "Business not found for this user");
+    const { businessId } = await getBusinessAndBranchForUser(req.user);
+    if (!businessId) throw new AppError(404, "Business not found for this user");
     
-    const businessId = business.id;
     const { recipientId, type } = req.body;
     let finalUrl = req.body.url;
 
@@ -229,12 +232,14 @@ export const sendMediaMessage = async (req, res, next) => {
 
 export const getConversations = async (req, res, next) => {
   try {
-    const business = await prisma.business.findFirst({ where: { ownerId: req.user.id } });
-    if (!business) throw new AppError(404, "Business not found for this user");
+    const { businessId, branchId: userBranchId, isOwner } = await getBusinessAndBranchForUser(req.user);
+    if (!businessId) throw new AppError(404, "Business not found for this user");
     
-    const businessId = business.id;
+    // If owner: filter by query branchId (optional), else return all.
+    // If branch manager: strictly filter by their branchId.
+    const branchId = isOwner ? (req.query.branchId || null) : userBranchId;
     
-    const conversations = await getConversationsService(businessId);
+    const conversations = await getConversationsService(businessId, branchId);
     
     sendResponse(res, {
       statusCode: 200,
@@ -269,11 +274,18 @@ export const getMessages = async (req, res, next) => {
 
 export const checkConnectionStatus = async (req, res, next) => {
   try {
-    const business = await prisma.business.findFirst({ where: { ownerId: req.user.id } });
-    if (!business) throw new AppError(404, "Business not found for this user");
+    const { businessId, branchId: userBranchId, isOwner } = await getBusinessAndBranchForUser(req.user);
+    if (!businessId) throw new AppError(404, "Business not found for this user");
+
+    const branchId = isOwner ? (req.query.branchId || null) : userBranchId;
+
+    const whereClause = { businessId, provider: "instagram", isActive: true };
+    if (branchId) {
+      whereClause.branchId = branchId;
+    }
 
     const connections = await prisma.socialConnection.findMany({
-      where: { businessId: business.id, provider: "instagram", isActive: true },
+      where: whereClause,
     });
 
     if (connections.length > 0) {

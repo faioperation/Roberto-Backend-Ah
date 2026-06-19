@@ -100,12 +100,35 @@
       font-size: 16px;
       box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
       margin: 20px 0;
-      transition: all 0.3s ease;
     }
 
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+    .btn-invoice {
+      display: inline-block;
+      background: #ffffff;
+      color: #6366f1 !important;
+      text-decoration: none;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 15px;
+      border: 2px solid #6366f1;
+      margin: 0 0 20px 0;
+    }
+
+    .invoice-section {
+      background: linear-gradient(135deg, #f0f4ff 0%, #faf5ff 100%);
+      border: 1px solid #c7d2fe;
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .invoice-section p {
+      color: #4338ca;
+      font-size: 14px;
+      margin: 0 0 12px 0;
+      font-weight: 500;
     }
 
     .footer {
@@ -122,44 +145,60 @@
       background: #e5e7eb;
       margin: 30px 0;
     }
+
+    .badge {
+      display: inline-block;
+      background: #d1fae5;
+      color: #065f46;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.5px;
+    }
   </style>
 </head>
 
 <body>
   <div class="container">
     <div class="header">
-      <h1>Subscription Activated!</h1>
-      <p>Thank you for choosing Tugatai</p>
+      <h1>🎉 Subscription Activated!</h1>
+      <p>Thank you for choosing Robarto</p>
     </div>
     <div class="content">
       <p class="welcome-text">Hello <%= name %>,</p>
-      <p>Your subscription has been successfully processed! Your business account is now fully active, and you can
+      <p>Your subscription has been successfully processed! Your business account is now fully active and you can
         access all your dashboard features.</p>
 
       <div class="details-card">
         <div class="details-row">
           <div class="details-label">Business Name:</div>
-          <div class="details-value">
-            <%= businessName %>
-          </div>
+          <div class="details-value"><%= businessName %></div>
         </div>
         <div class="details-row">
           <div class="details-label">Plan Purchased:</div>
-          <div class="details-value">
-            <%= planName %>
-          </div>
+          <div class="details-value"><%= planName %></div>
         </div>
         <div class="details-row">
           <div class="details-label">Billing Cycle:</div>
-          <div class="details-value">
-            <%= billingCycle %>
-          </div>
+          <div class="details-value"><%= billingCycle %></div>
+        </div>
+        <div class="details-row">
+          <div class="details-label">Amount Paid:</div>
+          <div class="details-value"><%= currency || 'USD' %> <%= Number(amount || 0).toFixed(2) %></div>
         </div>
         <div class="details-row">
           <div class="details-label">Status:</div>
-          <div class="details-value" style="color: #10b981;">ACTIVE</div>
+          <div class="details-value"><span class="badge">ACTIVE</span></div>
         </div>
       </div>
+
+      <% if (invoiceUrl) { %>
+      <div class="invoice-section">
+        <p>📄 Your invoice has been generated and is ready to download.</p>
+        <a href="<%= invoiceUrl %>" class="btn-invoice" target="_blank">Download Invoice PDF</a>
+      </div>
+      <% } %>
 
       <p>Click the button below to sign in and set up your workspace:</p>
 
@@ -172,7 +211,7 @@
     </div>
     <div class="footer">
       &copy; <%= new Date().getFullYear() %> Robarto. All rights reserved.<br>
-        Automate your customer communications with Robarto AI.
+      Automate your customer communications with Robarto AI.
     </div>
   </div>
 </body>

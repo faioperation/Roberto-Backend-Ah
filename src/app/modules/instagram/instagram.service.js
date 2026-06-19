@@ -43,9 +43,11 @@ export const handleIncomingMessage = async (instagramAccountId, webhookEvent) =>
     update: {
       lastMessage: lastMessageContent,
       lastMessageAt: new Date(),
+      branchId: connection.branchId || null,
     },
     create: {
       businessId,
+      branchId: connection.branchId || null,
       platform: "instagram",
       customerId: senderId,
       lastMessage: lastMessageContent,
@@ -219,9 +221,14 @@ export const sendMediaMessageToUser = async (businessId, recipientId, type, medi
   }
 };
 
-export const getConversations = async (businessId) => {
+export const getConversations = async (businessId, branchId) => {
+  const whereClause = { businessId, platform: "instagram" };
+  if (branchId) {
+    whereClause.branchId = branchId;
+  }
+
   const conversations = await prisma.conversation.findMany({
-    where: { businessId, platform: "instagram" },
+    where: whereClause,
     orderBy: { lastMessageAt: 'desc' },
   });
 

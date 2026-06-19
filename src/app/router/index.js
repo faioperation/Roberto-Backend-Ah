@@ -29,131 +29,52 @@ import { PublicPricingRoutes } from "../modules/publicApi/pricing/pricing.route.
 import { PublicChatSummaryRoutes } from "../modules/publicApi/chatSummary/chatSummary.route.js";
 import { ChatSummaryRoutes } from "../modules/chatSummary/chatSummary.route.js";
 import { VapiRoutes } from "../modules/systemOwner/vapi/vapi.route.js";
+import { PublicSubscriptionRoutes } from "../modules/publicApi/subscriptionPlan/subscriptionPlan.route.js";
+import { DashboardOverviewBRoutes } from "../modules/businessOwner/dashboardOvervieB/dashboardOvervieB.route.js";
+import { DashboardOverviewMRoutes } from "../modules/branchManager/dashboardOverviewM/dashboardOverviewM.route.js";
+import { TelephonyRoutes } from "../modules/systemOwner/twiloNumberCall/twiloNumberCall.route.js";
+import { DashboardOverviewSRoutes } from "../modules/systemOwner/dashboardOverviewS/dashboardOverviewS.route.js";
 
 export const router = Router();
-const moduleRoutes = [
-  {
-    path: "/user",
-    route: UserRoutes,
-  },
-  {
-    path: "/auth",
-    route: AuthRouter,
-  },
-  {
-    path: "/otp",
-    route: OtpRouter,
-  },
-  {
-    path: "/system-owner/businesses",
-    route: BusinessRoutes,
-  },
-  {
-    path: "/system-owner/subscription-plans",
-    route: SubscriptionPlanRoutes,
-  },
-  {
-    path: "/system-owner/activity-logs",
-    route: ActivityLogRoutes,
-  },
-  {
-    path: "/system-owner/agent-trainings",
-    route: AgentTrainingRoutes,
-  },
-  {
-    path: "/system-owner/agent-management",
-    route: AgentManagementRoutes,
-  },
-  {
-    path: "/business-owner/branch-managers",
-    route: BranchManagerRoutes,
-  },
-  {
-    path: "/business-owner/branches",
-    route: BranchRoutes,
-  },
-  {
-    path: "/business-owner/order-bookings",
-    route: OrderBookingRoutes,
-  },
-  {
-    path: "/business-owner/pricings",
-    route: PricingRoutes,
-  },
-  {
-    path: "/business-owner/crm-leads",
-    route: CrmLeadRoutes,
-  },
-  {
-    path: "/branch-manager/pricing",
-    route: PricingBranchRoutes,
-  },
-  {
-    path: "/branch-manager/crm-leads",
-    route: CrmLeadsManagerRoutes,
-  },
-  {
-    path: "/branch-manager/order-bookings",
-    route: OrderBookingBranchRoutes,
-  },
-  {
-    path: "/v1",
-    route: MessengerRoutes,
-  },
-  {
-    path: "/v1",
-    route: WhatsappRoutes,
-  },
-  {
-    path: "/v1",
-    route: InstagramRoutes,
-  },
-  {
-    path: "/v1/public/facebook",
-    route: PublicFacebookRoutes,
-  },
-  {
-    path: "/v1/public/instagram",
-    route: PublicInstagramRoutes,
-  },
-  {
-    path: "/v1/public/whatsapp",
-    route: PublicWhatsappRoutes,
-  },
-  {
-    path: "/payment",
-    route: PaymentRouter,
-  },
-  {
-    path: "/leads",
-    route: PublicLeadRoutes,
-  },
-  {
-    path: "/bookings",
-    route: PublicBookingRoutes,
-  },
-  {
-    path: "/v1/public/agent-training",
-    route: PublicAgentTrainingRoutes,
-  },
-  {
-    path: "/v1/public/pricings",
-    route: PublicPricingRoutes,
-  },
-  {
-    path: "/v1/public/chat-summaries",
-    route: PublicChatSummaryRoutes,
-  },
-  {
-    path: "/chat-summaries",
-    route: ChatSummaryRoutes,
-  },
-  {
-    path: "/webhook",
-    route: VapiRoutes,
-  }
-];
 
+const moduleRoutes = [
+  { path: "/user", route: UserRoutes },
+  { path: "/auth", route: AuthRouter },
+  { path: "/otp", route: OtpRouter },
+  { path: "/system-owner/businesses", route: BusinessRoutes },
+  { path: "/system-owner/subscription-plans", route: SubscriptionPlanRoutes },
+  { path: "/system-owner/activity-logs", route: ActivityLogRoutes },
+  { path: "/system-owner/agent-trainings", route: AgentTrainingRoutes },
+  { path: "/system-owner/agent-management", route: AgentManagementRoutes },
+  { path: "/business-owner/branch-managers", route: BranchManagerRoutes },
+  { path: "/business-owner/branches", route: BranchRoutes },
+  // Dynamic booking — routes to correct table based on businessType
+  { path: "/business-owner/bookings", route: OrderBookingRoutes },
+  { path: "/business-owner/pricings", route: PricingRoutes },
+  { path: "/business-owner/crm-leads", route: CrmLeadRoutes },
+  { path: "/branch-manager/pricing", route: PricingBranchRoutes },
+  { path: "/branch-manager/crm-leads", route: CrmLeadsManagerRoutes },
+  { path: "/branch-manager/bookings", route: OrderBookingBranchRoutes },
+  { path: "/v1", route: MessengerRoutes },
+  { path: "/v1", route: WhatsappRoutes },
+  { path: "/v1", route: InstagramRoutes },
+  { path: "/v1/public/facebook", route: PublicFacebookRoutes },
+  { path: "/v1/public/instagram", route: PublicInstagramRoutes },
+  { path: "/v1/public/whatsapp", route: PublicWhatsappRoutes },
+  { path: "/payment", route: PaymentRouter },
+  { path: "/leads", route: PublicLeadRoutes },
+  { path: "/bookings", route: PublicBookingRoutes },
+  { path: "/v1/public/agent-training", route: PublicAgentTrainingRoutes },
+  { path: "/v1/public/pricings", route: PublicPricingRoutes },
+  { path: "/v1/public/chat-summaries", route: PublicChatSummaryRoutes },
+  { path: "/chat-summaries", route: ChatSummaryRoutes },
+  { path: "/webhook", route: VapiRoutes },
+  { path: "/public/subscription-plans", route: PublicSubscriptionRoutes },
+  { path: "/business-owner/dashboard", route: DashboardOverviewBRoutes },
+  { path: "/branch-manager/dashboard", route: DashboardOverviewMRoutes },
+  { path: "/system-owner/telephony", route: TelephonyRoutes },
+  { path: "/system-owner/dashboard", route: DashboardOverviewSRoutes },
+];
 
 moduleRoutes.forEach((route) => {
   router.use(route.path, route.route);

@@ -1,28 +1,12 @@
 import { sendResponse } from "../../../utils/sendResponse.js";
 import { StatusCodes } from "http-status-codes";
 import { BranchService } from "./branch.service.js";
-import prisma from "../../../prisma/client.js";
 import DevBuildError from "../../../lib/DevBuildError.js";
 
 const createBranch = async (req, res, next) => {
     try {
-        const userId = req.user?.id;
-        
-        if (!userId) {
-            throw new DevBuildError("User is not authenticated", StatusCodes.UNAUTHORIZED);
-        }
-
-        // Find the business owned by the logged-in user
-        const business = await prisma.business.findFirst({
-            where: { ownerId: userId }
-        });
-
-        if (!business) {
-            throw new DevBuildError("No business found for the logged-in user", StatusCodes.BAD_REQUEST);
-        }
-
-        req.body.businessId = business.id;
-        req.body.createdById = userId;
+        req.body.businessId = req.business.id;
+        req.body.createdById = req.user.id;
 
         const result = await BranchService.createBranchService(req.body);
 
@@ -39,6 +23,8 @@ const createBranch = async (req, res, next) => {
 
 const getAllBranches = async (req, res, next) => {
     try {
+        // Filter by owner's businessId
+        req.query.businessId = req.business.id;
         const result = await BranchService.getAllBranchesService(req.query);
 
         sendResponse(res, {
@@ -57,6 +43,11 @@ const getBranchById = async (req, res, next) => {
     try {
         const result = await BranchService.getBranchByIdService(req.params.id, req.query);
 
+        // Ownership check
+        if (result.businessId !== req.business.id) {
+            throw new DevBuildError("You are not authorized to access this branch", StatusCodes.FORBIDDEN);
+        }
+
         sendResponse(res, {
             statusCode: StatusCodes.OK,
             success: true,
@@ -70,6 +61,11 @@ const getBranchById = async (req, res, next) => {
 
 const updateBranch = async (req, res, next) => {
     try {
+        const existing = await BranchService.getBranchByIdService(req.params.id, {});
+        if (existing.businessId !== req.business.id) {
+            throw new DevBuildError("You are not authorized to update this branch", StatusCodes.FORBIDDEN);
+        }
+
         const result = await BranchService.updateBranchService(req.params.id, req.body);
 
         sendResponse(res, {
@@ -85,6 +81,11 @@ const updateBranch = async (req, res, next) => {
 
 const deleteBranch = async (req, res, next) => {
     try {
+        const existing = await BranchService.getBranchByIdService(req.params.id, {});
+        if (existing.businessId !== req.business.id) {
+            throw new DevBuildError("You are not authorized to delete this branch", StatusCodes.FORBIDDEN);
+        }
+
         const result = await BranchService.deleteBranchService(req.params.id);
 
         sendResponse(res, {

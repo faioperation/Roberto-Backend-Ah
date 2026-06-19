@@ -63,6 +63,7 @@ const getAllBranchManagersService = async (query = {}) => {
     if (!queryParams.select) {
         queryParams.include = {
             business: true,
+            branches: { select: { id: true, name: true } },
             createdBy: {
                 select: {
                     id: true,
@@ -77,9 +78,25 @@ const getAllBranchManagersService = async (query = {}) => {
     const result = await prisma.branchManager.findMany(queryParams);
     const total = await prisma.branchManager.count({ where: queryBuilder.where });
 
-    // Hide passwords from response
+    // Attach user profile & hide password
+    const emails = result.map((m) => m.email);
+    const users = await prisma.user.findMany({
+        where: { email: { in: emails } },
+        select: {
+            email: true,
+            firstName: true,
+            lastName: true,
+            profilePicture: true,
+            phone: true,
+            status: true,
+            lastLoginAt: true,
+        }
+    });
+    const userMap = Object.fromEntries(users.map((u) => [u.email, u]));
+
     result.forEach((item) => {
         delete item.password;
+        item.profile = userMap[item.email] || null;
     });
 
     return {
@@ -101,6 +118,7 @@ const getBranchManagerByIdService = async (id, query = {}) => {
     } else {
         findArgs.include = {
             business: true,
+            branches: { select: { id: true, name: true } },
             createdBy: {
                 select: {
                     id: true,
@@ -119,6 +137,24 @@ const getBranchManagerByIdService = async (id, query = {}) => {
     }
 
     delete result.password;
+
+    // Attach user profile
+    const userProfile = await prisma.user.findUnique({
+        where: { email: result.email },
+        select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            profilePicture: true,
+            phone: true,
+            gender: true,
+            country: true,
+            status: true,
+            lastLoginAt: true,
+            createdAt: true,
+        }
+    });
+    result.profile = userProfile || null;
     
     return result;
 };

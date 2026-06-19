@@ -18,16 +18,43 @@ export const notifyAiAgent = async ({
 
     // Fetch business to get type (subject)
     const business = await prisma.business.findUnique({
+
+
       where: { id: businessId }
     });
 
+    // Fetch branchId depending on channel
+    let branchId = null;
+    try {
+      if (channel === "whatsapp") {
+        const waConv = await prisma.whatsappConversation.findUnique({
+          where: { id: conversationId },
+          include: { whatsappAccount: true }
+        });
+        if (waConv?.whatsappAccount) {
+          branchId = waConv.whatsappAccount.branchId || null;
+        }
+      } else if (channel === "instagram" || channel === "messenger") {
+        const conv = await prisma.conversation.findUnique({
+          where: { id: conversationId }
+        });
+        if (conv) {
+          branchId = conv.branchId;
+        }
+      }
+    } catch (e) {
+      console.error("[AI Agent] Error resolving branchId for conversation:", e);
+    }
+
     const payload = {
       business_id: businessId,
-      subject: business?.businessType || "others",
+      branchId: branchId || null,
+      subject: business?.businessType || "ORDER_BOOKING",
       recipient_id: recipientId,
       conversation_id: conversationId,
       channel,
-      message: message || ""
+      message: message || "",
+      training_data_id : "0ca80bd3-8519-4298-8a02-8f4ac0993e59"
     };
 
     console.log(`[AI Agent] Triggering notifyAiAgent for channel ${channel}...`);

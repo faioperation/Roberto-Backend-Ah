@@ -94,7 +94,7 @@ export class QueryBuilder {
     return this;
   }
 
-  sort(defaultSort = "createdAt", relationConfig = {}) {
+  sort(defaultSort = "-createdAt", relationConfig = {}) {
     let sort = this.query.sort || defaultSort;
 
     const sortFields = sort.split(",").map((field) => {
@@ -114,7 +114,8 @@ export class QueryBuilder {
           order = parts[1].toLowerCase() === "desc" ? "desc" : "asc";
         } else if (field.toLowerCase() === "desc" || field.toLowerCase() === "asc") {
           // If only "desc" is passed, use default field
-          return { [defaultSort]: field.toLowerCase() };
+          const cleanDefaultSort = defaultSort.startsWith("-") ? defaultSort.slice(1) : defaultSort;
+          return { [cleanDefaultSort]: field.toLowerCase() };
         }
       }
 

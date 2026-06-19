@@ -30,7 +30,13 @@ const getAllSubscriptionPlans = async (req, res, next) => {
             success: true,
             message: "Subscription plans retrieved successfully",
             statusCode: StatusCodes.OK,
-            data: result.data,
+            data: {
+                plans: result.data,
+                mrr: result.mrr,
+                arr: result.arr,
+                activeSubs: result.activeSubs,
+                billingHistory: result.billingHistory,
+            },
             meta: result.meta,
         });
     } catch (error) {
