@@ -36,6 +36,7 @@ import { DashboardOverviewBRoutes } from "../modules/businessOwner/dashboardOver
 import { DashboardOverviewMRoutes } from "../modules/branchManager/dashboardOverviewM/dashboardOverviewM.route.js";
 import { TelephonyRoutes } from "../modules/systemOwner/twiloNumberCall/twiloNumberCall.route.js";
 import { DashboardOverviewSRoutes } from "../modules/systemOwner/dashboardOverviewS/dashboardOverviewS.route.js";
+import { ConversationOffRoutes } from "../modules/conversationOff/conversationOff.route.js";
 
 export const router = Router();
 
@@ -78,6 +79,7 @@ const moduleRoutes = [
   { path: "/branch-manager/dashboard", route: DashboardOverviewMRoutes },
   { path: "/system-owner/telephony", route: TelephonyRoutes },
   { path: "/system-owner/dashboard", route: DashboardOverviewSRoutes },
+  { path: "/conversation-off", route: ConversationOffRoutes },
 ];
 
 moduleRoutes.forEach((route) => {
