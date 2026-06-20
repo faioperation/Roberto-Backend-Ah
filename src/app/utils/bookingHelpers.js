@@ -270,7 +270,7 @@ export const attachDetails = async (txOrPrisma, bookings) => {
 
     const formatted = list.map(booking => ({
         ...booking,
-        paymentDetail: paymentMap[booking.id] || null,
+        paymentDetails: paymentMap[booking.id] || null,
         additionalDetails: additionalMap[booking.id] || [],
     }));
 
