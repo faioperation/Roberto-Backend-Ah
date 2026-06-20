@@ -3,6 +3,8 @@ import { envVars } from "./app/config/env.js";
 import { connectRedis } from "./app/config/redis.config.js";
 import prisma from "./app/prisma/client.js";
 import { seedDatabase } from "./app/prisma/seed.js";
+import { startCampaignWorker } from "./app/modules/businessOwner/campaign/campaign.worker.js";
+import { CampaignService } from "./app/modules/businessOwner/campaign/campaign.service.js";
 
 let server;
 
@@ -22,6 +24,10 @@ const startServer = async () => {
     // Start server
     server = app.listen(PORT, () => {
       console.log(`Server running on port 🛺✅ ${PORT}`);
+      
+      // Initialize BullMQ Campaign Worker and Sync Queue
+      startCampaignWorker();
+      CampaignService.syncCampaignQueue();
     });
   } catch (error) {
     console.error("❌ Failed to start server:", error);

@@ -83,7 +83,7 @@ const createBusinessService = async (payload) => {
                 phone:        payload.ownerPhone,
                 industry:     payload.industry || null,
                 businessType: payload.businessType ? mapBusinessType(payload.businessType) : null,
-                status:       "ACTIVE",
+                status:       payload.status || "ACTIVE",
                 description:  payload.description || null,
                 planId:       payload.planId || null,
                 planCycle:    payload.planCycle || "MONTHLY",
@@ -192,10 +192,14 @@ const createBusinessService = async (payload) => {
                 ? (payload.planCycle === "YEARLY" ? plan.yearlyPrice : plan.monthlyPrice)
                 : null;
 
+            const isPending = business.status === "PENDING";
+
             await sendEmail({
                 to:           user.email,
-                subject:      "Welcome to Robarto – Your Business is Now Live!",
-                templateName: "businessCreated",
+                subject:      isPending 
+                    ? "Welcome to Robarto – Finish Setting Up Your Business" 
+                    : "Welcome to Robarto – Your Business is Now Live!",
+                templateName: isPending ? "businessPendingCreated" : "businessCreated",
                 templateData: {
                     ownerName:    payload.ownerName || "Business Owner",
                     ownerEmail:   user.email,
@@ -235,6 +239,7 @@ const getAllBusinessesService = async (query = {}) => {
         queryParams.include = {
             createdBy: { select: { id: true, email: true, firstName: true, lastName: true } },
             owner:     { select: { id: true, email: true, firstName: true, lastName: true } },
+            branches:  true,
         };
     }
 
@@ -296,6 +301,7 @@ const getBusinessByIdService = async (id, query = {}) => {
         findArgs.include = {
             createdBy: { select: { id: true, email: true, firstName: true, lastName: true } },
             owner:     { select: { id: true, email: true, firstName: true, lastName: true } },
+            branches:  true,
         };
     }
 

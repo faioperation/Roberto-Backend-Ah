@@ -1,4 +1,5 @@
 import prisma from "../../../prisma/client.js";
+import { getBookingModel } from "../../../utils/bookingHelpers.js";
 
 const getDashboardOverviewService = async (businessId) => {
     const now = new Date();
@@ -15,20 +16,49 @@ const getDashboardOverviewService = async (businessId) => {
 
     const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
 
+    // Resolve business type
+    const business = await prisma.business.findUnique({
+        where: { id: businessId },
+        select: { businessType: true },
+    });
+    const businessType = business?.businessType || "ORDER_BOOKING";
+    const { model } = getBookingModel(businessType);
+
+    // Determine pending statuses based on business type
+    let pendingStatuses = [];
+    if (businessType === "PARCEL_DELIVERY") {
+        pendingStatuses = ["PENDING", "PICKUP_PENDING", "PICKED_UP", "IN_TRANSIT", "OUT_FOR_DELIVERY", "ON_HOLD"];
+    } else if (businessType === "APPOINTMENT_BOOKING") {
+        pendingStatuses = ["PENDING", "CONFIRMED", "IN_PROGRESS", "ON_HOLD"];
+    } else {
+        // ORDER_BOOKING
+        pendingStatuses = ["PENDING", "PROCESSING", "READY", "IN_PROGRESS", "ON_HOLD"];
+    }
+
     const [
         todayOrders,
+        pendingDeliveries,
         recentActivity,
         whatsappActiveUsers,
         messengerActiveUsers,
         instagramActiveUsers,
         weeklyOrdersRaw,
     ] = await Promise.all([
-        prisma.orderBooking.count({
+        model.count({
             where: {
                 businessId,
                 createdAt: {
                     gte: todayStart,
                     lte: todayEnd,
+                },
+            },
+        }),
+
+        model.count({
+            where: {
+                businessId,
+                status: {
+                    in: pendingStatuses,
                 },
             },
         }),
@@ -83,7 +113,7 @@ const getDashboardOverviewService = async (businessId) => {
             },
         }),
 
-        prisma.orderBooking.findMany({
+        model.findMany({
             where: {
                 businessId,
                 createdAt: {
@@ -114,7 +144,7 @@ const getDashboardOverviewService = async (businessId) => {
 
     return {
         todayOrders,
-        pendingDeliveries: 0,
+        pendingDeliveries,
         todaysSales: totalSales,
         activeUsers: {
             total: totalActiveUsers,

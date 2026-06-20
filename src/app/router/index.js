@@ -3,6 +3,7 @@ import { AuthRouter } from "../modules/auth/auth.route.js";
 import { OtpRouter } from "../modules/otp/otp.route.js";
 import { UserRoutes } from "../modules/user/user.route.js";
 import { BusinessRoutes } from "../modules/systemOwner/businessManagement/businessManagement.route.js";
+import { GlobalBusinessRoutes } from "../modules/publicApi/globalBusiness/globalBusiness.route.js";
 import { SubscriptionPlanRoutes } from "../modules/systemOwner/subscriptionPlan/subscriptionPlan.route.js";
 import { ActivityLogRoutes } from "../modules/systemOwner/activityLog/activityLog.route.js";
 import { AgentTrainingRoutes } from "../modules/systemOwner/agentTraining/agentTraining.route.js";
@@ -12,6 +13,7 @@ import { BranchRoutes } from "../modules/businessOwner/branch/branch.route.js";
 import { OrderBookingRoutes } from "../modules/businessOwner/orderBooking/orderBooking.route.js";
 import { PricingRoutes } from "../modules/businessOwner/pricing/pricing.route.js";
 import { CrmLeadRoutes } from "../modules/businessOwner/crmLead/crmLead.route.js";
+import { CampaignRoutes } from "../modules/businessOwner/campaign/campaign.route.js";
 import { PricingBranchRoutes } from "../modules/branchManager/pricingBranch/pricingBranch.route.js";
 import { CrmLeadsManagerRoutes } from "../modules/branchManager/crmLeadsManager/crmLeadsManager.route.js";
 import { OrderBookingBranchRoutes } from "../modules/branchManager/orderBookingBranch/orderBookingBranch.route.js";
@@ -42,6 +44,7 @@ const moduleRoutes = [
   { path: "/auth", route: AuthRouter },
   { path: "/otp", route: OtpRouter },
   { path: "/system-owner/businesses", route: BusinessRoutes },
+  { path: "/global/business", route: GlobalBusinessRoutes },
   { path: "/system-owner/subscription-plans", route: SubscriptionPlanRoutes },
   { path: "/system-owner/activity-logs", route: ActivityLogRoutes },
   { path: "/system-owner/agent-trainings", route: AgentTrainingRoutes },
@@ -52,6 +55,7 @@ const moduleRoutes = [
   { path: "/business-owner/bookings", route: OrderBookingRoutes },
   { path: "/business-owner/pricings", route: PricingRoutes },
   { path: "/business-owner/crm-leads", route: CrmLeadRoutes },
+  { path: "/business-owner/campaigns", route: CampaignRoutes },
   { path: "/branch-manager/pricing", route: PricingBranchRoutes },
   { path: "/branch-manager/crm-leads", route: CrmLeadsManagerRoutes },
   { path: "/branch-manager/bookings", route: OrderBookingBranchRoutes },

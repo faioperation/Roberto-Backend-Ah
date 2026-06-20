@@ -42,7 +42,7 @@ const getUserInfo = async (req, res, next) => {
       throw new DevBuildError("User not found", 404);
     }
 
-    // Append businessId if BUSINESS_OWNER or BRANCH_MANAGER
+    // Append businessId and businessType if BUSINESS_OWNER or BRANCH_MANAGER
     const userRoleNames = user.roles?.map(r => r.role.name) || [];
     if (userRoleNames.includes("BUSINESS_OWNER")) {
       const business = await prisma.business.findFirst({
@@ -50,6 +50,7 @@ const getUserInfo = async (req, res, next) => {
       });
       if (business) {
         user.businessId = business.id;
+        user.businessType = business.businessType;
       }
     } else if (userRoleNames.includes("BRANCH_MANAGER")) {
       const manager = await prisma.branchManager.findUnique({
@@ -59,6 +60,13 @@ const getUserInfo = async (req, res, next) => {
       if (manager) {
         user.businessId = manager.businessId;
         user.branchId = manager.branches?.[0]?.id || null;
+        const business = await prisma.business.findUnique({
+          where: { id: manager.businessId },
+          select: { businessType: true }
+        });
+        if (business) {
+          user.businessType = business.businessType;
+        }
       }
     }
 
@@ -87,18 +95,26 @@ const userDetails = async (req, res, next) => {
       });
     }
 
-    // Append businessId if it exists (for BUSINESS_OWNER or BRANCH_MANAGER)
+    // Append businessId and businessType if it exists (for BUSINESS_OWNER or BRANCH_MANAGER)
     const business = await prisma.business.findFirst({
       where: { ownerId: user.id }
     });
     if (business) {
       user.businessId = business.id;
+      user.businessType = business.businessType;
     } else {
       const manager = await prisma.branchManager.findUnique({
         where: { email: user.email }
       });
       if (manager) {
         user.businessId = manager.businessId;
+        const managerBusiness = await prisma.business.findUnique({
+          where: { id: manager.businessId },
+          select: { businessType: true }
+        });
+        if (managerBusiness) {
+          user.businessType = managerBusiness.businessType;
+        }
       }
     }
 
