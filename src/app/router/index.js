@@ -3,6 +3,7 @@ import { AuthRouter } from "../modules/auth/auth.route.js";
 import { OtpRouter } from "../modules/otp/otp.route.js";
 import { UserRoutes } from "../modules/user/user.route.js";
 import { BusinessRoutes } from "../modules/systemOwner/businessManagement/businessManagement.route.js";
+import { GlobalBusinessRoutes } from "../modules/publicApi/globalBusiness/globalBusiness.route.js";
 import { SubscriptionPlanRoutes } from "../modules/systemOwner/subscriptionPlan/subscriptionPlan.route.js";
 import { ActivityLogRoutes } from "../modules/systemOwner/activityLog/activityLog.route.js";
 import { AgentTrainingRoutes } from "../modules/systemOwner/agentTraining/agentTraining.route.js";
@@ -12,6 +13,7 @@ import { BranchRoutes } from "../modules/businessOwner/branch/branch.route.js";
 import { OrderBookingRoutes } from "../modules/businessOwner/orderBooking/orderBooking.route.js";
 import { PricingRoutes } from "../modules/businessOwner/pricing/pricing.route.js";
 import { CrmLeadRoutes } from "../modules/businessOwner/crmLead/crmLead.route.js";
+import { CampaignRoutes } from "../modules/businessOwner/campaign/campaign.route.js";
 import { PricingBranchRoutes } from "../modules/branchManager/pricingBranch/pricingBranch.route.js";
 import { CrmLeadsManagerRoutes } from "../modules/branchManager/crmLeadsManager/crmLeadsManager.route.js";
 import { OrderBookingBranchRoutes } from "../modules/branchManager/orderBookingBranch/orderBookingBranch.route.js";
@@ -30,18 +32,23 @@ import { PublicChatSummaryRoutes } from "../modules/publicApi/chatSummary/chatSu
 import { ChatSummaryRoutes } from "../modules/chatSummary/chatSummary.route.js";
 import { VapiRoutes } from "../modules/systemOwner/vapi/vapi.route.js";
 import { PublicSubscriptionRoutes } from "../modules/publicApi/subscriptionPlan/subscriptionPlan.route.js";
+import { PublicCampaignRoutes } from "../modules/publicApi/campaignPublic/campaignPublic.route.js";
 import { DashboardOverviewBRoutes } from "../modules/businessOwner/dashboardOvervieB/dashboardOvervieB.route.js";
 import { DashboardOverviewMRoutes } from "../modules/branchManager/dashboardOverviewM/dashboardOverviewM.route.js";
 import { TelephonyRoutes } from "../modules/systemOwner/twiloNumberCall/twiloNumberCall.route.js";
 import { DashboardOverviewSRoutes } from "../modules/systemOwner/dashboardOverviewS/dashboardOverviewS.route.js";
+import { ConversationOffRoutes } from "../modules/conversationOff/conversationOff.route.js";
+import { NotificationRoutes } from "../modules/notification/notification.route.js";
 
 export const router = Router();
 
 const moduleRoutes = [
+  { path: "/notifications", route: NotificationRoutes },
   { path: "/user", route: UserRoutes },
   { path: "/auth", route: AuthRouter },
   { path: "/otp", route: OtpRouter },
   { path: "/system-owner/businesses", route: BusinessRoutes },
+  { path: "/global/business", route: GlobalBusinessRoutes },
   { path: "/system-owner/subscription-plans", route: SubscriptionPlanRoutes },
   { path: "/system-owner/activity-logs", route: ActivityLogRoutes },
   { path: "/system-owner/agent-trainings", route: AgentTrainingRoutes },
@@ -52,6 +59,7 @@ const moduleRoutes = [
   { path: "/business-owner/bookings", route: OrderBookingRoutes },
   { path: "/business-owner/pricings", route: PricingRoutes },
   { path: "/business-owner/crm-leads", route: CrmLeadRoutes },
+  { path: "/business-owner/campaigns", route: CampaignRoutes },
   { path: "/branch-manager/pricing", route: PricingBranchRoutes },
   { path: "/branch-manager/crm-leads", route: CrmLeadsManagerRoutes },
   { path: "/branch-manager/bookings", route: OrderBookingBranchRoutes },
@@ -70,10 +78,12 @@ const moduleRoutes = [
   { path: "/chat-summaries", route: ChatSummaryRoutes },
   { path: "/webhook", route: VapiRoutes },
   { path: "/public/subscription-plans", route: PublicSubscriptionRoutes },
+  { path: "/v1/public/campaigns", route: PublicCampaignRoutes },
   { path: "/business-owner/dashboard", route: DashboardOverviewBRoutes },
   { path: "/branch-manager/dashboard", route: DashboardOverviewMRoutes },
   { path: "/system-owner/telephony", route: TelephonyRoutes },
   { path: "/system-owner/dashboard", route: DashboardOverviewSRoutes },
+  { path: "/conversation-off", route: ConversationOffRoutes },
 ];
 
 moduleRoutes.forEach((route) => {

@@ -57,6 +57,7 @@ export const WhatsappService = {
     const conversations = await prisma.whatsappConversation.findMany({
       where: whereClause,
       include: { contact: true },
+      orderBy: { lastMessageAt: 'desc' },
     });
 
     const conversationIds = conversations.map((c) => c.id);

@@ -33,7 +33,7 @@ const credentialLogin = async (req, res, next) => {
         // Remove sensitive fields before sending user
         const { passwordHash, ...saveUser } = user;
 
-        // Retrieve businessId for BUSINESS_OWNER or BRANCH_MANAGER
+        // Retrieve businessId and businessType for BUSINESS_OWNER or BRANCH_MANAGER
         const userRoleNames = user.roles?.map(r => r.role.name) || [];
         if (userRoleNames.includes("BUSINESS_OWNER")) {
           const business = await prisma.business.findFirst({
@@ -41,6 +41,7 @@ const credentialLogin = async (req, res, next) => {
           });
           if (business) {
             saveUser.businessId = business.id;
+            saveUser.businessType = business.businessType;
           }
         } else if (userRoleNames.includes("BRANCH_MANAGER")) {
           const manager = await prisma.branchManager.findUnique({
@@ -50,6 +51,13 @@ const credentialLogin = async (req, res, next) => {
           if (manager) {
             saveUser.businessId = manager.businessId;
             saveUser.branchId = manager.branches?.[0]?.id || null;
+            const business = await prisma.business.findUnique({
+              where: { id: manager.businessId },
+              select: { businessType: true }
+            });
+            if (business) {
+              saveUser.businessType = business.businessType;
+            }
           }
         }
 

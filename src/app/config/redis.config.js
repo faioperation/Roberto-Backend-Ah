@@ -12,5 +12,12 @@ export const connectRedis = async () => {
   if (!redisClient.isOpen) {
     await redisClient.connect();
     console.log("✈️ Redis is connected");
+
+    try {
+      await redisClient.configSet("maxmemory-policy", "noeviction");
+      console.log("✈️ Redis eviction policy configured to 'noeviction' successfully.");
+    } catch (error) {
+      console.log("⚠️ Failed to set Redis eviction policy programmatically (expected on some cloud providers):", error.message);
+    }
   }
 };

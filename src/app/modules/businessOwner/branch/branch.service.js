@@ -2,11 +2,22 @@ import prisma from "../../../prisma/client.js";
 import DevBuildError from "../../../lib/DevBuildError.js";
 import { StatusCodes } from "http-status-codes";
 import { QueryBuilder } from "../../../utils/QueryBuilder.js";
+import { NotificationService } from "../../notification/notification.service.js";
 
 const createBranchService = async (payload) => {
     const result = await prisma.branch.create({
         data: payload,
     });
+    
+    // Trigger notification to System Owners (and business owner since we pass businessId)
+    NotificationService.createAndSendNotification({
+        title: "New Branch Created",
+        message: `A new branch "${result.name}" has been created.`,
+        type: "BRANCH_CREATE",
+        businessId: result.businessId,
+        branchId: result.id,
+    }).catch(err => console.error("Error sending branch creation notification:", err));
+
     return result;
 };
 
