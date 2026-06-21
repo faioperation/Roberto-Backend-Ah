@@ -1,5 +1,6 @@
 import prisma from "../../prisma/client.js";
 import { notifyAiAgent } from "../../utils/aiAgent.js";
+import { NotificationService } from "../notification/notification.service.js";
 
 export const handleWebhookEvent = async (body) => {
   if (body.object === "whatsapp_business_account") {
@@ -101,6 +102,20 @@ const processIncomingMessages = async (value) => {
           status: "DELIVERED",
         },
       });
+
+      // Trigger notification for incoming WhatsApp message with throttling
+      NotificationService.shouldSendMessageNotification(conversation.id, "whatsapp").then((shouldNotify) => {
+        if (shouldNotify) {
+          NotificationService.createAndSendNotification({
+            title: "New WhatsApp Message",
+            message: `Message: "${text || "Attachment/Other"}"`,
+            type: "NEW_MESSAGE",
+            businessId: businessId,
+            branchId: account.branchId || null,
+            conversationId: conversation.id,
+          }).catch(err => console.error("Error sending WhatsApp incoming message notification:", err));
+        }
+      }).catch(err => console.error("Error checking WhatsApp throttling:", err));
 
       // Update conversation's last message ID
       await prisma.whatsappConversation.update({

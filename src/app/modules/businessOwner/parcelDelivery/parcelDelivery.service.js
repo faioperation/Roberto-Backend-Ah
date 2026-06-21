@@ -23,7 +23,12 @@ const createParcelDeliveryService = async (payload) => {
         deliveryAddress: payload.deliveryAddress || null,
         productType: payload.productType || null,
         productHeight: payload.productHeight || null,
-        productWeight: payload.productWeight || null,
+        productWeight: (() => {
+            const w = payload.productWeight;
+            if (w === undefined || w === null || w === "") return null;
+            const parsed = parseInt(w, 10);
+            return isNaN(parsed) ? null : parsed;
+        })(),
     };
 
     const result = await prisma.$transaction(async (tx) => {
@@ -120,7 +125,15 @@ const updateParcelDeliveryService = async (id, payload) => {
     if (payload.deliveryAddress !== undefined) detailsData.deliveryAddress = payload.deliveryAddress;
     if (payload.productType !== undefined) detailsData.productType = payload.productType;
     if (payload.productHeight !== undefined) detailsData.productHeight = payload.productHeight;
-    if (payload.productWeight !== undefined) detailsData.productWeight = payload.productWeight;
+    if (payload.productWeight !== undefined) {
+        const w = payload.productWeight;
+        if (w === null || w === "") {
+            detailsData.productWeight = null;
+        } else {
+            const parsed = parseInt(w, 10);
+            detailsData.productWeight = isNaN(parsed) ? null : parsed;
+        }
+    }
 
     const result = await prisma.$transaction(async (tx) => {
         const updated = await tx.parcelDelivery.update({ where: { id }, data: mainPayload });

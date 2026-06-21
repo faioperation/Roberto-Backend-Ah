@@ -2,6 +2,7 @@ import prisma from "../../../prisma/client.js";
 import DevBuildError from "../../../lib/DevBuildError.js";
 import { StatusCodes } from "http-status-codes";
 import { QueryBuilder } from "../../../utils/QueryBuilder.js";
+import { NotificationService } from "../../notification/notification.service.js";
 import {
     getBookingModel,
     buildMainPayload,
@@ -57,6 +58,15 @@ const createBookingService = async (payload) => {
 
         return await attachDetails(tx, createdBooking);
     });
+
+    // Trigger notification for booking creation
+    NotificationService.createAndSendNotification({
+        title: `New ${businessType.replace('_', ' ')} Created`,
+        message: `Booking for ${result.customerName} (${result.customerNumber}) has been created.`,
+        type: businessType,
+        businessId: result.businessId,
+        branchId: result.branchId || null,
+    }).catch(err => console.error("Error sending booking creation notification:", err));
 
     return result;
 };
@@ -196,6 +206,17 @@ const updateBookingService = async (id, filter, payload) => {
 
         return await attachDetails(tx, updatedBooking);
     });
+
+    // Trigger notification if booking is delivered or completed
+    if (result && (result.status === "DELIVERED" || result.status === "COMPLETED")) {
+        NotificationService.createAndSendNotification({
+            title: `${businessType.replace('_', ' ')} Delivered`,
+            message: `Booking for ${result.customerName} has been marked as ${result.status.toLowerCase()}.`,
+            type: `${businessType}_DELIVERY`,
+            businessId: result.businessId,
+            branchId: result.branchId || null,
+        }).catch(err => console.error("Error sending booking delivery notification:", err));
+    }
 
     return result;
 };

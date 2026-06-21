@@ -88,6 +88,9 @@ const loadEnvVars = () => {
     AI_AGENT_API_TOKEN: process.env.AI_AGENT_API_TOKEN,
     VOICE_AGENT_API: process.env.VOICE_AGENT_API,
     VAPI_API_KEY: process.env.VAPI_API_KEY,
+
+    // Firebase Cloud Messaging
+    FIREBASE_SERVICE_ACCOUNT_PATH: process.env.FIREBASE_SERVICE_ACCOUNT_PATH,
   };
 };
 

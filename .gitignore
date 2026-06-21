@@ -44,3 +44,10 @@ next-env.d.ts
 
 /src/generated/prisma
 /uploads
+
+# Firebase configurations & credentials
+src/app/config/GoogleService-Info.plist
+src/app/config/google-services.json
+src/app/config/firebase-config.js
+src/app/config/roberto-notification-firebase-adminsdk-fbsvc-ebd70cfbdc.json
+

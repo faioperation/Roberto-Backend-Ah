@@ -14,8 +14,8 @@ const createParcelDeliverySchema = z.object({
         deliveryDate: z.string().optional(),
         deliveryAddress: z.string().optional(),
         productType: z.string().optional(),
-        productHeight: z.string().optional(),
-        productWeight: z.string().optional(),
+        productHeight: z.string().nullable().optional(),
+        productWeight: z.union([z.string(), z.number()]).nullable().optional(),
 
         // payment
         paymentStatus: z.enum(["PENDING", "COMPLETED", "FAILED", "REFUNDED"]).optional(),
@@ -38,8 +38,8 @@ const updateParcelDeliverySchema = z.object({
         deliveryDate: z.string().optional(),
         deliveryAddress: z.string().optional(),
         productType: z.string().optional(),
-        productHeight: z.string().optional(),
-        productWeight: z.string().optional(),
+        productHeight: z.string().nullable().optional(),
+        productWeight: z.union([z.string(), z.number()]).nullable().optional(),
 
         // payment
         paymentStatus: z.enum(["PENDING", "COMPLETED", "FAILED", "REFUNDED"]).optional(),

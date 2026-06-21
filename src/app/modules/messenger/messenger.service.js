@@ -3,6 +3,7 @@ import prisma from "../../prisma/client.js";
 import { envVars } from "../../config/env.js";
 import { AppError } from "../../errorHelper/appError.js";
 import { notifyAiAgent } from "../../utils/aiAgent.js";
+import { NotificationService } from "../notification/notification.service.js";
 
 const getGraphUrl = () => `https://graph.facebook.com/${envVars.META_GRAPH_VERSION || "v23.0"}`;
 
@@ -58,6 +59,20 @@ export const handleIncomingMessage = async (pageId, webhookEvent) => {
       rawPayload: webhookEvent,
     },
   });
+
+  // Trigger notification for incoming Messenger message with throttling
+  NotificationService.shouldSendMessageNotification(conversation.id, "messenger").then((shouldNotify) => {
+    if (shouldNotify) {
+      NotificationService.createAndSendNotification({
+        title: "New Messenger Message",
+        message: `Message: "${messageText || "Attachment/Other"}"`,
+        type: "NEW_MESSAGE",
+        businessId: businessId,
+        branchId: connection.branchId || null,
+        conversationId: conversation.id,
+      }).catch(err => console.error("Error sending Messenger incoming message notification:", err));
+    }
+  }).catch(err => console.error("Error checking Messenger throttling:", err));
 
   // Notify AI Agent of incoming Messenger message
   notifyAiAgent({

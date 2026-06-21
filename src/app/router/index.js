@@ -32,15 +32,18 @@ import { PublicChatSummaryRoutes } from "../modules/publicApi/chatSummary/chatSu
 import { ChatSummaryRoutes } from "../modules/chatSummary/chatSummary.route.js";
 import { VapiRoutes } from "../modules/systemOwner/vapi/vapi.route.js";
 import { PublicSubscriptionRoutes } from "../modules/publicApi/subscriptionPlan/subscriptionPlan.route.js";
+import { PublicCampaignRoutes } from "../modules/publicApi/campaignPublic/campaignPublic.route.js";
 import { DashboardOverviewBRoutes } from "../modules/businessOwner/dashboardOvervieB/dashboardOvervieB.route.js";
 import { DashboardOverviewMRoutes } from "../modules/branchManager/dashboardOverviewM/dashboardOverviewM.route.js";
 import { TelephonyRoutes } from "../modules/systemOwner/twiloNumberCall/twiloNumberCall.route.js";
 import { DashboardOverviewSRoutes } from "../modules/systemOwner/dashboardOverviewS/dashboardOverviewS.route.js";
 import { ConversationOffRoutes } from "../modules/conversationOff/conversationOff.route.js";
+import { NotificationRoutes } from "../modules/notification/notification.route.js";
 
 export const router = Router();
 
 const moduleRoutes = [
+  { path: "/notifications", route: NotificationRoutes },
   { path: "/user", route: UserRoutes },
   { path: "/auth", route: AuthRouter },
   { path: "/otp", route: OtpRouter },
@@ -75,6 +78,7 @@ const moduleRoutes = [
   { path: "/chat-summaries", route: ChatSummaryRoutes },
   { path: "/webhook", route: VapiRoutes },
   { path: "/public/subscription-plans", route: PublicSubscriptionRoutes },
+  { path: "/v1/public/campaigns", route: PublicCampaignRoutes },
   { path: "/business-owner/dashboard", route: DashboardOverviewBRoutes },
   { path: "/branch-manager/dashboard", route: DashboardOverviewMRoutes },
   { path: "/system-owner/telephony", route: TelephonyRoutes },

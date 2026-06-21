@@ -61,6 +61,8 @@ model User {
   createdPricings       Pricing[]          @relation("PricingCreator")
   createdCrmLeads       CrmLead[]          @relation("CrmLeadCreator")
   auditLogs             AuditLog[]         @relation("UserAuditLogs")
+  notifications         Notification[]     @relation("UserNotifications")
+  fcmTokens             FCMToken[]         @relation("UserFCMTokens")
 
   @@map("users")
 }
@@ -334,6 +336,7 @@ model Business {
   whatsappMessages      WhatsappMessage[]      @relation("BusinessWhatsappMessages")
   chatSummaries         ChatSummary[]
   auditLogs             AuditLog[]             @relation("BusinessAuditLogs")
+  notifications         Notification[]         @relation("BusinessNotifications")
 
   @@map("businesses")
 }
@@ -363,6 +366,7 @@ model Branch {
   conversations     Conversation[]     @relation("BranchConversations")
   whatsappAccounts  WhatsappAccount[]  @relation("BranchWhatsappAccounts")
   campaigns         Campaign[]         @relation("BranchCampaigns")
+  notifications     Notification[]     @relation("BranchNotifications")
 
   @@map("branches")
 }
@@ -558,7 +562,7 @@ model ParcelDetails {
   deliveryAddress  String?        @map("delivery_address")
   productType      String?        @map("product_type")
   productHeight    String?        @map("product_height")
-  productWeight    String?        @map("product_weight")
+  productWeight    Int?           @map("product_weight")
   createdAt        DateTime       @default(now()) @map("created_at")
   updatedAt        DateTime       @updatedAt @map("updated_at")
   deletedAt        DateTime?      @map("deleted_at")
@@ -926,6 +930,7 @@ model Campaign {
   endDate        DateTime?    @map("end_date")
   message        String       @db.Text
   status         String       @default("PENDING")
+  isExpire       Boolean      @default(true) @map("is_expire")
   createdAt      DateTime     @default(now()) @map("created_at")
   updatedAt      DateTime     @updatedAt @map("updated_at")
   deletedAt      DateTime?    @map("deleted_at")
@@ -934,4 +939,38 @@ model Campaign {
   branch   Branch?  @relation("BranchCampaigns", fields: [branchId], references: [id], onDelete: SetNull)
 
   @@map("campaigns")
+}
+
+model Notification {
+  id             String    @id @default(uuid())
+  title          String
+  message        String
+  type           String    // e.g. "BRANCH_CREATE", "NEW_MESSAGE", "ORDER_BOOKING", "ORDER_DELIVERY", "PARCEL_DELIVERY", "APPOINTMENT_BOOKING", "VOICE_CALL"
+  role           RoleName?
+  businessId     String?   @map("business_id")
+  branchId       String?   @map("branch_id")
+  userId         String?   @map("user_id")
+  isRead         Boolean   @default(false) @map("is_read")
+  conversationId String?   @map("conversation_id")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  user         User?     @relation("UserNotifications", fields: [userId], references: [id], onDelete: Cascade)
+  business     Business? @relation("BusinessNotifications", fields: [businessId], references: [id], onDelete: Cascade)
+  branch       Branch?   @relation("BranchNotifications", fields: [branchId], references: [id], onDelete: SetNull)
+
+  @@map("notifications")
+}
+
+model FCMToken {
+  id         String   @id @default(uuid())
+  userId     String   @map("user_id")
+  token      String   @unique
+  deviceType String   @default("WEB") @map("device_type")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  user       User     @relation("UserFCMTokens", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("fcm_tokens")
 }

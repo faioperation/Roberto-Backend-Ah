@@ -80,7 +80,12 @@ export const buildDetailsPayload = (businessType, payload, bookingId, businessId
             deliveryAddress: payload.deliveryAddress || payload.delivery_address || null,
             productType: payload.productType || payload.product_type || null,
             productHeight: payload.productHeight || payload.product_height || null,
-            productWeight: payload.productWeight || payload.product_weight || null,
+            productWeight: (() => {
+                const w = payload.productWeight !== undefined ? payload.productWeight : payload.product_weight;
+                if (w === undefined || w === null || w === "") return null;
+                const parsed = parseInt(w, 10);
+                return isNaN(parsed) ? null : parsed;
+            })(),
         };
     }
     // Default: ORDER_BOOKING
@@ -115,7 +120,15 @@ export const buildDetailsUpdatePayload = (businessType, payload) => {
         if (payload.deliveryAddress !== undefined) data.deliveryAddress = payload.deliveryAddress;
         if (payload.productType !== undefined) data.productType = payload.productType;
         if (payload.productHeight !== undefined) data.productHeight = payload.productHeight;
-        if (payload.productWeight !== undefined) data.productWeight = payload.productWeight;
+        if (payload.productWeight !== undefined) {
+            const w = payload.productWeight;
+            if (w === null || w === "") {
+                data.productWeight = null;
+            } else {
+                const parsed = parseInt(w, 10);
+                data.productWeight = isNaN(parsed) ? null : parsed;
+            }
+        }
     } else {
         if (payload.deliveryDate !== undefined) data.deliveryDate = payload.deliveryDate;
         if (payload.deliveryAddress !== undefined) data.deliveryAddress = payload.deliveryAddress;

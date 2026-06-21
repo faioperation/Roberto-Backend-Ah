@@ -22,8 +22,8 @@ const createBookingSchema = z.object({
 
         // PARCEL_DELIVERY details
         pickupAddress: z.string().optional(),
-        productHeight: z.string().optional(),
-        productWeight: z.string().optional(),
+        productHeight: z.string().nullable().optional(),
+        productWeight: z.union([z.string(), z.number()]).nullable().optional(),
 
         // payment
         paymentStatus: z.enum(["PENDING", "COMPLETED", "FAILED", "REFUNDED"]).optional(),
@@ -54,8 +54,8 @@ const updateBookingSchema = z.object({
 
         // PARCEL_DELIVERY details
         pickupAddress: z.string().optional(),
-        productHeight: z.string().optional(),
-        productWeight: z.string().optional(),
+        productHeight: z.string().nullable().optional(),
+        productWeight: z.union([z.string(), z.number()]).nullable().optional(),
 
         // payment
         paymentStatus: z.enum(["PENDING", "COMPLETED", "FAILED", "REFUNDED"]).optional(),

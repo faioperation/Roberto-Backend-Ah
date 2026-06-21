@@ -5,16 +5,29 @@ import { StatusCodes } from "http-status-codes";
 import { MetaGraphAPI } from "../../whatsapp/whatsapp.meta.js";
 import { campaignQueue } from "./campaign.queue.js";
 
+const formatCampaign = (campaign) => {
+    if (!campaign) return campaign;
+    const now = new Date();
+    const isExpire = campaign.endDate ? now > new Date(campaign.endDate) : false;
+    return {
+        ...campaign,
+        isExpire,
+    };
+};
+
 const createCampaignService = async (businessId, payload) => {
-    const { title, selectedPeople, scheduledTime, endDate, message, branchId } = payload;
-    const parsedTime = new Date(scheduledTime);
+    const { title, selectedPeople, message, branchId } = payload;
+    const rawScheduledTime = payload.scheduledTime || payload.scheduled_time;
+    const rawEndDate = payload.endDate || payload.end_date;
+
+    const parsedTime = new Date(rawScheduledTime);
     if (isNaN(parsedTime.getTime())) {
         throw new DevBuildError("Invalid scheduledTime format", StatusCodes.BAD_REQUEST);
     }
 
     let parsedEndDate = null;
-    if (endDate) {
-        parsedEndDate = new Date(endDate);
+    if (rawEndDate) {
+        parsedEndDate = new Date(rawEndDate);
         if (isNaN(parsedEndDate.getTime())) {
             throw new DevBuildError("Invalid endDate format", StatusCodes.BAD_REQUEST);
         }
@@ -30,6 +43,7 @@ const createCampaignService = async (businessId, payload) => {
             selectedPeople: formattedPeople,
             scheduledTime: parsedTime,
             endDate: parsedEndDate,
+            isExpire: parsedEndDate ? new Date() > parsedEndDate : false,
             message,
             status: "PENDING",
         },
@@ -43,7 +57,7 @@ const createCampaignService = async (businessId, payload) => {
         { jobId: `campaign-${campaign.id}`, delay }
     );
 
-    return campaign;
+    return formatCampaign(campaign);
 };
 
 const getAllCampaignsService = async (businessId, query = {}) => {
@@ -63,7 +77,7 @@ const getAllCampaignsService = async (businessId, query = {}) => {
 
     return {
         meta: queryBuilder.getMeta(total),
-        data: result,
+        data: result.map(formatCampaign),
     };
 };
 
@@ -76,7 +90,7 @@ const getCampaignByIdService = async (businessId, id) => {
         throw new DevBuildError("Campaign not found", StatusCodes.NOT_FOUND);
     }
 
-    return campaign;
+    return formatCampaign(campaign);
 };
 
 const updateCampaignService = async (businessId, id, payload) => {
@@ -94,24 +108,32 @@ const updateCampaignService = async (businessId, id, payload) => {
     }
 
     const updateData = { ...payload };
-    if (payload.scheduledTime) {
-        const parsedTime = new Date(payload.scheduledTime);
+    
+    const rawScheduledTime = payload.scheduledTime || payload.scheduled_time;
+    if (rawScheduledTime) {
+        const parsedTime = new Date(rawScheduledTime);
         if (isNaN(parsedTime.getTime())) {
             throw new DevBuildError("Invalid scheduledTime format", StatusCodes.BAD_REQUEST);
         }
         updateData.scheduledTime = parsedTime;
+        delete updateData.scheduled_time;
     }
 
-    if (payload.endDate !== undefined) {
-        if (payload.endDate) {
-            const parsedEndDate = new Date(payload.endDate);
+    const hasEndDateField = payload.endDate !== undefined || payload.end_date !== undefined;
+    if (hasEndDateField) {
+        const rawEndDate = payload.endDate !== undefined ? payload.endDate : payload.end_date;
+        if (rawEndDate) {
+            const parsedEndDate = new Date(rawEndDate);
             if (isNaN(parsedEndDate.getTime())) {
                 throw new DevBuildError("Invalid endDate format", StatusCodes.BAD_REQUEST);
             }
             updateData.endDate = parsedEndDate;
+            updateData.isExpire = new Date() > parsedEndDate;
         } else {
             updateData.endDate = null;
+            updateData.isExpire = false;
         }
+        delete updateData.end_date;
     }
 
     if (payload.selectedPeople) {
@@ -140,7 +162,7 @@ const updateCampaignService = async (businessId, id, payload) => {
         { jobId, delay }
     );
 
-    return campaign;
+    return formatCampaign(campaign);
 };
 
 const deleteCampaignService = async (businessId, id) => {
@@ -216,11 +238,22 @@ const processSingleCampaign = async (campaignId) => {
 
         let successCount = 0;
         let failCount = 0;
+        const seenPhones = new Set();
 
         for (const lead of leads) {
             try {
                 const formattedPhone = lead.phone.replace(/\D/g, "");
-                if (!formattedPhone) continue;
+                if (!formattedPhone || formattedPhone.length < 7) {
+                    console.warn(`⚠️ Skipping invalid phone number "${lead.phone}" (Lead ID: ${lead.id})`);
+                    continue;
+                }
+
+                // Deduplicate to prevent sending the message multiple times to the same number in a single campaign run
+                if (seenPhones.has(formattedPhone)) {
+                    console.log(`⚠️ Skipping duplicate phone number "${formattedPhone}" (Lead ID: ${lead.id})`);
+                    continue;
+                }
+                seenPhones.add(formattedPhone);
 
                 // Resolve or create contact in Robarto system
                 const dbContact = await prisma.whatsappContact.upsert({

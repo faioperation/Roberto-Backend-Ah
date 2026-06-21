@@ -2,6 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import prisma from "../../../prisma/client.js";
 import { extractLeadPayload } from "../../../utils/workflowHelpers.js";
 import { getBookingModel, buildDetailsPayload, saveAdditionalDetails } from "../../../utils/bookingHelpers.js";
+import { NotificationService } from "../../notification/notification.service.js";
 
 export const handleVapiWebhook = async (req, res, next) => {
   try {
@@ -63,6 +64,15 @@ export const handleVapiWebhook = async (req, res, next) => {
           await saveAdditionalDetails(prisma, agent.businessId, agent.branchId, booking.id, structuredData);
 
           console.log(`📦 [Vapi] Created ${businessType} booking: ${booking.id}`);
+
+          // Trigger notification for Voice Call Booking
+          NotificationService.createAndSendNotification({
+            title: `New ${businessType.replace('_', ' ')} (Voice Call)`,
+            message: `Booking for ${customerName} (${customerNumber}) confirmed via Voice Call.`,
+            type: "VOICE_CALL",
+            businessId: agent.businessId,
+            branchId: agent.branchId || null,
+          }).catch(err => console.error("Error sending Voice Call booking notification:", err));
 
           // Create CRM Lead
           const cleanLead = await extractLeadPayload(agent.businessId, {
