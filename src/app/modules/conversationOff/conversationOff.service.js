@@ -6,20 +6,13 @@ import axios from "axios";
 
 const toggleConversationAiService = async (businessId, conversationId, action) => {
     // 1. Check in WhatsappConversation
-    let recipientId = null;
+    let conversationFound = false;
     let whatsappConv = await prisma.whatsappConversation.findFirst({
         where: { id: conversationId, businessId },
     });
 
     if (whatsappConv) {
-        const contact = await prisma.whatsappContact.findUnique({
-            where: { id: whatsappConv.contactId },
-        });
-
-        if (contact) {
-            recipientId = contact.waUserId;
-        }
-
+        conversationFound = true;
         // Update database status
         await prisma.whatsappConversation.update({
             where: { id: conversationId },
@@ -32,8 +25,7 @@ const toggleConversationAiService = async (businessId, conversationId, action) =
         });
 
         if (regularConv) {
-            recipientId = regularConv.customerId;
-
+            conversationFound = true;
             // Update database status
             await prisma.conversation.update({
                 where: { id: conversationId },
@@ -42,49 +34,15 @@ const toggleConversationAiService = async (businessId, conversationId, action) =
         }
     }
 
-    // If neither conversation exists or couldn't resolve recipientId, throw error
-    if (!recipientId) {
+    // If neither conversation exists, throw error
+    if (!conversationFound) {
         throw new DevBuildError(
-            "Conversation not found or recipient could not be resolved.",
+            "Conversation not found.",
             StatusCodes.NOT_FOUND
         );
     }
 
-    // 3. Make HTTP request to Tareq's AI API (/agent/handoff)
-    const apiBaseUrl = envVars.AI_API_TAREQ;
-    if (!apiBaseUrl) {
-        console.warn("[ConversationOff] AI_API_TAREQ is not defined in environment variables.");
-        return { success: true, dbUpdatedOnly: true };
-    }
-
-    const payload = {
-        business_id: businessId,
-        recipient_id: recipientId,
-        action: action, // "pause" or "resume"
-    };
-
-    console.log(`[ConversationOff] Triggering AI Handoff: ${action} for recipient ${recipientId}`);
-    
-    try {
-        const response = await axios.post(`${apiBaseUrl}/agent/handoff`, payload, {
-            headers: {
-                "x-api-token": envVars.AI_AGENT_API_TOKEN,
-                "Content-Type": "application/json",
-            },
-        });
-
-        console.log("[ConversationOff] Response from AI Handoff API:", response.data);
-        return { success: true, aiApiResponse: response.data };
-    } catch (error) {
-        console.error(
-            "[ConversationOff] Error calling AI Handoff API:",
-            error.response?.data ? JSON.stringify(error.response.data, null, 2) : error.message
-        );
-        throw new DevBuildError(
-            `Failed to communicate with AI Agent: ${error.response?.data?.message || error.message}`,
-            error.response?.status || StatusCodes.INTERNAL_SERVER_ERROR
-        );
-    }
+    return { success: true };
 };
 
 const getConversationAiStatusService = async (businessId, conversationId) => {

@@ -170,13 +170,36 @@ const getNotificationsService = async (userId, query = {}) => {
     userId,
   };
 
+  // Enforce branch manager filter if applicable
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    include: { roles: { include: { role: true } } }
+  });
+
+  if (user) {
+    const userRoleNames = user.roles?.map(r => r.role.name) || [];
+    if (userRoleNames.includes("BRANCH_MANAGER")) {
+      const manager = await prisma.branchManager.findUnique({
+        where: { email: user.email },
+        include: { branches: { select: { id: true } } }
+      });
+      if (manager) {
+        const branchIds = manager.branches.map(b => b.id);
+        queryParams.where = {
+          ...queryParams.where,
+          branchId: { in: branchIds }
+        };
+      }
+    }
+  }
+
   const [notifications, total] = await Promise.all([
     prisma.notification.findMany(queryParams),
     prisma.notification.count({ where: queryParams.where }),
   ]);
 
   const unreadCount = await prisma.notification.count({
-    where: { userId, isRead: false }
+    where: { ...queryParams.where, isRead: false }
   });
 
   return {
@@ -211,8 +234,29 @@ const markAsReadService = async (userId, id) => {
  * Marks all notifications of a user as read.
  */
 const markAllAsReadService = async (userId) => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    include: { roles: { include: { role: true } } }
+  });
+
+  const whereClause = { userId, isRead: false };
+
+  if (user) {
+    const userRoleNames = user.roles?.map(r => r.role.name) || [];
+    if (userRoleNames.includes("BRANCH_MANAGER")) {
+      const manager = await prisma.branchManager.findUnique({
+        where: { email: user.email },
+        include: { branches: { select: { id: true } } }
+      });
+      if (manager) {
+        const branchIds = manager.branches.map(b => b.id);
+        whereClause.branchId = { in: branchIds };
+      }
+    }
+  }
+
   return await prisma.notification.updateMany({
-    where: { userId, isRead: false },
+    where: whereClause,
     data: { isRead: true }
   });
 };
