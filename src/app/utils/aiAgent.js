@@ -23,7 +23,7 @@ export const notifyAiAgent = async ({
       where: { id: businessId }
     });
 
-    // Fetch branchId depending on channel
+    // Fetch branchId depending on channel and check if AI reply is enabled
     let branchId = null;
     try {
       if (channel === "whatsapp") {
@@ -31,19 +31,29 @@ export const notifyAiAgent = async ({
           where: { id: conversationId },
           include: { whatsappAccount: true }
         });
-        if (waConv?.whatsappAccount) {
-          branchId = waConv.whatsappAccount.branchId || null;
+        if (waConv) {
+          if (!waConv.aiReply) {
+            console.log(`[AI Agent] AI reply is disabled (aiReply is false) for Whatsapp conversation ${conversationId}. Skipping AI notification.`);
+            return;
+          }
+          if (waConv.whatsappAccount) {
+            branchId = waConv.whatsappAccount.branchId || null;
+          }
         }
       } else if (channel === "instagram" || channel === "messenger") {
         const conv = await prisma.conversation.findUnique({
           where: { id: conversationId }
         });
         if (conv) {
+          if (!conv.aiReply) {
+            console.log(`[AI Agent] AI reply is disabled (aiReply is false) for ${channel} conversation ${conversationId}. Skipping AI notification.`);
+            return;
+          }
           branchId = conv.branchId;
         }
       }
     } catch (e) {
-      console.error("[AI Agent] Error resolving branchId for conversation:", e);
+      console.error("[AI Agent] Error resolving branchId or aiReply for conversation:", e);
     }
 
     const payload = {

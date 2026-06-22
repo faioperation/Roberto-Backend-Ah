@@ -26,8 +26,15 @@ const createStripeCheckoutSession = async (user, planId, billingCycle) => {
     throw new DevBuildError("Subscription plan not found", StatusCodes.NOT_FOUND);
   }
 
-  const priceId =
+  let priceId =
     billingCycle === "yearly" ? plan.stripeYearlyPriceId : plan.stripeMonthlyPriceId;
+
+  if (!priceId) {
+    const slugUpper = plan.slug ? plan.slug.toUpperCase() : plan.name.toUpperCase();
+    const cycleUpper = billingCycle.toUpperCase();
+    const envKey = `STRIPE_${slugUpper}_${cycleUpper}_PRICE_ID`;
+    priceId = envVars[envKey];
+  }
 
   if (!priceId) {
     throw new DevBuildError(
