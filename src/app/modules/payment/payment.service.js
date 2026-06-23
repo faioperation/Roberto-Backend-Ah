@@ -217,10 +217,10 @@ const getMySubscription = async (user) => {
     include: {
       plan: { include: { features: true } },
       invoices: {
-        orderBy: { createdAt: "desc" },
+        orderBy: { createdAt: "asc" },
       },
     },
-    orderBy: { createdAt: "desc" },
+    orderBy: { createdAt: "asc" },
   });
 
   return subscriptions.map((sub) => {

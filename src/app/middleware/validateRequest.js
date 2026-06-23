@@ -8,10 +8,10 @@ const validateRequest = (schema) => {
                 cookies: req.cookies,
             });
             
-            req.body = parsed.body;
-            req.query = parsed.query;
-            req.params = parsed.params;
-            req.cookies = parsed.cookies;
+            if (parsed.body !== undefined) req.body = parsed.body;
+            if (parsed.query !== undefined) req.query = parsed.query;
+            if (parsed.params !== undefined) req.params = parsed.params;
+            if (parsed.cookies !== undefined) req.cookies = parsed.cookies;
             
             next();
         } catch (error) {

@@ -39,6 +39,8 @@ import { TelephonyRoutes } from "../modules/systemOwner/twiloNumberCall/twiloNum
 import { DashboardOverviewSRoutes } from "../modules/systemOwner/dashboardOverviewS/dashboardOverviewS.route.js";
 import { ConversationOffRoutes } from "../modules/conversationOff/conversationOff.route.js";
 import { NotificationRoutes } from "../modules/notification/notification.route.js";
+import { PricingCalculatorRoutes } from "../modules/pricingCalculator/pricingCalculator.route.js";
+import { AllConversationsRoutes } from "../modules/allConversations/allConversations.route.js";
 
 export const router = Router();
 
@@ -84,6 +86,8 @@ const moduleRoutes = [
   { path: "/system-owner/telephony", route: TelephonyRoutes },
   { path: "/system-owner/dashboard", route: DashboardOverviewSRoutes },
   { path: "/conversation-off", route: ConversationOffRoutes },
+  { path: "/pricing-calculator", route: PricingCalculatorRoutes },
+  { path: "/conversations", route: AllConversationsRoutes },
 ];
 
 moduleRoutes.forEach((route) => {

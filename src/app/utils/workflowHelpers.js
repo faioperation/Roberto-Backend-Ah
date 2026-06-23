@@ -108,13 +108,26 @@ export const extractLeadPayload = async (businessId, payload) => {
     }
   }
 
+  const validSources = [
+    "WEBSITE",
+    "SOCIAL_MEDIA",
+    "REFERRAL",
+    "COLD_CALL",
+    "OTHER",
+    "WHATSAPP",
+    "MESSENGER",
+    "INSTAGRAM"
+  ];
+
   if (extracted.source) {
     const sourceUpper = String(extracted.source).toUpperCase().replace(/[-\s]/g, "_");
-    if (["WEBSITE", "SOCIAL_MEDIA", "REFERRAL", "COLD_CALL", "OTHER"].includes(sourceUpper)) {
+    if (validSources.includes(sourceUpper)) {
       extracted.source = sourceUpper;
     } else {
-      extracted.source = "OTHER";
+      extracted.source = "COLD_CALL";
     }
+  } else {
+    extracted.source = "COLD_CALL";
   }
 
   extracted.metadata = metadata;

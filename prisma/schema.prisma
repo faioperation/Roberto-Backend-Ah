@@ -643,6 +643,9 @@ enum SourceEnum {
   REFERRAL
   COLD_CALL   
   OTHER
+  WHATSAPP
+  MESSENGER
+  INSTAGRAM
 }
 
 model CrmLead {

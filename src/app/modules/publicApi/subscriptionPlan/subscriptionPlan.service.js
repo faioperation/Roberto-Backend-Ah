@@ -5,7 +5,7 @@ const getAllPublicSubscriptionPlansService = async (query = {}) => {
     const queryBuilder = new QueryBuilder(query)
         .search(["name", "slug", "description"])
         .filter()
-        .sort()
+        .sort("createdAt")
         .paginate()
         .fields();
 

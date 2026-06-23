@@ -7,6 +7,35 @@ import { NotificationService } from "../notification/notification.service.js";
 
 const getGraphUrl = () => `https://graph.facebook.com/${envVars.META_GRAPH_VERSION || "v23.0"}`;
 
+const getMessengerUserProfile = async (psid, pageAccessToken) => {
+  try {
+    const response = await axios.get(
+      `${getGraphUrl()}/me/conversations`,
+      {
+        params: {
+          user_id: psid,
+          fields: "participants",
+          access_token: pageAccessToken,
+        },
+      }
+    );
+    const conversations = response.data?.data;
+    if (conversations && conversations.length > 0) {
+      const participants = conversations[0].participants?.data;
+      if (participants) {
+        const customer = participants.find((p) => p.id === psid);
+        if (customer && customer.name) {
+          return { name: customer.name };
+        }
+      }
+    }
+    return { name: "Social Customer" };
+  } catch (error) {
+    console.error("Error fetching Messenger user profile from conversations:", error.response?.data || error.message);
+    return { name: "Social Customer" };
+  }
+};
+
 export const handleIncomingMessage = async (pageId, webhookEvent) => {
   const senderId = webhookEvent.sender.id;
   const messageText = webhookEvent.message.text;
@@ -24,6 +53,23 @@ export const handleIncomingMessage = async (pageId, webhookEvent) => {
 
   const businessId = connection.businessId;
 
+  // Fetch customerName if conversation doesn't exist or is missing name
+  const existingConv = await prisma.conversation.findUnique({
+    where: {
+      businessId_platform_customerId: {
+        businessId,
+        platform: "messenger",
+        customerId: senderId,
+      },
+    },
+  });
+
+  let customerName = existingConv?.customerName;
+  if (!customerName || customerName === "Social Customer") {
+    const profile = await getMessengerUserProfile(senderId, connection.accessToken);
+    customerName = profile.name;
+  }
+
   // Create or update conversation
   const conversation = await prisma.conversation.upsert({
     where: {
@@ -37,12 +83,14 @@ export const handleIncomingMessage = async (pageId, webhookEvent) => {
       lastMessage: messageText || "Attachment/Other",
       lastMessageAt: new Date(),
       branchId: connection.branchId || null,
+      customerName: customerName || undefined,
     },
     create: {
       businessId,
       branchId: connection.branchId || null,
       platform: "messenger",
       customerId: senderId,
+      customerName: customerName || "Social Customer",
       lastMessage: messageText || "Attachment/Other",
       lastMessageAt: new Date(),
     },

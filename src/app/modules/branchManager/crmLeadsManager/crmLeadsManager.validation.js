@@ -26,6 +26,9 @@ const updateCrmLeadSchema = z.object({
         stageId: z.string().optional(),
         metadata: z.record(z.string(), z.any()).optional(),
     }).passthrough(),
+    params: z.object({
+        id: z.string().uuid("Invalid lead ID format"),
+    }),
 });
 
 export const CrmLeadsManagerValidation = {
