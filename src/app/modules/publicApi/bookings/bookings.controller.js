@@ -30,6 +30,30 @@ export const createBooking = async (req, res, next) => {
     const businessType = business.businessType || "ORDER_BOOKING";
     const { model, detailsModel, detailsRelation } = getBookingModel(businessType);
 
+    let conversationId = null;
+    if (req.body.conversationId) {
+      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+      if (!uuidRegex.test(req.body.conversationId)) {
+        throw new AppError(StatusCodes.BAD_REQUEST, "Invalid conversationId format.");
+      }
+
+      const standardExists = await prisma.conversation.findUnique({
+        where: { id: req.body.conversationId }
+      });
+      if (standardExists) {
+        conversationId = req.body.conversationId;
+      } else {
+        const whatsappExists = await prisma.whatsappConversation.findUnique({
+          where: { id: req.body.conversationId }
+        });
+        if (whatsappExists) {
+          conversationId = req.body.conversationId;
+        } else {
+          throw new AppError(StatusCodes.BAD_REQUEST, `Conversation ${req.body.conversationId} not found.`);
+        }
+      }
+    }
+
     const result = await prisma.$transaction(async (tx) => {
       const booking = await model.create({
         data: {
@@ -41,6 +65,7 @@ export const createBooking = async (req, res, next) => {
           price: price ? String(price) : "0",
           note: req.body.note || req.body.orderNote || null,
           status: req.body.status || "PENDING",
+          conversationId,
         }
       });
 

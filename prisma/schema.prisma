@@ -453,6 +453,7 @@ model OrderBooking {
   price          String
   note           String?       @db.Text
   status         BookingStatus @default(PENDING)
+  conversationId String?       @map("conversation_id")
   createdAt      DateTime      @default(now()) @map("created_at")
   updatedAt      DateTime      @updatedAt @map("updated_at")
   deletedAt      DateTime?     @map("deleted_at")
@@ -496,6 +497,7 @@ model AppointmentBooking {
   price              String
   note               String?             @db.Text
   status             BookingStatus       @default(PENDING)
+  conversationId     String?             @map("conversation_id")
   createdAt          DateTime            @default(now()) @map("created_at")
   updatedAt          DateTime            @updatedAt @map("updated_at")
   deletedAt          DateTime?           @map("deleted_at")
@@ -540,6 +542,7 @@ model ParcelDelivery {
   price          String
   note           String?        @db.Text
   status         BookingStatus  @default(PENDING)
+  conversationId String?        @map("conversation_id")
   createdAt      DateTime       @default(now()) @map("created_at")
   updatedAt      DateTime       @updatedAt @map("updated_at")
   deletedAt      DateTime?      @map("deleted_at")

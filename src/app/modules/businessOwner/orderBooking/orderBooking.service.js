@@ -99,14 +99,31 @@ const getAllBookingsService = async (query = {}) => {
         };
     }
 
-    const [result, total] = await Promise.all([
+    const baseWhere = { ...queryParams.where };
+    delete baseWhere.status;
+
+    const [result, total, totalBookings, pending, confirmed, delivered] = await Promise.all([
         model.findMany(queryParams),
         model.count({ where: queryParams.where }),
+        model.count({ where: baseWhere }),
+        model.count({ where: { ...baseWhere, status: "PENDING" } }),
+        model.count({ where: { ...baseWhere, status: "CONFIRMED" } }),
+        model.count({ where: { ...baseWhere, status: { in: ["DELIVERED", "COMPLETED"] } } }),
     ]);
 
     const formattedData = await attachDetails(prisma, result);
 
-    return { meta: { ...queryBuilder.getMeta(total), total }, data: formattedData };
+    return {
+        meta: {
+            ...queryBuilder.getMeta(total),
+            total,
+            totalBookings,
+            pending,
+            confirmed,
+            delivered,
+        },
+        data: formattedData,
+    };
 };
 
 const getBookingByIdService = async (businessId, id, query = {}) => {

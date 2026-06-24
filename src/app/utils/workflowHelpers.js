@@ -130,6 +130,13 @@ export const extractLeadPayload = async (businessId, payload) => {
     extracted.source = "COLD_CALL";
   }
 
+  if (extracted.source === "COLD_CALL") {
+    const customerPhone = metadata.customer_phone || normalizedPayload.customer_phone || metadata.customerPhone || normalizedPayload.customerPhone;
+    if (customerPhone) {
+      extracted.phone = customerPhone;
+    }
+  }
+
   extracted.metadata = metadata;
   extracted.businessId = businessId;
 
