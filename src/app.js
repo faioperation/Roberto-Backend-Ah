@@ -21,7 +21,7 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:5174",
   "https://matrix-ai-app.vercel.app",
-  "https://matrix-ai-landing-page.vercel.app/"
+  "https://matrix-ai-landing-page.vercel.app"
 ];
 
 app.use(cors({
