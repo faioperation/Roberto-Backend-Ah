@@ -3,8 +3,11 @@ import DevBuildError from "../../../lib/DevBuildError.js";
 import { StatusCodes } from "http-status-codes";
 import { QueryBuilder } from "../../../utils/QueryBuilder.js";
 import { NotificationService } from "../../notification/notification.service.js";
+import { checkBranchLimit } from "../../../utils/limitChecker.js";
 
 const createBranchService = async (payload) => {
+    await checkBranchLimit(payload.businessId);
+
     const result = await prisma.branch.create({
         data: payload,
     });

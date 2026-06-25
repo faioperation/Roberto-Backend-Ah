@@ -326,6 +326,7 @@ model Business {
   pricings            Pricing[]              @relation("BusinessPricings")
   crmLeads            CrmLead[]              @relation("BusinessCrmLeads")
   socialConnections   SocialConnection[]     @relation("BusinessSocialConnections")
+  googleCalendarConnections GoogleCalendarConnection[] @relation("BusinessGoogleCalendar")
   conversations       Conversation[]         @relation("BusinessConversations")
   subscriptions       BusinessSubscription[] @relation("BusinessSubscriptions")
   invoices            SubscriptionInvoice[]  @relation("BusinessInvoices")
@@ -363,6 +364,7 @@ model Branch {
   crmLeads          CrmLead[]          @relation("BranchCrmLeads")
   pricings          Pricing[]          @relation("BranchPricings")
   socialConnections SocialConnection[] @relation("BranchSocialConnections")
+  googleCalendarConnection GoogleCalendarConnection? @relation("BranchGoogleCalendar")
   conversations     Conversation[]     @relation("BranchConversations")
   whatsappAccounts  WhatsappAccount[]  @relation("BranchWhatsappAccounts")
   campaigns         Campaign[]         @relation("BranchCampaigns")
@@ -979,4 +981,21 @@ model FCMToken {
   user       User     @relation("UserFCMTokens", fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("fcm_tokens")
+}
+
+model GoogleCalendarConnection {
+  id           String    @id @default(uuid())
+  businessId   String    @map("business_id")
+  branchId     String    @unique @map("branch_id")
+  email        String    @map("email")
+  accessToken  String    @map("access_token")
+  refreshToken String    @map("refresh_token")
+  tokenExpiry  DateTime? @map("token_expiry")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  business Business @relation("BusinessGoogleCalendar", fields: [businessId], references: [id], onDelete: Cascade)
+  branch   Branch   @relation("BranchGoogleCalendar", fields: [branchId], references: [id], onDelete: Cascade)
+
+  @@map("google_calendar_connections")
 }

@@ -3,6 +3,7 @@ import DevBuildError from "../../../lib/DevBuildError.js";
 import { StatusCodes } from "http-status-codes";
 import { QueryBuilder } from "../../../utils/QueryBuilder.js";
 import { NotificationService } from "../../notification/notification.service.js";
+import { GoogleCalendarService } from "../../googleCalendar/googleCalendar.service.js";
 import {
     getBookingModel,
     buildMainPayload,
@@ -67,6 +68,12 @@ const createBookingService = async (payload) => {
         businessId: result.businessId,
         branchId: result.branchId || null,
     }).catch(err => console.error("Error sending booking creation notification:", err));
+
+    if (businessType === "APPOINTMENT_BOOKING") {
+        GoogleCalendarService.syncBookingToCalendar(result).catch(err => {
+            console.error("Error auto-syncing booking to Google Calendar in branch service:", err);
+        });
+    }
 
     return result;
 };

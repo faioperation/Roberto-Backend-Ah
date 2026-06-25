@@ -24,6 +24,9 @@ const loadEnvVars = () => {
 
     "STRIPE_SECRET_KEY",
     "STRIPE_WEBHOOK_SECRET",
+    "GOOGLE_CALENDAR_CLIENT_ID",
+    "GOOGLE_CALENDAR_CLIENT_SECRET",
+    "GOOGLE_CALENDAR_REDIRECT_URI",
   ];
 
   requiredVars.forEach((key) => {
@@ -62,6 +65,11 @@ const loadEnvVars = () => {
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
     GOOGLE_CALLBACK_URL: process.env.GOOGLE_CALLBACK_URL,
+
+    // Google Calendar Integration
+    GOOGLE_CALENDAR_CLIENT_ID: process.env.GOOGLE_CALENDAR_CLIENT_ID,
+    GOOGLE_CALENDAR_CLIENT_SECRET: process.env.GOOGLE_CALENDAR_CLIENT_SECRET,
+    GOOGLE_CALENDAR_REDIRECT_URI: process.env.GOOGLE_CALENDAR_REDIRECT_URI,
     // Frontend
     FRONT_END_URL: process.env.FRONT_END_URL,
     

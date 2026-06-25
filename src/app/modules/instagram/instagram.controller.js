@@ -298,3 +298,30 @@ export const checkConnectionStatus = async (req, res, next) => {
     next(error);
   }
 };
+
+export const disconnectConnection = async (req, res, next) => {
+  try {
+    const { businessId } = await getBusinessAndBranchForUser(req.user);
+    if (!businessId) throw new AppError(404, "Business not found for this user");
+
+    const { connectionId } = req.body;
+    if (!connectionId) throw new AppError(400, "Connection ID is required");
+
+    const connection = await prisma.socialConnection.findFirst({
+      where: { id: connectionId, businessId, provider: "instagram" }
+    });
+
+    if (!connection) {
+      throw new AppError(404, "Instagram connection not found");
+    }
+
+    await prisma.socialConnection.update({
+      where: { id: connectionId },
+      data: { isActive: false }
+    });
+
+    res.json({ success: true, message: "Instagram connection disconnected successfully" });
+  } catch (error) {
+    next(error);
+  }
+};

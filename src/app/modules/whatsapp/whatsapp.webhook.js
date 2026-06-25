@@ -1,6 +1,7 @@
 import prisma from "../../prisma/client.js";
 import { notifyAiAgent } from "../../utils/aiAgent.js";
 import { NotificationService } from "../notification/notification.service.js";
+import { isConversationLimitReached } from "../../utils/limitChecker.js";
 
 export const handleWebhookEvent = async (body) => {
   if (body.object === "whatsapp_business_account") {
@@ -37,6 +38,30 @@ const processIncomingMessages = async (value) => {
     const waUserId = contact.wa_id;
     const name = contact.profile?.name;
     const phoneNumber = waUserId;
+
+    // Check if conversation already exists before checking limits
+    const existingContact = await prisma.whatsappContact.findUnique({
+      where: {
+        businessId_waUserId: { businessId, waUserId },
+      },
+    });
+
+    let existingConv = null;
+    if (existingContact) {
+      existingConv = await prisma.whatsappConversation.findUnique({
+        where: {
+          businessId_contactId: { businessId, contactId: existingContact.id },
+        },
+      });
+    }
+
+    if (!existingConv) {
+      const limitReached = await isConversationLimitReached(businessId);
+      if (limitReached) {
+        console.warn(`[WhatsApp Webhook] Conversation limit reached for business: ${businessId}. Ignoring incoming message.`);
+        continue;
+      }
+    }
 
     // Upsert Contact
     const dbContact = await prisma.whatsappContact.upsert({

@@ -3,6 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import { sendResponse } from "../../../utils/sendResponse.js";
 import { AppError } from "../../../errorHelper/appError.js";
 import { NotificationService } from "../../notification/notification.service.js";
+import { GoogleCalendarService } from "../../googleCalendar/googleCalendar.service.js";
 import {
     getBookingModel,
     buildDetailsPayload,
@@ -108,6 +109,12 @@ export const createBooking = async (req, res, next) => {
       businessId: result.businessId,
       branchId: result.branchId || null,
     }).catch(err => console.error("Error sending Public API booking notification:", err));
+
+    if (businessType === "APPOINTMENT_BOOKING") {
+      GoogleCalendarService.syncBookingToCalendar(result).catch(err => {
+        console.error("Error auto-syncing booking to Google Calendar in public API controller:", err);
+      });
+    }
 
     sendResponse(res, { success: true, statusCode: StatusCodes.CREATED, message: "Booking created successfully.", data: result });
   } catch (error) {

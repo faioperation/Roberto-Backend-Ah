@@ -38,3 +38,8 @@ WhatsappRoutes.post(
   validateRequest(WhatsappValidation.sendMediaMessage),
   WhatsappController.sendMediaMessage
 );
+
+WhatsappRoutes.post(
+  "/whatsapp/disconnect",
+  WhatsappController.disconnectAccount
+);

@@ -131,15 +131,17 @@ export const OtpService = {
     // OTP is valid, generate a short-lived reset token
     const user = await prisma.user.findUnique({
       where: { email },
-      select: { id: true, email: true, role: true },
+      include: { roles: { include: { role: true } } }
     });
 
     if (!user) {
       throw new DevBuildError("User not found", 404);
     }
 
+    const userRole = user.roles?.[0]?.role?.name || null;
+
     const resetToken = jwt.sign(
-      { id: user.id, email: user.email, role: user.role },
+      { id: user.id, email: user.email, role: userRole },
       envVars.JWT_SECRET_TOKEN,
       { expiresIn: "10m" }
     );

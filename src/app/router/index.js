@@ -20,6 +20,7 @@ import { OrderBookingBranchRoutes } from "../modules/branchManager/orderBookingB
 import { MessengerRoutes } from "../modules/messenger/messenger.route.js";
 import { WhatsappRoutes } from "../modules/whatsapp/whatsapp.routes.js";
 import { InstagramRoutes } from "../modules/instagram/instagram.route.js";
+import { GoogleCalendarRoutes } from "../modules/googleCalendar/googleCalendar.route.js";
 import { PublicFacebookRoutes } from "../modules/publicApi/facebook/facebook.route.js";
 import { PublicInstagramRoutes } from "../modules/publicApi/instagram/instagram.route.js";
 import { PublicWhatsappRoutes } from "../modules/publicApi/whatsapp/whatsapp.route.js";
@@ -68,6 +69,7 @@ const moduleRoutes = [
   { path: "/v1", route: MessengerRoutes },
   { path: "/v1", route: WhatsappRoutes },
   { path: "/v1", route: InstagramRoutes },
+  { path: "/v1", route: GoogleCalendarRoutes },
   { path: "/v1/public/facebook", route: PublicFacebookRoutes },
   { path: "/v1/public/instagram", route: PublicInstagramRoutes },
   { path: "/v1/public/whatsapp", route: PublicWhatsappRoutes },

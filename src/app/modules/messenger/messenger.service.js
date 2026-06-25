@@ -4,6 +4,7 @@ import { envVars } from "../../config/env.js";
 import { AppError } from "../../errorHelper/appError.js";
 import { notifyAiAgent } from "../../utils/aiAgent.js";
 import { NotificationService } from "../notification/notification.service.js";
+import { isConversationLimitReached } from "../../utils/limitChecker.js";
 
 const getGraphUrl = () => `https://graph.facebook.com/${envVars.META_GRAPH_VERSION || "v23.0"}`;
 
@@ -63,6 +64,14 @@ export const handleIncomingMessage = async (pageId, webhookEvent) => {
       },
     },
   });
+
+  if (!existingConv) {
+    const limitReached = await isConversationLimitReached(businessId);
+    if (limitReached) {
+      console.warn(`[Messenger Webhook] Conversation limit reached for business: ${businessId}. Ignoring incoming message.`);
+      return;
+    }
+  }
 
   let customerName = existingConv?.customerName;
   if (!customerName || customerName === "Social Customer") {

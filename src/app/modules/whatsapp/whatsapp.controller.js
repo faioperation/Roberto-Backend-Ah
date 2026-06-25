@@ -130,4 +130,21 @@ export const WhatsappController = {
       res.status(500).json({ success: false, message: error.message });
     }
   },
+
+  disconnectAccount: async (req, res) => {
+    try {
+      const { businessId } = await getBusinessAndBranchForUser(req.user);
+      if (!businessId) return res.status(404).json({ success: false, message: "Business not found for this user" });
+
+      const { accountId } = req.body;
+      if (!accountId) {
+        return res.status(400).json({ success: false, message: "Account ID is required" });
+      }
+
+      await WhatsappService.disconnectAccount(businessId, accountId);
+      res.json({ success: true, message: "WhatsApp account disconnected successfully" });
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+    }
+  },
 };

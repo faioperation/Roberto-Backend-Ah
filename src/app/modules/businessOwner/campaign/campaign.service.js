@@ -3,6 +3,7 @@ import { QueryBuilder } from "../../../utils/QueryBuilder.js";
 import DevBuildError from "../../../lib/DevBuildError.js";
 import { StatusCodes } from "http-status-codes";
 import { MetaGraphAPI } from "../../whatsapp/whatsapp.meta.js";
+import { isConversationLimitReached } from "../../../utils/limitChecker.js";
 import { campaignQueue } from "./campaign.queue.js";
 
 const formatCampaign = (campaign) => {
@@ -275,6 +276,20 @@ const processSingleCampaign = async (campaignId) => {
                 });
 
                 // Resolve or create conversation
+                const existingConv = await prisma.whatsappConversation.findUnique({
+                    where: {
+                        businessId_contactId: { businessId: campaign.businessId, contactId: dbContact.id },
+                    },
+                });
+
+                if (!existingConv) {
+                    const limitReached = await isConversationLimitReached(campaign.businessId);
+                    if (limitReached) {
+                        console.log(`⚠️ Skip sending campaign message to ${formattedPhone} due to subscription conversation limit.`);
+                        continue;
+                    }
+                }
+
                 const conversation = await prisma.whatsappConversation.upsert({
                     where: {
                         businessId_contactId: { businessId: campaign.businessId, contactId: dbContact.id },
