@@ -118,6 +118,10 @@ const getAllSubscriptionPlansService = async (query = {}) => {
             status: invoice.status ? invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1) : "Paid",
             invoiceUrl: invoice.invoiceUrl,
             invoicePath: invoice.invoicePath,
+            business: {
+                name: invoice.business?.name || "N/A",
+                renewalDate: invoice.subscription?.endDate || null,
+            },
         };
     });
 

@@ -154,9 +154,17 @@ const getDashboardOverviewService = async (businessId) => {
         }),
     ]);
 
-    const totalSales = weeklyOrdersRaw.reduce((sum, order) => {
-        return sum + (Number(order.price) || 0);
-    }, 0);
+    const todaysSales = weeklyOrdersRaw
+        .filter((order) => {
+            const createdAt = new Date(order.createdAt);
+            return (
+                createdAt >= todayStart &&
+                createdAt <= todayEnd
+            );
+        })
+        .reduce((sum, order) => {
+            return sum + (Number(order.price) || 0);
+        }, 0);
 
     const weeklyData = buildWeeklyData(
         weeklyOrdersRaw,
@@ -189,7 +197,7 @@ const getDashboardOverviewService = async (businessId) => {
     return {
         todayOrders,
         pendingDeliveries,
-        todaysSales: totalSales,
+        todaysSales,
         activeUsers: {
             total: totalActiveUsers,
             whatsapp: whatsappActiveUsers,
