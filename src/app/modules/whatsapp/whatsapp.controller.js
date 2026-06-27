@@ -165,7 +165,7 @@ export const WhatsappController = {
       const extras = JSON.stringify({ setup: { setup_program: "whatsapp" } });
 
       const configIdParam = envVars.WHATSAPP_CONFIG_ID ? `&config_id=${envVars.WHATSAPP_CONFIG_ID}` : '';
-      const authUrl = `https://www.facebook.com/${graphVersion}/dialog/oauth?client_id=${appId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${permissions}&state=${encodeURIComponent(state)}&extras=${encodeURIComponent(extras)}${configIdParam}`;
+      const authUrl = `https://www.facebook.com/${graphVersion}/dialog/oauth?client_id=${appId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${permissions}&state=${encodeURIComponent(state)}&extras=${encodeURIComponent(extras)}${configIdParam}`;
 
       res.json({
         success: true,
