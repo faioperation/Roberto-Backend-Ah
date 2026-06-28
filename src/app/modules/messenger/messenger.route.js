@@ -9,6 +9,7 @@ import {
   getMessages,
   checkConnectionStatus,
   sendMediaMessage,
+  disconnectConnection,
 } from "./messenger.controller.js";
 import { checkAuthMiddleware } from "../../middleware/checkAuthMiddleware.js";
 import { messengerUpload } from "./messengerUpload.js";
@@ -45,3 +46,5 @@ MessengerRoutes.post(
 // Get Data
 MessengerRoutes.get("/messenger/conversations", getConversations);
 MessengerRoutes.get("/messenger/messages/:conversationId", getMessages);
+
+MessengerRoutes.post("/messenger/disconnect", disconnectConnection);

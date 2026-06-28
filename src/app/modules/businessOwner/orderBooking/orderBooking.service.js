@@ -3,6 +3,7 @@ import DevBuildError from "../../../lib/DevBuildError.js";
 import { StatusCodes } from "http-status-codes";
 import { QueryBuilder } from "../../../utils/QueryBuilder.js";
 import { NotificationService } from "../../notification/notification.service.js";
+import { GoogleCalendarService } from "../../googleCalendar/googleCalendar.service.js";
 import {
     getBookingModel,
     buildMainPayload,
@@ -73,6 +74,12 @@ const createBookingService = async (payload) => {
         branchId: result.branchId || null,
     }).catch(err => console.error("Error sending booking creation notification:", err));
 
+    if (businessType === "APPOINTMENT_BOOKING") {
+        GoogleCalendarService.syncBookingToCalendar(result).catch(err => {
+            console.error("Error auto-syncing booking to Google Calendar:", err);
+        });
+    }
+
     return result;
 };
 
@@ -99,14 +106,31 @@ const getAllBookingsService = async (query = {}) => {
         };
     }
 
-    const [result, total] = await Promise.all([
+    const baseWhere = { ...queryParams.where };
+    delete baseWhere.status;
+
+    const [result, total, totalBookings, pending, confirmed, delivered] = await Promise.all([
         model.findMany(queryParams),
         model.count({ where: queryParams.where }),
+        model.count({ where: baseWhere }),
+        model.count({ where: { ...baseWhere, status: "PENDING" } }),
+        model.count({ where: { ...baseWhere, status: "CONFIRMED" } }),
+        model.count({ where: { ...baseWhere, status: { in: ["DELIVERED", "COMPLETED"] } } }),
     ]);
 
     const formattedData = await attachDetails(prisma, result);
 
-    return { meta: { ...queryBuilder.getMeta(total), total }, data: formattedData };
+    return {
+        meta: {
+            ...queryBuilder.getMeta(total),
+            total,
+            totalBookings,
+            pending,
+            confirmed,
+            delivered,
+        },
+        data: formattedData,
+    };
 };
 
 const getBookingByIdService = async (businessId, id, query = {}) => {

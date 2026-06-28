@@ -3,6 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import { sendResponse } from "../../../utils/sendResponse.js";
 import { AppError } from "../../../errorHelper/appError.js";
 import { NotificationService } from "../../notification/notification.service.js";
+import { GoogleCalendarService } from "../../googleCalendar/googleCalendar.service.js";
 import {
     getBookingModel,
     buildDetailsPayload,
@@ -30,6 +31,30 @@ export const createBooking = async (req, res, next) => {
     const businessType = business.businessType || "ORDER_BOOKING";
     const { model, detailsModel, detailsRelation } = getBookingModel(businessType);
 
+    let conversationId = null;
+    if (req.body.conversationId) {
+      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+      if (!uuidRegex.test(req.body.conversationId)) {
+        throw new AppError(StatusCodes.BAD_REQUEST, "Invalid conversationId format.");
+      }
+
+      const standardExists = await prisma.conversation.findUnique({
+        where: { id: req.body.conversationId }
+      });
+      if (standardExists) {
+        conversationId = req.body.conversationId;
+      } else {
+        const whatsappExists = await prisma.whatsappConversation.findUnique({
+          where: { id: req.body.conversationId }
+        });
+        if (whatsappExists) {
+          conversationId = req.body.conversationId;
+        } else {
+          throw new AppError(StatusCodes.BAD_REQUEST, `Conversation ${req.body.conversationId} not found.`);
+        }
+      }
+    }
+
     const result = await prisma.$transaction(async (tx) => {
       const booking = await model.create({
         data: {
@@ -41,6 +66,7 @@ export const createBooking = async (req, res, next) => {
           price: price ? String(price) : "0",
           note: req.body.note || req.body.orderNote || null,
           status: req.body.status || "PENDING",
+          conversationId,
         }
       });
 
@@ -83,6 +109,12 @@ export const createBooking = async (req, res, next) => {
       businessId: result.businessId,
       branchId: result.branchId || null,
     }).catch(err => console.error("Error sending Public API booking notification:", err));
+
+    if (businessType === "APPOINTMENT_BOOKING") {
+      GoogleCalendarService.syncBookingToCalendar(result).catch(err => {
+        console.error("Error auto-syncing booking to Google Calendar in public API controller:", err);
+      });
+    }
 
     sendResponse(res, { success: true, statusCode: StatusCodes.CREATED, message: "Booking created successfully.", data: result });
   } catch (error) {

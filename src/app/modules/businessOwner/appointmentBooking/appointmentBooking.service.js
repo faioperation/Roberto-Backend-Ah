@@ -2,6 +2,7 @@ import prisma from "../../../prisma/client.js";
 import DevBuildError from "../../../lib/DevBuildError.js";
 import { StatusCodes } from "http-status-codes";
 import { QueryBuilder } from "../../../utils/QueryBuilder.js";
+import { GoogleCalendarService } from "../../googleCalendar/googleCalendar.service.js";
 
 const buildMainPayload = (businessId, payload) => {
     const extracted = {};
@@ -52,6 +53,10 @@ const createAppointmentBookingService = async (payload) => {
             where: { id: booking.id },
             include: { appointmentDetails: true }
         });
+    });
+
+    GoogleCalendarService.syncBookingToCalendar(result).catch(err => {
+        console.error("Error auto-syncing booking to Google Calendar:", err);
     });
 
     return result;

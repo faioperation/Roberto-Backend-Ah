@@ -46,7 +46,7 @@ export const getBookingModel = (businessType) => {
  */
 export const buildMainPayload = (businessId, payload) => {
     const extracted = { businessId };
-    const fields = ["branchId", "createdById", "customerName", "customerNumber", "email", "note", "status"];
+    const fields = ["branchId", "createdById", "customerName", "customerNumber", "email", "note", "status", "conversationId"];
     for (const f of fields) {
         if (payload[f] !== undefined) extracted[f] = payload[f];
     }
@@ -166,7 +166,8 @@ export const saveAdditionalDetails = async (tx, businessId, branchId, bookingId,
         "productHeight",
         "productWeight",
         "userId",
-        "status"
+        "status",
+        "conversationId"
     ]);
 
     const additionalDetailsData = [];
@@ -219,7 +220,8 @@ export const updateAdditionalDetails = async (tx, businessId, branchId, bookingI
         "productHeight",
         "productWeight",
         "userId",
-        "status"
+        "status",
+        "conversationId"
     ]);
 
     for (const key of Object.keys(payload)) {

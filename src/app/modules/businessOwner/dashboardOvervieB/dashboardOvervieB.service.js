@@ -43,6 +43,8 @@ const getDashboardOverviewService = async (businessId) => {
         messengerActiveUsers,
         instagramActiveUsers,
         weeklyOrdersRaw,
+        branches,
+        last7DaysBookings,
     ] = await Promise.all([
         model.count({
             where: {
@@ -125,11 +127,44 @@ const getDashboardOverviewService = async (businessId) => {
                 price: true,
             },
         }),
+
+        prisma.branch.findMany({
+            where: {
+                businessId,
+                deletedAt: null,
+            },
+            select: {
+                id: true,
+                name: true,
+            },
+        }),
+
+        model.findMany({
+            where: {
+                businessId,
+                createdAt: {
+                    gte: last7DaysStart,
+                    lte: todayEnd,
+                },
+            },
+            select: {
+                branchId: true,
+                price: true,
+            },
+        }),
     ]);
 
-    const totalSales = weeklyOrdersRaw.reduce((sum, order) => {
-        return sum + (Number(order.price) || 0);
-    }, 0);
+    const todaysSales = weeklyOrdersRaw
+        .filter((order) => {
+            const createdAt = new Date(order.createdAt);
+            return (
+                createdAt >= todayStart &&
+                createdAt <= todayEnd
+            );
+        })
+        .reduce((sum, order) => {
+            return sum + (Number(order.price) || 0);
+        }, 0);
 
     const weeklyData = buildWeeklyData(
         weeklyOrdersRaw,
@@ -142,10 +177,27 @@ const getDashboardOverviewService = async (businessId) => {
         messengerActiveUsers +
         instagramActiveUsers;
 
+    const branchPerformance = branches.map((branch) => {
+        const branchBookings = last7DaysBookings.filter(
+            (booking) => booking.branchId === branch.id
+        );
+        const totalOrders = branchBookings.length;
+        const totalSales = branchBookings.reduce((sum, booking) => {
+            return sum + (Number(booking.price) || 0);
+        }, 0);
+
+        return {
+            branchId: branch.id,
+            branchName: branch.name,
+            totalOrders,
+            totalSales,
+        };
+    }).sort((a, b) => b.totalSales - a.totalSales || b.totalOrders - a.totalOrders);
+
     return {
         todayOrders,
         pendingDeliveries,
-        todaysSales: totalSales,
+        todaysSales,
         activeUsers: {
             total: totalActiveUsers,
             whatsapp: whatsappActiveUsers,
@@ -153,6 +205,7 @@ const getDashboardOverviewService = async (businessId) => {
             instagram: instagramActiveUsers,
         },
         weeklySales: weeklyData,
+        branchPerformance,
         recentActivity,
     };
 };

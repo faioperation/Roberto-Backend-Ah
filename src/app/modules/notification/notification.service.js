@@ -23,18 +23,28 @@ const createAndSendNotification = async ({
       recipients.add(userId);
     }
 
-    // 2. All SYSTEM_OWNER users always receive all notifications
-    const systemOwners = await prisma.user.findMany({
-      where: {
-        roles: {
-          some: {
-            role: { name: "SYSTEM_OWNER" }
+    // 2. All SYSTEM_OWNER users receive notifications, EXCEPT:
+    //    - Social media notifications (type: "NEW_MESSAGE")
+    //    - Order / Appointment bookings (type containing "BOOKING" or "DELIVERY", e.g. "ORDER_BOOKING", "APPOINTMENT_BOOKING", "PARCEL_DELIVERY")
+    //    - CRM Leads / Voice calls (type: "VOICE_CALL")
+    const isExcludedForSystemOwner = 
+      type === "NEW_MESSAGE" || 
+      type === "VOICE_CALL" || 
+      (type && (type.includes("BOOKING") || type.includes("DELIVERY")));
+
+    if (!isExcludedForSystemOwner) {
+      const systemOwners = await prisma.user.findMany({
+        where: {
+          roles: {
+            some: {
+              role: { name: "SYSTEM_OWNER" }
+            }
           }
-        }
-      },
-      select: { id: true }
-    });
-    systemOwners.forEach(u => recipients.add(u.id));
+        },
+        select: { id: true }
+      });
+      systemOwners.forEach(u => recipients.add(u.id));
+    }
 
     // 3. If businessId is specified, the Business Owner gets it
     if (businessId) {
@@ -178,6 +188,20 @@ const getNotificationsService = async (userId, query = {}) => {
 
   if (user) {
     const userRoleNames = user.roles?.map(r => r.role.name) || [];
+
+    if (userRoleNames.includes("SYSTEM_OWNER")) {
+      const existingNot = queryParams.where.NOT || [];
+      const notConditions = [
+        { type: "NEW_MESSAGE" },
+        { type: "VOICE_CALL" },
+        { type: { contains: "BOOKING" } },
+        { type: { contains: "DELIVERY" } }
+      ];
+      queryParams.where.NOT = Array.isArray(existingNot)
+        ? [...existingNot, ...notConditions]
+        : [existingNot, ...notConditions];
+    }
+
     if (userRoleNames.includes("BRANCH_MANAGER")) {
       const manager = await prisma.branchManager.findUnique({
         where: { email: user.email },

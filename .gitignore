@@ -51,3 +51,5 @@ src/app/config/google-services.json
 src/app/config/firebase-config.js
 src/app/config/roberto-notification-firebase-adminsdk-fbsvc-ebd70cfbdc.json
 
+prisma/migrations
+

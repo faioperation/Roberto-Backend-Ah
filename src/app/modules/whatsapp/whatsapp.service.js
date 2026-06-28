@@ -198,4 +198,65 @@ export const WhatsappService = {
       data: { unreadCount: 0 },
     });
   },
+
+  connectOAuthAccount: async (businessId, branchId, code, redirectUri) => {
+    // 1. Exchange authorization code for access token
+    const userAccessToken = await MetaGraphAPI.getAccessToken(code, redirectUri);
+
+    // 2. Fetch shared WABA accounts
+    const wabas = await MetaGraphAPI.getWabaAccounts(userAccessToken);
+    if (!wabas || wabas.length === 0) {
+      throw new Error("No shared WhatsApp Business Accounts found.");
+    }
+
+    const connectedAccounts = [];
+
+    // 3. For each shared WABA, fetch phone numbers and save
+    for (const waba of wabas) {
+      const wabaId = waba.id;
+      const phoneNumbers = await MetaGraphAPI.getWabaPhoneNumbers(wabaId, userAccessToken);
+      
+      if (phoneNumbers && phoneNumbers.length > 0) {
+        for (const phone of phoneNumbers) {
+          const account = await prisma.whatsappAccount.upsert({
+            where: {
+              businessId_phoneNumberId: {
+                businessId,
+                phoneNumberId: phone.id,
+              },
+            },
+            update: {
+              wabaId,
+              phoneNumber: phone.display_phone_number,
+              accessToken: userAccessToken,
+              status: "ACTIVE",
+              branchId: branchId || null,
+            },
+            create: {
+              businessId,
+              branchId: branchId || null,
+              wabaId,
+              phoneNumberId: phone.id,
+              phoneNumber: phone.display_phone_number,
+              accessToken: userAccessToken,
+              status: "ACTIVE",
+            },
+          });
+          
+          connectedAccounts.push({
+            id: account.id,
+            phoneNumber: account.phoneNumber,
+            wabaId: account.wabaId,
+            phoneNumberId: account.phoneNumberId,
+          });
+        }
+      }
+    }
+
+    if (connectedAccounts.length === 0) {
+      throw new Error("No phone numbers found under the shared WhatsApp Business Accounts.");
+    }
+
+    return connectedAccounts;
+  },
 };

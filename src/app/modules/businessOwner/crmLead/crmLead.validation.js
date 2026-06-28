@@ -26,6 +26,9 @@ const updateCrmLeadSchema = z.object({
         branchId: z.string().uuid("Invalid branch ID format").optional(),
         metadata: z.record(z.string(), z.any()).optional(),
     }).passthrough(),
+    params: z.object({
+        id: z.string().uuid("Invalid lead ID format"),
+    }),
 });
 
 export const CrmLeadValidation = {

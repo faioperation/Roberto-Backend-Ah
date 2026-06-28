@@ -9,6 +9,7 @@ import {
   getMessages,
   checkConnectionStatus,
   sendMediaMessage,
+  disconnectConnection,
 } from "./instagram.controller.js";
 import { checkAuthMiddleware } from "../../middleware/checkAuthMiddleware.js";
 import { instagramUpload } from "./instagramUpload.js";
@@ -44,3 +45,5 @@ InstagramRoutes.post(
 // Get Data
 InstagramRoutes.get("/instagram/conversations", getConversations);
 InstagramRoutes.get("/instagram/messages/:conversationId", getMessages);
+
+InstagramRoutes.post("/instagram/disconnect", disconnectConnection);

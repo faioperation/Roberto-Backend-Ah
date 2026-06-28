@@ -8,6 +8,7 @@ const createBookingSchema = z.object({
         price: z.union([z.string(), z.number()]).optional(),
         note: z.string().optional(),
         branchId: z.string().uuid("Invalid branch ID").optional(),
+        conversationId: z.string().uuid("Invalid conversation ID").optional(),
 
         // ORDER_BOOKING details
         deliveryDate: z.string().optional(),
@@ -40,6 +41,7 @@ const updateBookingSchema = z.object({
         price: z.union([z.string(), z.number()]).optional(),
         note: z.string().optional(),
         branchId: z.string().uuid("Invalid branch ID").optional(),
+        conversationId: z.string().uuid("Invalid conversation ID").optional(),
 
         // ORDER_BOOKING details
         deliveryDate: z.string().optional(),

@@ -63,9 +63,11 @@ export const notifyAiAgent = async ({
       recipient_id: recipientId,
       conversation_id: conversationId,
       channel,
+      source_type: channel ? channel.toUpperCase() : null,
       message: message || "",
-      training_data_id : "0ca80bd3-8519-4298-8a02-8f4ac0993e59"
+      training_data_id: "0ca80bd3-8519-4298-8a02-8f4ac0993e59"
     };
+    console.log("from paylod message", payload)
 
     console.log(`[AI Agent] Triggering notifyAiAgent for channel ${channel}...`);
     console.log("[AI Agent] Payload:", JSON.stringify(payload, null, 2));

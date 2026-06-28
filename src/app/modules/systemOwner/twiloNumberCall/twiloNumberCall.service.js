@@ -10,11 +10,14 @@ const setupTwilioService = async (payload) => {
     twilio_number,
     transfer_number,
     assistant_id,
+    vapiId,
   } = payload;
 
-  if (!twilio_sid || !twilio_auth_token || !twilio_number || !transfer_number || !assistant_id) {
+  const targetAssistantId = vapiId || assistant_id;
+
+  if (!twilio_sid || !twilio_auth_token || !twilio_number || !transfer_number || !targetAssistantId) {
     throw new DevBuildError(
-      "All fields (twilio_sid, twilio_auth_token, twilio_number, transfer_number, assistant_id) are required",
+      "All fields (twilio_sid, twilio_auth_token, twilio_number, transfer_number, vapiId or assistant_id) are required",
       StatusCodes.BAD_REQUEST
     );
   }
@@ -33,17 +36,17 @@ const setupTwilioService = async (payload) => {
   };
 
   // 1. Fetch assistant details to get existing tools
-  let existingToolIds = [];
+  let currentModel = {};
   try {
-    console.log(`[Vapi] Fetching assistant details for assistant_id: ${assistant_id}`);
-    const assistantResponse = await axios.get(`https://api.vapi.ai/assistant/${assistant_id}`, {
+    console.log(`[Vapi] Fetching assistant details for assistant_id: ${targetAssistantId}`);
+    const assistantResponse = await axios.get(`https://api.vapi.ai/assistant/${targetAssistantId}`, {
       headers: vapiHeaders,
     });
-    existingToolIds = assistantResponse.data?.toolIds || [];
-    console.log(`[Vapi] Current assistant toolIds:`, existingToolIds);
+    currentModel = assistantResponse.data?.model || {};
+    console.log(`[Vapi] Current assistant model config:`, currentModel);
   } catch (error) {
     console.error(
-      `[Vapi] Error fetching assistant ${assistant_id}:`,
+      `[Vapi] Error fetching assistant ${targetAssistantId}:`,
       error.response?.data || error.message
     );
     throw new DevBuildError(
@@ -67,7 +70,6 @@ const setupTwilioService = async (payload) => {
           message: "Forwarding your call now.",
         },
       ],
-      name: `Transfer to ${transfer_number}`,
     };
 
     const toolResponse = await axios.post(`https://api.vapi.ai/tool`, toolPayload, {
@@ -90,14 +92,19 @@ const setupTwilioService = async (payload) => {
 
   // 3. Attach the tool to the assistant
   try {
+    const existingToolIds = currentModel.toolIds || [];
     const updatedToolIds = [...new Set([...existingToolIds, createdTool.id])];
+    const updatedModel = {
+      ...currentModel,
+      toolIds: updatedToolIds,
+    };
     console.log(
-      `[Vapi] Updating assistant ${assistant_id} with new tool list:`,
-      updatedToolIds
+      `[Vapi] Updating assistant ${targetAssistantId} with new model config:`,
+      updatedModel
     );
     await axios.patch(
-      `https://api.vapi.ai/assistant/${assistant_id}`,
-      { toolIds: updatedToolIds },
+      `https://api.vapi.ai/assistant/${targetAssistantId}`,
+      { model: updatedModel },
       { headers: vapiHeaders }
     );
     console.log(`[Vapi] Assistant tools updated successfully.`);
@@ -123,7 +130,7 @@ const setupTwilioService = async (payload) => {
       number: twilio_number,
       twilioAccountSid: twilio_sid,
       twilioAuthToken: twilio_auth_token,
-      assistantId: assistant_id,
+      assistantId: targetAssistantId,
       name: `Twilio ${twilio_number}`,
     };
 
@@ -142,6 +149,8 @@ const setupTwilioService = async (payload) => {
     const isConflict =
       errMsg.toLowerCase().includes("already exists") ||
       errMsg.toLowerCase().includes("conflict") ||
+      errMsg.toLowerCase().includes("existing phone number") ||
+      errMsg.toLowerCase().includes("identical") ||
       error.response?.status === 409;
 
     if (isConflict) {
@@ -158,7 +167,7 @@ const setupTwilioService = async (payload) => {
           );
           const patchResponse = await axios.patch(
             `https://api.vapi.ai/phone-number/${matchedNumber.id}`,
-            { assistantId: assistant_id },
+            { assistantId: targetAssistantId },
             { headers: vapiHeaders }
           );
           importedPhoneNumber = patchResponse.data;

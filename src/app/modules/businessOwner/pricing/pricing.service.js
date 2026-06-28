@@ -42,8 +42,30 @@ const getAllPricingsService = async (query = {}) => {
     const result = await prisma.pricing.findMany(queryParams);
     const total = await prisma.pricing.count({ where: queryBuilder.where });
 
+    const allPricings = await prisma.pricing.findMany({
+        where: queryParams.where,
+        select: {
+            type: true,
+            status: true,
+        },
+    });
+
+    const activeCount = allPricings.filter((pricing) => pricing.status === true).length;
+
+    const uniqueTypes = new Set();
+    allPricings.forEach((pricing) => {
+        if (pricing.type) {
+            uniqueTypes.add(pricing.type.toUpperCase());
+        }
+    });
+    const typeCounts = uniqueTypes.size;
+
     return {
-        meta: queryBuilder.getMeta(total),
+        meta: {
+            ...queryBuilder.getMeta(total),
+            activeCount,
+            typeCounts,
+        },
         data: result,
     };
 };

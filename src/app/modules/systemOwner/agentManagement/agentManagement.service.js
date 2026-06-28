@@ -86,6 +86,16 @@ const mergeRulesFiles = async (files) => {
 };
 
 const createAgentService = async (businessId, agentName, files, branchId) => {
+    const targetBranchId = (branchId === "null" || branchId === "") ? null : branchId;
+    if (targetBranchId) {
+        const existingAgent = await prisma.agent.findFirst({
+            where: { branchId: targetBranchId },
+        });
+        if (existingAgent) {
+            throw new DevBuildError("An agent already exists for this branch", StatusCodes.BAD_REQUEST);
+        }
+    }
+
     if (!files || files.length === 0) {
         throw new DevBuildError("rules_file is required for agent creation", StatusCodes.BAD_REQUEST);
     }
@@ -106,7 +116,7 @@ const createAgentService = async (businessId, agentName, files, branchId) => {
     const result = await prisma.agent.create({
         data: {
             businessId,
-            branchId: branchId || null,
+            branchId: targetBranchId,
             rulesFile: relativePath,
             vapiId,
             metadata: externalResponse ? { ...externalResponse, agentName } : { agentName },
@@ -164,12 +174,22 @@ const updateAgentService = async (id, payload, files) => {
         throw new DevBuildError("Agent not found", StatusCodes.NOT_FOUND);
     }
 
+    const targetBranchId = (payload.branchId === "null" || payload.branchId === "") ? null : payload.branchId;
+    if (targetBranchId && targetBranchId !== existingAgent.branchId) {
+        const existingBranchAgent = await prisma.agent.findFirst({
+            where: { branchId: targetBranchId },
+        });
+        if (existingBranchAgent) {
+            throw new DevBuildError("An agent already exists for this branch", StatusCodes.BAD_REQUEST);
+        }
+    }
+
     const updateData = {};
     if (payload.businessId) {
         updateData.businessId = payload.businessId;
     }
     if (payload.branchId !== undefined) {
-        updateData.branchId = payload.branchId;
+        updateData.branchId = targetBranchId;
     }
 
     const existingMetadata = existingAgent.metadata || {};

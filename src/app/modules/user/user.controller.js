@@ -55,11 +55,13 @@ const getUserInfo = async (req, res, next) => {
     } else if (userRoleNames.includes("BRANCH_MANAGER")) {
       const manager = await prisma.branchManager.findUnique({
         where: { email: user.email },
-        include: { branches: { select: { id: true } } }
+        include: { branches: true }
       });
       if (manager) {
         user.businessId = manager.businessId;
         user.branchId = manager.branches?.[0]?.id || null;
+        user.branch = manager.branches?.[0] || null;
+        user.branches = manager.branches || [];
         const business = await prisma.business.findUnique({
           where: { id: manager.businessId },
           select: { businessType: true }

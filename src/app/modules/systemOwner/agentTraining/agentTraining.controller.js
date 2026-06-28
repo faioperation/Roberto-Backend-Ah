@@ -22,6 +22,28 @@ const mapFiles = async (filesArray) => {
     return result;
 };
 
+const sanitizePayload = (obj) => {
+    if (obj === null || obj === undefined) return obj;
+    if (typeof obj === 'string') {
+        // Remove null bytes (\u0000 / \x00) and replace backslashes to prevent database driver Unicode escape crash
+        return obj
+            .replace(/\u0000/g, '')
+            .replace(/\x00/g, '')
+            .replace(/\\/g, '/');
+    }
+    if (Array.isArray(obj)) {
+        return obj.map(sanitizePayload);
+    }
+    if (typeof obj === 'object') {
+        const sanitized = {};
+        for (const key of Object.keys(obj)) {
+            sanitized[key] = sanitizePayload(obj[key]);
+        }
+        return sanitized;
+    }
+    return obj;
+};
+
 const compileRowText = (payload) => {
     let textParts = [];
     const extractFromJson = (jsonField) => {
@@ -66,7 +88,8 @@ const createAgentTraining = async (req, res, next) => {
         
         payload.rowText = compileRowText(payload);
         
-        const result = await AgentTrainingService.createAgentTrainingService(payload);
+        const sanitizedPayload = sanitizePayload(payload);
+        const result = await AgentTrainingService.createAgentTrainingService(sanitizedPayload);
 
         sendResponse(res, {
             success: true,
@@ -141,7 +164,8 @@ const updateAgentTraining = async (req, res, next) => {
             payload.rowText = compileRowText(mergedPayload);
         }
 
-        const result = await AgentTrainingService.updateAgentTrainingService(id, payload);
+        const sanitizedPayload = sanitizePayload(payload);
+        const result = await AgentTrainingService.updateAgentTrainingService(id, sanitizedPayload);
 
         sendResponse(res, {
             success: true,

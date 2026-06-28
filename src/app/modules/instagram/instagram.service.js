@@ -4,8 +4,39 @@ import { envVars } from "../../config/env.js";
 import { AppError } from "../../errorHelper/appError.js";
 import { notifyAiAgent } from "../../utils/aiAgent.js";
 import { NotificationService } from "../notification/notification.service.js";
+import { isConversationLimitReached } from "../../utils/limitChecker.js";
 
 const getGraphUrl = () => `https://graph.facebook.com/${envVars.META_GRAPH_VERSION || "v23.0"}`;
+
+const getInstagramUserProfile = async (igsid, pageAccessToken) => {
+  try {
+    const response = await axios.get(
+      `${getGraphUrl()}/me/conversations`,
+      {
+        params: {
+          platform: "instagram",
+          user_id: igsid,
+          fields: "participants",
+          access_token: pageAccessToken,
+        },
+      }
+    );
+    const conversations = response.data?.data;
+    if (conversations && conversations.length > 0) {
+      const participants = conversations[0].participants?.data;
+      if (participants) {
+        const customer = participants.find((p) => p.id === igsid);
+        if (customer && customer.name) {
+          return { name: customer.name };
+        }
+      }
+    }
+    return { name: "Instagram User" };
+  } catch (error) {
+    console.error("Error fetching Instagram user profile from conversations:", error.response?.data || error.message);
+    return { name: "Instagram User" };
+  }
+};
 
 export const handleIncomingMessage = async (instagramAccountId, webhookEvent) => {
   const senderId = webhookEvent.sender.id;
@@ -32,6 +63,31 @@ export const handleIncomingMessage = async (instagramAccountId, webhookEvent) =>
 
   const businessId = connection.businessId;
 
+  // Fetch customerName if conversation doesn't exist or is missing name
+  const existingConv = await prisma.conversation.findUnique({
+    where: {
+      businessId_platform_customerId: {
+        businessId,
+        platform: "instagram",
+        customerId: senderId,
+      },
+    },
+  });
+
+  if (!existingConv) {
+    const limitReached = await isConversationLimitReached(businessId);
+    if (limitReached) {
+      console.warn(`[Instagram Webhook] Conversation limit reached for business: ${businessId}. Ignoring incoming message.`);
+      return;
+    }
+  }
+
+  let customerName = existingConv?.customerName;
+  if (!customerName || customerName === "Instagram User") {
+    const profile = await getInstagramUserProfile(senderId, connection.accessToken);
+    customerName = profile.name;
+  }
+
   // Create or update conversation
   const conversation = await prisma.conversation.upsert({
     where: {
@@ -45,12 +101,14 @@ export const handleIncomingMessage = async (instagramAccountId, webhookEvent) =>
       lastMessage: lastMessageContent,
       lastMessageAt: new Date(),
       branchId: connection.branchId || null,
+      customerName: customerName || undefined,
     },
     create: {
       businessId,
       branchId: connection.branchId || null,
       platform: "instagram",
       customerId: senderId,
+      customerName: customerName || "Instagram User",
       lastMessage: lastMessageContent,
       lastMessageAt: new Date(),
     },

@@ -14,9 +14,11 @@ const setupTwilioSchema = z.object({
     transfer_number: z.string({
       required_error: "transfer_number is required",
     }),
-    assistant_id: z.string({
-      required_error: "assistant_id is required",
-    }),
+    vapiId: z.string().optional(),
+    assistant_id: z.string().optional(),
+  }).refine(data => data.vapiId || data.assistant_id, {
+    message: "Either vapiId or assistant_id is required",
+    path: ["vapiId"],
   }),
 });
 

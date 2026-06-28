@@ -20,6 +20,7 @@ import { OrderBookingBranchRoutes } from "../modules/branchManager/orderBookingB
 import { MessengerRoutes } from "../modules/messenger/messenger.route.js";
 import { WhatsappRoutes } from "../modules/whatsapp/whatsapp.routes.js";
 import { InstagramRoutes } from "../modules/instagram/instagram.route.js";
+import { GoogleCalendarRoutes } from "../modules/googleCalendar/googleCalendar.route.js";
 import { PublicFacebookRoutes } from "../modules/publicApi/facebook/facebook.route.js";
 import { PublicInstagramRoutes } from "../modules/publicApi/instagram/instagram.route.js";
 import { PublicWhatsappRoutes } from "../modules/publicApi/whatsapp/whatsapp.route.js";
@@ -39,6 +40,8 @@ import { TelephonyRoutes } from "../modules/systemOwner/twiloNumberCall/twiloNum
 import { DashboardOverviewSRoutes } from "../modules/systemOwner/dashboardOverviewS/dashboardOverviewS.route.js";
 import { ConversationOffRoutes } from "../modules/conversationOff/conversationOff.route.js";
 import { NotificationRoutes } from "../modules/notification/notification.route.js";
+import { PricingCalculatorRoutes } from "../modules/pricingCalculator/pricingCalculator.route.js";
+import { AllConversationsRoutes } from "../modules/allConversations/allConversations.route.js";
 
 export const router = Router();
 
@@ -66,6 +69,7 @@ const moduleRoutes = [
   { path: "/v1", route: MessengerRoutes },
   { path: "/v1", route: WhatsappRoutes },
   { path: "/v1", route: InstagramRoutes },
+  { path: "/v1", route: GoogleCalendarRoutes },
   { path: "/v1/public/facebook", route: PublicFacebookRoutes },
   { path: "/v1/public/instagram", route: PublicInstagramRoutes },
   { path: "/v1/public/whatsapp", route: PublicWhatsappRoutes },
@@ -84,6 +88,8 @@ const moduleRoutes = [
   { path: "/system-owner/telephony", route: TelephonyRoutes },
   { path: "/system-owner/dashboard", route: DashboardOverviewSRoutes },
   { path: "/conversation-off", route: ConversationOffRoutes },
+  { path: "/pricing-calculator", route: PricingCalculatorRoutes },
+  { path: "/conversations", route: AllConversationsRoutes },
 ];
 
 moduleRoutes.forEach((route) => {

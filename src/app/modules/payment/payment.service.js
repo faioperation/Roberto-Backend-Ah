@@ -217,10 +217,10 @@ const getMySubscription = async (user) => {
     include: {
       plan: { include: { features: true } },
       invoices: {
-        orderBy: { createdAt: "desc" },
+        orderBy: { createdAt: "asc" },
       },
     },
-    orderBy: { createdAt: "desc" },
+    orderBy: { createdAt: "asc" },
   });
 
   return subscriptions.map((sub) => {
@@ -242,6 +242,7 @@ const getMySubscription = async (user) => {
     const latestInvoice = cleanedInvoices[0] || null;
     return {
       ...sub,
+      renewalDate: sub.endDate,
       invoices: cleanedInvoices,
       invoicePath: latestInvoice?.invoicePath || null,
       invoiceUrl: latestInvoice?.invoiceUrl || null,
