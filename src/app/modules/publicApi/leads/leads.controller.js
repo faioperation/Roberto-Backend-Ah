@@ -24,6 +24,24 @@ export const createLead = async (req, res, next) => {
       if (!branchExists) throw new AppError(StatusCodes.NOT_FOUND, `Branch not found in this business.`);
     }
 
+    if (cleanPayload.conversationId) {
+      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+      if (!uuidRegex.test(cleanPayload.conversationId)) {
+        throw new AppError(StatusCodes.BAD_REQUEST, "Invalid conversationId format.");
+      }
+
+      const standardExists = await prisma.conversation.findUnique({
+        where: { id: cleanPayload.conversationId }
+      });
+      const whatsappExists = await prisma.whatsappConversation.findUnique({
+        where: { id: cleanPayload.conversationId }
+      });
+
+      if (!standardExists && !whatsappExists) {
+        throw new AppError(StatusCodes.BAD_REQUEST, `Conversation ${cleanPayload.conversationId} not found.`);
+      }
+    }
+
     const newLead = await prisma.crmLead.create({ data: cleanPayload });
 
     sendResponse(res, {

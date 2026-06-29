@@ -1,4 +1,5 @@
 import prisma from "../../../prisma/client.js";
+// Triggering nodemon restart with schema update
 import DevBuildError from "../../../lib/DevBuildError.js";
 import { StatusCodes } from "http-status-codes";
 import { QueryBuilder } from "../../../utils/QueryBuilder.js";
