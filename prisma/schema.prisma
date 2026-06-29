@@ -117,19 +117,20 @@ model RolePermission {
 }
 
 enum DemoBookingStatus {
-  CALLED
   PENDING
+  CALLED
+  FAILED
 }
 
 model DemoBooking {
-  id           String            @id @default(uuid())
-  email        String?           @unique
-  mobileNumber String?           @map("mobile_number")
-  date         DateTime?         @db.Date
-  status       DemoBookingStatus @default(PENDING)
-  credits      Int               @default(0)
-  createdAt    DateTime          @default(now()) @map("created_at")
-  updatedAt    DateTime          @updatedAt @map("updated_at")
+  id          String            @id @default(uuid())
+  name        String
+  email       String
+  subject     String
+  description String            @db.Text
+  status      DemoBookingStatus @default(PENDING)
+  createdAt   DateTime          @default(now()) @map("created_at")
+  updatedAt   DateTime          @updatedAt @map("updated_at")
 
   @@map("demo_booking")
 }

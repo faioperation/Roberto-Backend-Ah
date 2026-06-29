@@ -11,10 +11,16 @@ const getAllPublicSubscriptionPlansService = async (query = {}) => {
 
     const queryParams = queryBuilder.build();
 
-    // Only return active plans for public
+    // Only return active plans for public, excluding any plan named "FREE"
     queryParams.where = {
         ...queryParams.where,
         isActive: true,
+        NOT: {
+            name: {
+                equals: "FREE",
+                mode: "insensitive"
+            }
+        }
     };
 
     if (!queryParams.select) {

@@ -102,7 +102,9 @@ const createBusinessService = async (payload) => {
             if (plan) {
                 const startDate = new Date();
                 const endDate   = new Date(startDate);
-                if (payload.planCycle === "YEARLY") {
+                if (plan.name.toLowerCase() === "free") {
+                    endDate.setDate(endDate.getDate() + 14);
+                } else if (payload.planCycle === "YEARLY") {
                     endDate.setFullYear(endDate.getFullYear() + 1);
                 } else {
                     endDate.setMonth(endDate.getMonth() + 1);

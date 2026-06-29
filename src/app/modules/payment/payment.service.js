@@ -86,10 +86,15 @@ const processStripeWebhook = async (event) => {
       data:  { status: "CANCELED" },
     });
 
+    // Fetch plan details
+    const plan = await prisma.subscriptionPlan.findUnique({ where: { id: planId } });
+
     // Compute subscription period
     const startDate = new Date();
     const endDate   = new Date(startDate);
-    if (billingCycle === "yearly") {
+    if (plan?.name?.toLowerCase() === "free") {
+      endDate.setDate(endDate.getDate() + 14);
+    } else if (billingCycle === "yearly") {
       endDate.setFullYear(endDate.getFullYear() + 1);
     } else {
       endDate.setMonth(endDate.getMonth() + 1);
@@ -119,8 +124,6 @@ const processStripeWebhook = async (event) => {
       },
     });
 
-    // Fetch plan details for amount
-    const plan   = await prisma.subscriptionPlan.findUnique({ where: { id: planId } });
     const amount = billingCycle === "yearly" ? plan?.yearlyPrice : plan?.monthlyPrice;
 
     const invoiceNo = session.invoice || `INV-${Date.now()}`;
