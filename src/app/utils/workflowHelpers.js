@@ -60,6 +60,7 @@ export const extractLeadPayload = async (businessId, payload) => {
     branch_id: "branchId",
     created_by_id: "createdById",
     created_by: "createdById",
+    conversation_id: "conversationId",
   };
 
   for (const [snakeKey, camelKey] of Object.entries(keyMap)) {
@@ -79,6 +80,7 @@ export const extractLeadPayload = async (businessId, payload) => {
     "address",
     "note",
     "status",
+    "conversationId",
     "metadata"
   ];
 

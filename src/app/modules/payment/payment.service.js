@@ -109,10 +109,14 @@ const processStripeWebhook = async (event) => {
       },
     });
 
-    // Activate business
+    // Activate business and sync plan details
     await prisma.business.update({
       where: { id: businessId },
-      data:  { status: "ACTIVE" },
+      data:  { 
+        status: "ACTIVE",
+        planId,
+        planCycle: billingCycle === "yearly" ? "YEARLY" : "MONTHLY"
+      },
     });
 
     // Fetch plan details for amount

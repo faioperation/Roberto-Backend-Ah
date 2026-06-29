@@ -240,15 +240,50 @@ const getAllBusinessesService = async (query = {}) => {
             createdBy: { select: { id: true, email: true, firstName: true, lastName: true } },
             owner:     { select: { id: true, email: true, firstName: true, lastName: true } },
             branches:  true,
+            subscriptions: {
+                where: { status: "ACTIVE" },
+                include: { plan: true }
+            }
         };
     }
 
     const result = await prisma.business.findMany(queryParams);
     const total  = await prisma.business.count({ where: queryBuilder.where });
 
+    // Collect all planIds we might need to fetch (if not already included in active subscription)
+    const planIdsToFetch = [];
+    for (const item of result) {
+        const activeSub = item.subscriptions?.find((sub) => sub.status === "ACTIVE");
+        if (activeSub) {
+            continue;
+        }
+        if (item.planId) {
+            planIdsToFetch.push(item.planId);
+        }
+    }
+
+    // Fetch any missing plan details from DB
+    let fetchedPlans = [];
+    if (planIdsToFetch.length > 0) {
+        fetchedPlans = await prisma.subscriptionPlan.findMany({
+            where: { id: { in: [...new Set(planIdsToFetch)] } }
+        });
+    }
+    const fetchedPlansMap = new Map(fetchedPlans.map((p) => [p.id, p]));
+
     const formatted = result.map((item) => {
+        const activeSub = item.subscriptions?.find((sub) => sub.status === "ACTIVE");
+        let plan = activeSub?.plan || null;
+
+        // Fallback to planId lookup if not found via active subscription
+        if (!plan && item.planId) {
+            plan = fetchedPlansMap.get(item.planId) || null;
+        }
+
+        delete item.subscriptions;
         delete item.createdById;
         delete item.planId;
+        item.plan = plan;
         return formatBusinessResponse(item);
     });
 
@@ -302,6 +337,10 @@ const getBusinessByIdService = async (id, query = {}) => {
             createdBy: { select: { id: true, email: true, firstName: true, lastName: true } },
             owner:     { select: { id: true, email: true, firstName: true, lastName: true } },
             branches:  true,
+            subscriptions: {
+                where: { status: "ACTIVE" },
+                include: { plan: true }
+            }
         };
     }
 
@@ -311,8 +350,19 @@ const getBusinessByIdService = async (id, query = {}) => {
         throw new DevBuildError("Business not found", StatusCodes.NOT_FOUND);
     }
 
+    const activeSub = result.subscriptions?.find((sub) => sub.status === "ACTIVE");
+    let plan = activeSub?.plan || null;
+
+    if (!plan && result.planId) {
+        plan = await prisma.subscriptionPlan.findUnique({
+            where: { id: result.planId }
+        });
+    }
+
+    delete result.subscriptions;
     delete result.createdById;
     delete result.planId;
+    result.plan = plan;
 
     return formatBusinessResponse(result);
 };

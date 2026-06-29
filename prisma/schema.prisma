@@ -666,6 +666,7 @@ model CrmLead {
   address     String?
   note        String?
   status      LeadStatus @default(COLD)
+  conversationId String?   @map("conversation_id")
 
   metadata    Json?    // Specific lead collection fields
 
