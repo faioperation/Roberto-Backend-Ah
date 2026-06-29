@@ -74,6 +74,33 @@ export const checkAuthMiddleware =
             }
           }
 
+          if (business) {
+            // Check if subscription has expired (current date > endDate of active subscription)
+            const activeSubscription = await prisma.businessSubscription.findFirst({
+              where: {
+                businessId: business.id,
+                status: "ACTIVE",
+              }
+            });
+
+            if (activeSubscription && new Date() > new Date(activeSubscription.endDate)) {
+              // Expire subscription in DB
+              await prisma.businessSubscription.update({
+                where: { id: activeSubscription.id },
+                data: { status: "INACTIVE" }
+              });
+
+              // Set business status to INACTIVE in DB
+              const updatedBusiness = await prisma.business.update({
+                where: { id: business.id },
+                data: { status: "INACTIVE" }
+              });
+
+              // Update business reference in local memory
+              business = updatedBusiness;
+            }
+          }
+
           // If the business is deleted or suspended, completely block access to all routes
           if (!business || business.deletedAt || business.status === "SUSPENDED") {
             return res.status(403).json({

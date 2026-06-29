@@ -42,6 +42,7 @@ import { ConversationOffRoutes } from "../modules/conversationOff/conversationOf
 import { NotificationRoutes } from "../modules/notification/notification.route.js";
 import { PricingCalculatorRoutes } from "../modules/pricingCalculator/pricingCalculator.route.js";
 import { AllConversationsRoutes } from "../modules/allConversations/allConversations.route.js";
+import { DemoBookingRoutes } from "../modules/demoBooking/demoBooking.route.js";
 
 export const router = Router();
 
@@ -90,6 +91,7 @@ const moduleRoutes = [
   { path: "/conversation-off", route: ConversationOffRoutes },
   { path: "/pricing-calculator", route: PricingCalculatorRoutes },
   { path: "/conversations", route: AllConversationsRoutes },
+  { path: "/demo-bookings", route: DemoBookingRoutes },
 ];
 
 moduleRoutes.forEach((route) => {
