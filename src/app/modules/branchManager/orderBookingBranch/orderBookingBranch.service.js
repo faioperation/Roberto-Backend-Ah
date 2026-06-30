@@ -69,11 +69,10 @@ const createBookingService = async (payload) => {
         branchId: result.branchId || null,
     }).catch(err => console.error("Error sending booking creation notification:", err));
 
-    if (businessType === "APPOINTMENT_BOOKING") {
-        GoogleCalendarService.syncBookingToCalendar(result).catch(err => {
-            console.error("Error auto-syncing booking to Google Calendar in branch service:", err);
-        });
-    }
+    // Sync to Google Calendar for all booking categories
+    GoogleCalendarService.syncBookingToCalendar(result).catch(err => {
+        console.error("Error auto-syncing booking to Google Calendar in branch service:", err);
+    });
 
     return result;
 };

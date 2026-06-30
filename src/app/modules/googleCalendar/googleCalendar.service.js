@@ -165,73 +165,107 @@ const getAuthenticatedClient = async (connection) => {
 };
 
 /**
- * Creates Google Calendar event for a newly created appointment booking
- * @param {object} booking - Booking object from DB (must include appointmentDetails)
- * @param {object} connection - Google Calendar connection details
+ * Builds an all-day event start/end block from a date value.
  */
-const createEventForBooking = async (booking, connection) => {
-  const details = booking.appointmentDetails;
-  if (!details || (!details.appointmentTime && !details.appointmentDate)) {
-    console.log("No appointment time or date found. Skipping calendar event creation.");
-    return;
-  }
+const buildAllDayEvent = (dateValue) => {
+  const startTime = new Date(dateValue);
+  const nextDay = new Date(startTime);
+  nextDay.setDate(nextDay.getDate() + 1);
+  const fmt = (d) => d.toISOString().split("T")[0];
+  return {
+    start: { date: fmt(startTime) },
+    end: { date: fmt(nextDay) },
+  };
+};
 
+/**
+ * Creates Google Calendar event for any booking category.
+ * Supports: APPOINTMENT_BOOKING, ORDER_BOOKING, PARCEL_DELIVERY
+ * @param {object} booking - Booking object from DB (with its details relation attached)
+ * @param {object} connection - Google Calendar connection details
+ * @param {string} [businessType] - Optional override; auto-detected from booking shape if omitted
+ */
+const createEventForBooking = async (booking, connection, businessType) => {
   const oauth2Client = await getAuthenticatedClient(connection);
   const calendar = google.calendar({ version: "v3", auth: oauth2Client });
 
-  let startTime;
-  let isAllDay = false;
+  const baseAttendees = booking.email ? [{ email: booking.email }] : [];
+  const baseNote = `Customer Phone: ${booking.customerNumber}\nCustomer Email: ${booking.email || "N/A"}\nNotes: ${booking.note || "N/A"}`;
 
-  if (details.appointmentTime) {
-    startTime = new Date(details.appointmentTime);
-  } else {
-    startTime = new Date(details.appointmentDate);
-    isAllDay = true;
-  }
+  let eventResource;
 
-  const eventResource = {
-    summary: `Appointment: ${booking.customerName}`,
-    location: details.platform || "Physical Location / Not Specified",
-    description: `Customer Phone: ${booking.customerNumber}\nCustomer Email: ${booking.email || "N/A"}\nNotes: ${booking.note || "N/A"}`,
-    attendees: booking.email ? [{ email: booking.email }] : [],
-    reminders: {
-      useDefault: true,
-    },
-  };
-
-  if (isAllDay) {
-    const nextDay = new Date(startTime);
-    nextDay.setDate(nextDay.getDate() + 1);
-    
-    const formatDate = (d) => d.toISOString().split('T')[0];
-
-    eventResource.start = {
-      date: formatDate(startTime),
-    };
-    eventResource.end = {
-      date: formatDate(nextDay),
-    };
-  } else {
-    // Parse duration (e.g. "30 mins", "1 hour", or number/null). Default to 60 mins.
-    let durationMinutes = 60;
-    const durationStr = details.duration;
-    if (durationStr) {
-      const match = durationStr.match(/(\d+)/);
-      if (match) {
-        const numericVal = parseInt(match[1], 10);
-        durationMinutes = durationStr.toLowerCase().includes("hour") ? numericVal * 60 : numericVal;
-      }
+  // ── APPOINTMENT BOOKING ────────────────────────────────────────────────────
+  if (businessType === "APPOINTMENT_BOOKING" || booking.appointmentDetails) {
+    const details = booking.appointmentDetails;
+    if (!details || (!details.appointmentTime && !details.appointmentDate)) {
+      console.log("No appointment time or date found. Skipping calendar event creation.");
+      return;
     }
 
-    const endTime = new Date(startTime.getTime() + durationMinutes * 60 * 1000);
+    let timePart;
+    if (details.appointmentTime) {
+      const startTime = new Date(details.appointmentTime);
 
-    eventResource.start = {
-      dateTime: startTime.toISOString(),
-      timeZone: "UTC",
+      // Parse duration string e.g. "30 mins", "1 hour". Default 60 mins.
+      let durationMinutes = 60;
+      const durationStr = details.duration;
+      if (durationStr) {
+        const match = durationStr.match(/(\d+)/);
+        if (match) {
+          const n = parseInt(match[1], 10);
+          durationMinutes = durationStr.toLowerCase().includes("hour") ? n * 60 : n;
+        }
+      }
+      const endTime = new Date(startTime.getTime() + durationMinutes * 60 * 1000);
+      timePart = {
+        start: { dateTime: startTime.toISOString(), timeZone: "UTC" },
+        end: { dateTime: endTime.toISOString(), timeZone: "UTC" },
+      };
+    } else {
+      timePart = buildAllDayEvent(details.appointmentDate);
+    }
+
+    eventResource = {
+      summary: `Appointment: ${booking.customerName}`,
+      location: details.platform || "Physical Location / Not Specified",
+      description: `${baseNote}\nPlatform: ${details.platform || "N/A"}\nDuration: ${details.duration || "N/A"}`,
+      attendees: baseAttendees,
+      reminders: { useDefault: true },
+      ...timePart,
     };
-    eventResource.end = {
-      dateTime: endTime.toISOString(),
-      timeZone: "UTC",
+
+  // ── PARCEL DELIVERY ────────────────────────────────────────────────────────
+  } else if (businessType === "PARCEL_DELIVERY" || booking.parcelDetails) {
+    const details = booking.parcelDetails;
+    if (!details?.deliveryDate) {
+      console.log("No delivery date for parcel. Skipping calendar event creation.");
+      return;
+    }
+
+    eventResource = {
+      ...buildAllDayEvent(details.deliveryDate),
+      summary: `Parcel Delivery: ${booking.customerName}`,
+      location: details.deliveryAddress || "Not Specified",
+      description: `${baseNote}\nPickup: ${details.pickupAddress || "N/A"}\nDelivery Address: ${details.deliveryAddress || "N/A"}\nProduct Type: ${details.productType || "N/A"}\nWeight: ${details.productWeight ?? "N/A"}`,
+      attendees: baseAttendees,
+      reminders: { useDefault: true },
+    };
+
+  // ── ORDER BOOKING (default) ────────────────────────────────────────────────
+  } else {
+    const details = booking.orderDetails;
+    if (!details?.deliveryDate) {
+      console.log("No delivery date for order. Skipping calendar event creation.");
+      return;
+    }
+
+    eventResource = {
+      ...buildAllDayEvent(details.deliveryDate),
+      summary: `Order: ${booking.customerName}`,
+      location: details.deliveryAddress || "Not Specified",
+      description: `${baseNote}\nDelivery Address: ${details.deliveryAddress || "N/A"}\nProduct Type: ${details.productType || "N/A"}`,
+      attendees: baseAttendees,
+      reminders: { useDefault: true },
     };
   }
 
@@ -240,7 +274,7 @@ const createEventForBooking = async (booking, connection) => {
       calendarId: "primary",
       requestBody: eventResource,
     });
-    console.log(`Google Calendar event successfully created for branch ${connection.branchId}: ${response.data.htmlLink}`);
+    console.log(`Google Calendar event created for branch ${connection.branchId}: ${response.data.htmlLink}`);
     return response.data;
   } catch (error) {
     console.error("Error creating Google Calendar event:", error);
@@ -249,27 +283,63 @@ const createEventForBooking = async (booking, connection) => {
 };
 
 /**
- * Automatically syncs an appointment booking to Google Calendar if connection exists.
- * @param {object} booking 
+ * Automatically syncs any booking to Google Calendar if a connection exists for the branch.
+ * Supports APPOINTMENT_BOOKING, ORDER_BOOKING, and PARCEL_DELIVERY.
+ * @param {object} booking - Booking object (may or may not have details already attached)
  */
 const syncBookingToCalendar = async (booking) => {
   if (!booking.branchId) return;
 
-  let fullBooking = booking;
-  if (!booking.appointmentDetails) {
-    const details = await prisma.appointmentDetails.findUnique({
-      where: { appointmentId: booking.id }
+  // Resolve businessType from the business record if not already on the object
+  let businessType = booking.businessType;
+  if (!businessType) {
+    const business = await prisma.business.findUnique({
+      where: { id: booking.businessId },
+      select: { businessType: true },
     });
-    if (!details) return;
-    fullBooking = { ...booking, appointmentDetails: details };
+    businessType = business?.businessType || "ORDER_BOOKING";
+  }
+
+  // Fetch details if not already attached
+  let fullBooking = { ...booking, businessType };
+
+  if (businessType === "APPOINTMENT_BOOKING" && !booking.appointmentDetails) {
+    const details = await prisma.appointmentDetails.findUnique({
+      where: { appointmentId: booking.id },
+    });
+    if (!details) {
+      console.log(`No appointmentDetails found for booking ${booking.id}. Skipping.`);
+      return;
+    }
+    fullBooking.appointmentDetails = details;
+
+  } else if (businessType === "PARCEL_DELIVERY" && !booking.parcelDetails) {
+    const details = await prisma.parcelDetails.findUnique({
+      where: { parcelDeliveryId: booking.id },
+    });
+    if (!details) {
+      console.log(`No parcelDetails found for booking ${booking.id}. Skipping.`);
+      return;
+    }
+    fullBooking.parcelDetails = details;
+
+  } else if (businessType === "ORDER_BOOKING" && !booking.orderDetails) {
+    const details = await prisma.orderDetails.findUnique({
+      where: { orderId: booking.id },
+    });
+    if (!details) {
+      console.log(`No orderDetails found for booking ${booking.id}. Skipping.`);
+      return;
+    }
+    fullBooking.orderDetails = details;
   }
 
   try {
     const connection = await prisma.googleCalendarConnection.findUnique({
-      where: { branchId: booking.branchId }
+      where: { branchId: booking.branchId },
     });
     if (connection) {
-      await createEventForBooking(fullBooking, connection);
+      await createEventForBooking(fullBooking, connection, businessType);
     }
   } catch (err) {
     console.error("Failed to sync booking to Google Calendar automatically:", err);
