@@ -1,8 +1,10 @@
-import { Prisma } from "@prisma/client";
+import * as PrismaModule from "@prisma/client";
 import { AppError } from "../errorHelper/appError.js";
 import { envVars } from "../config/env.js";
 
-
+const { Prisma } = PrismaModule;
+const PrismaClientKnownRequestError = Prisma?.PrismaClientKnownRequestError;
+const PrismaClientValidationError = Prisma?.PrismaClientValidationError;
 
 export const globalErrorHandler = (
   err,
@@ -19,7 +21,7 @@ export const globalErrorHandler = (
   let errorSource = [];
 
   // ✅ Prisma Known Errors
-  if (err instanceof Prisma.PrismaClientKnownRequestError) {
+  if (err instanceof PrismaClientKnownRequestError) {
     switch (err.code) {
       case "P2002":
         statusCode = 409;
@@ -43,7 +45,7 @@ export const globalErrorHandler = (
   }
 
   // ✅ Prisma Validation Errors
-  else if (err instanceof Prisma.PrismaClientValidationError) {
+  else if (err instanceof PrismaClientValidationError) {
     statusCode = 400;
     message = err.message;
   }
